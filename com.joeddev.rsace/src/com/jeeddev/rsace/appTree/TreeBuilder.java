@@ -1,5 +1,5 @@
 package com.jeeddev.rsace.appTree;
-// init javadoc
+// init javadoc more docs
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.eclipse.core.resources.IFile;
