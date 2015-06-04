@@ -198,19 +198,25 @@ public class TreeBuilder
     {
     	try
     	{
+    		String runtimePlatform = "";
     	    IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
     	    IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
     	    String path = file.getRawLocation().toOSString();
     	    String [] parts = path.split("\\/");
-    	     if (platform.equalsIgnoreCase("eclipse"))
-    	        for (int i = 0; i<parts.length; i++)
-    		       if (parts[i].equalsIgnoreCase("runtime-EclipseApplication"))
-    			         return parts[i+1]; 
-         }
-    	 catch (Exception e) 
-    	 { 
-    		 System.out.println(e.getMessage()); 
-    	 }
-    	 return "";
+    	    // Checks IDE Platform
+    	    if (platform.equalsIgnoreCase("eclipse"))
+    	    	runtimePlatform = "runtime-EclipseApplication";
+    	    else if (platform.equalsIgnoreCase("netbeans"))
+    	    	runtimePlatform = "runtime-NetbeansApplication";
+    	    // Gets the correct root working project
+    	    for (int i = 0; i<parts.length; i++)
+      		    if (parts[i].equalsIgnoreCase(runtimePlatform))
+      			      return parts[i+1];
+    	}
+    	catch (Exception e) 
+    	{ 
+    		System.out.println(e.getMessage()); 
+    	}
+    	return "";
     }
 }
