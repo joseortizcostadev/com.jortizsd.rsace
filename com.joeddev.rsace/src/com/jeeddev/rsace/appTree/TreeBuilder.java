@@ -1,7 +1,11 @@
 package com.jeeddev.rsace.appTree;
 // init javadoc more docs
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -12,6 +16,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.internal.Platform;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 
 public class TreeBuilder 
 {
@@ -19,6 +26,7 @@ public class TreeBuilder
 	private IFolder root;
 	private static final String VERSION = "1.0";
 	private static final String VENDOR = "com.jocdev.rsace";
+	private static final String ROOT_FOLDER = "Rsace";
 	private static final String CONFIG_DIR = "Rsace/RsaceConfigFiles";
 	private static final String RESOURCES_DIR = "Rsace/rscDir";
 	private static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
@@ -27,11 +35,12 @@ public class TreeBuilder
 	
 	private IProject proj;
 	
-    private TreeBuilder ()
+    private TreeBuilder () 
     {
     	this.proj = getWorkingProject();
-    	this.root = getFolder("Rsace");
+    	this.root = getFolder(ROOT_FOLDER);
     	buildConfigFiles(VENDOR,VERSION);
+    	
     }
     
     public static TreeBuilder getRsaceTreeInstance ()
@@ -65,11 +74,18 @@ public class TreeBuilder
     	getFile(configFolder, "usrFile.rsace", headerRsaceFile);
     	
     }
-    private IProject getWorkingProject ()
+    private IProject getWorkingProject () 
     {
     	IWorkspace workspace = ResourcesPlugin.getWorkspace();
     	IWorkspaceRoot root = workspace.getRoot();
-    	return  root.getProject("Rtest");
+    	String proj = null;
+    	try {
+			proj = getActiveProject("eclipse");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return  root.getProject(proj);
     }
     private IFolder getFolder (String folderName)
     {
@@ -126,6 +142,31 @@ public class TreeBuilder
         Object adapter = adaptable.getAdapter(IResource.class);
         System.out.println(adapter.toString());
         return (IResource) adapter;
+     }
+    
+     private String getActiveProject (String platform) throws FileNotFoundException
+     {
+    	 try
+    	 {
+    	 IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
+    	 IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
+    	  String path = file.getRawLocation().toOSString();
+    	 String [] parts = path.split("\\/");
+    	 if (platform.equalsIgnoreCase("eclipse"))
+    	 {
+    		 for (int i = 0; i<parts.length; i++)
+    		 {
+    			 if (parts[i].equalsIgnoreCase("runtime-EclipseApplication"))
+    			 {
+    				 System.out.println(parts[i+1]);
+    				 return parts[i+1]; 
+    			 }
+    				 
+    		 }
+    	 }
+    	 }
+    	 catch (Exception e) { System.out.println(e.getMessage()); }
+    	 return "";
      }
     
     
