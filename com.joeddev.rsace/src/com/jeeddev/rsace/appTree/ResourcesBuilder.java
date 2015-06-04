@@ -1,22 +1,25 @@
 package com.jeeddev.rsace.appTree;
 
+import java.io.InputStream;
+
 public class ResourcesBuilder implements TreeFilesInterface
 {
 
 	@Override
-	public void insertData(String filename, Object[] data) {
+	public void insertData(Object[] data) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeData(String filename, Object[] data) {
+	public void removeData(Object[] data) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void getFileContents(String filename) {
+	public InputStream getFileContents(String filename) {
+		return null;
 		// TODO Auto-generated method stub
 		
 	}

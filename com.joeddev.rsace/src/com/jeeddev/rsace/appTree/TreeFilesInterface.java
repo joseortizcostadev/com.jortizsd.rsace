@@ -13,7 +13,7 @@ import java.io.InputStream;
 
 public interface TreeFilesInterface 
 {
-    public void insertData (String filename, Object [] data);
-    public void removeData (String filename, Object [] data);
+    public void insertData (Object [] data);
+    public void removeData (Object [] data);
     public InputStream getFileContents (String filename);
 }

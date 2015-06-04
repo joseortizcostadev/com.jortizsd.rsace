@@ -15,13 +15,13 @@ public class ConfigBuilder implements TreeFilesInterface
     	this.file = treeBuilder.getFile(filename); 
     }
 	@Override
-	public void insertData(String filename, Object[] data) {
+	public void insertData( Object[] data) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeData(String filename, Object[] data) {
+	public void removeData(Object[] data) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -40,5 +40,7 @@ public class ConfigBuilder implements TreeFilesInterface
 		return null;
 		
 	}
+	
+	
     
 }
