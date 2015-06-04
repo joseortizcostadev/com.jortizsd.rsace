@@ -1,11 +1,19 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          TreeBuilder.java
+ * @Date          04/06/2015
+ * @Description   This class builds the base application's tree structure
+ *                in the user's project package explorer view. 
+ *                First of all, this class gets the user's working project 
+ *                directory, and creates the root folder ( Rsace ) for this 
+ *                application. In Addition, this class creates two sub folders 
+ *                which contain the base for rsace's configuration files, and 
+ *                resources files respectively. 
+ */
 package com.jeeddev.rsace.appTree;
-
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.net.URL;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -13,17 +21,13 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.internal.Platform;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 public class TreeBuilder 
 {
+	// Instance variables and constants
 	public static TreeBuilder instance = new TreeBuilder();
-	private IFolder root;
 	private String version = "1.0";
 	private String vendor = "com.jocdev.rsace";
 	public static final String ROOT_FOLDER = "Rsace";
@@ -32,34 +36,54 @@ public class TreeBuilder
 	public static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
 	public static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
 	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
+	private IProject proj; // User's working project
 	
-	private IProject proj;
-	
-    private TreeBuilder () 
+	/**
+	 * @category     Private Constructor
+	 * @description  Initializes base components
+	*/
+	private TreeBuilder () 
     {
     	this.proj = getWorkingProject();
-    	this.root = getFolder(ROOT_FOLDER);
+    	getFolder(ROOT_FOLDER); // Creates root folder
     	buildConfigFiles(vendor,version);
-    	
     }
     
+	/**
+	 * @category     Singleton method
+	 * @description  Creates a single instance of this class
+	 * @return       An instance of this class 
+	*/
     public static TreeBuilder getRsaceTreeInstance ()
     {
-    	
     	return instance;
     }
     
+    /**
+     * @category       Private Class Method
+     * @description    Build all the configuration files with
+     *                 a base content
+     * @param vendor   String that represents the vendor's file
+     * @param version  String that represents the version's file 
+    */
     private void buildConfigFiles (String vendor, String version)
     {
     	IFolder configFolder = getFolder(CONFIG_DIR);
     	String headerConfigFiles = "<?xml version=\"" + version + "\" encoding=\"UTF-8\"?>\n" + 
     	                           "<?rsace version=\"" + version + "\"?>";
+    	// Creates the configuration files.
     	getFile(configFolder, MANIFEST_FILE_CONFIG, headerConfigFiles);
     	getFile(configFolder, MEMBERS_FILE_CONFIG, headerConfigFiles);
     	getFile(configFolder, RESOURCES_FILE_CONFIG, headerConfigFiles);
     }
     
-    public void buildResourcesDir ()
+    /**
+     * @category      Public Class Method
+     * @description   Builds the resources files for this application
+     *                with a base content
+     * 
+    */
+    public void buildResourcesFiles ()
     {
     	IFolder configFolder = getFolder(RESOURCES_DIR);
     	String headerJavaTmp = "/**\n" + 
@@ -68,25 +92,34 @@ public class TreeBuilder
     			               "    Date: 00/00/0000\n" +
     	                       "*/";
     	String headerRsaceFile = "##### Keeps Stages Changes #######";
-    	 
-    	
+    	// Create resources files
     	getFile(configFolder, "usrFile_syn.java", headerJavaTmp);
     	getFile(configFolder, "usrFile.rsace", headerRsaceFile);
     	
     }
+    
+    /**
+     * @category     Private Class Method
+     * @description  Gets the working project directory where this
+     *               application was launched   
+     * @return       IProject object representing the working 
+     *               root directory
+     */
     private IProject getWorkingProject () 
     {
     	IWorkspace workspace = ResourcesPlugin.getWorkspace();
     	IWorkspaceRoot root = workspace.getRoot();
     	String proj = null;
-    	try {
-			proj = getActiveProject("eclipse");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	proj = getActiveProject("eclipse");
     	return  root.getProject(proj);
     }
+    
+    /**
+     * @category            Private Method Class
+     * @description         Creates a folder in the user's working project
+     * @param folderName    String representing the folderName to be created
+     * @return              IFolder object representing the folder created
+     */
     private IFolder getFolder (String folderName)
     {
     	try
@@ -103,25 +136,45 @@ public class TreeBuilder
     	return null;
     }
     
-    private  IFile getFile (IFolder folder, String fileName, String content)
+    /** 
+     * @category        Private Class Method
+     * @description     Creates a file in the user's working project     
+     * @param folder    IFolder object that represents the file's folder
+     * @param fileName  String object that represents the name of the file
+     * @param content   String object that represents the header content of the file
+     * @return          IFile object that represents the file created
+     */
+    private  IFile getFile (IFolder folder, String fileName, String header)
     {
     	IFile file = folder.getFile(fileName);
-    	setFileContents(file, content);
+    	setFileContents(file, header); // Creates headers
     	return file;
     }
     
-    public IFile getConfigFile (String filename)
+    /**
+     * @category        Public Class Method     
+     * @description     Gets the file given as argument   
+     * @param filename  String object representing the file's name
+     * @return          IFile object representing the file
+    */
+    public IFile getFile (String filename)
     {
-    	
     	return getFolder(CONFIG_DIR).getFile(filename);
     }
     
+    /**
+     * @category        Public Class Method
+     * @description     Sets the base contents on a file     
+     * @param file      IFile object that represents the file 
+     * @param contents  String object representing the new file's contents 
+    */
     public void setFileContents (IFile file, String contents)
     {
     	try
     	{
     	    if (!file.exists()) 
     	    {
+    	    	// Inserts contents using binary approach 
     	        byte[] bytes = contents.getBytes();
     	        InputStream source = new ByteArrayInputStream(bytes);
     	        file.create(source, IResource.NONE, null);
@@ -133,46 +186,31 @@ public class TreeBuilder
     	}
     }
     
-    public IResource extractSelection(ISelection sel) {
-        if (!(sel instanceof IStructuredSelection))
-           return null;
-        IStructuredSelection ss = (IStructuredSelection) sel;
-        Object element = ss.getFirstElement();
-        if (element instanceof IResource)
-           return (IResource) element;
-        if (!(element instanceof IAdaptable))
-           return null;
-        IAdaptable adaptable = (IAdaptable)element;
-        Object adapter = adaptable.getAdapter(IResource.class);
-        System.out.println(adapter.toString());
-        return (IResource) adapter;
-     }
-    
-     private String getActiveProject (String platform) throws FileNotFoundException
-     {
-    	 try
-    	 {
-    	 IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
-    	 IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
-    	  String path = file.getRawLocation().toOSString();
-    	 String [] parts = path.split("\\/");
-    	 if (platform.equalsIgnoreCase("eclipse"))
-    	 {
-    		 for (int i = 0; i<parts.length; i++)
-    		 {
-    			 if (parts[i].equalsIgnoreCase("runtime-EclipseApplication"))
-    			 {
-    				 System.out.println(parts[i+1]);
-    				 return parts[i+1]; 
-    			 }
-    				 
-    		 }
+    /**
+     * @category                       Private Class Method
+     * @description                    Gets the current active user's working project name
+     * @param platform                 String object that represents the Platform or IDE 
+     *                                 that users are using to develop their project 
+     * @return                         String object representing the name of the active project
+     * 
+    */
+    private String getActiveProject (String platform) 
+    {
+    	try
+    	{
+    	    IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
+    	    IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
+    	    String path = file.getRawLocation().toOSString();
+    	    String [] parts = path.split("\\/");
+    	     if (platform.equalsIgnoreCase("eclipse"))
+    	        for (int i = 0; i<parts.length; i++)
+    		       if (parts[i].equalsIgnoreCase("runtime-EclipseApplication"))
+    			         return parts[i+1]; 
+         }
+    	 catch (Exception e) 
+    	 { 
+    		 System.out.println(e.getMessage()); 
     	 }
-    	 }
-    	 catch (Exception e) { System.out.println(e.getMessage()); }
     	 return "";
-     }
-    
-    
-    
+    }
 }

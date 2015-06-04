@@ -42,7 +42,7 @@ public class InitHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		treeBuilder.buildResourcesDir();
+		treeBuilder.buildResourcesFiles();
 		
 		MessageDialog.openInformation(
 				window.getShell(),
