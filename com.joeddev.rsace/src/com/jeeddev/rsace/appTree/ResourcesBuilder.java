@@ -2,6 +2,8 @@ package com.jeeddev.rsace.appTree;
 
 import java.io.InputStream;
 
+import org.eclipse.core.runtime.CoreException;
+
 public class ResourcesBuilder implements TreeFilesInterface
 {
 
@@ -18,10 +20,10 @@ public class ResourcesBuilder implements TreeFilesInterface
 	}
 
 	@Override
-	public InputStream getFileContents(String filename) {
-		return null;
+	public InputStream getFileContents() throws CoreException {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
+	
 }

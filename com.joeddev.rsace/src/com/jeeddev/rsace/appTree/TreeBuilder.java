@@ -30,6 +30,11 @@ public class TreeBuilder
 	public static TreeBuilder instance = new TreeBuilder();
 	private String version = "1.0";
 	private String vendor = "com.jocdev.rsace";
+	public static final String ACTIVE_ELEMENT_PROJECT = "project";
+	public static final String ACTIVE_ELEMENT_FOLDER = "folder";
+	public static final String ACTIVE_ELEMENT_FILE = "file";
+	public static final String ECLIPSE_PLATFORM = "Eclipse";
+	public static final String NETBEANS_PLATFORM = "Netbeans";
 	public static final String ROOT_FOLDER = "Rsace";
 	public static final String CONFIG_DIR = "Rsace/RsaceConfigFiles";
 	public static final String RESOURCES_DIR = "Rsace/rscDir";
@@ -110,7 +115,7 @@ public class TreeBuilder
     	IWorkspace workspace = ResourcesPlugin.getWorkspace();
     	IWorkspaceRoot root = workspace.getRoot();
     	String proj = null;
-    	proj = getActiveProject("eclipse");
+    	proj = getActiveElement("eclipse","project");
     	return  root.getProject(proj);
     }
     
@@ -188,13 +193,15 @@ public class TreeBuilder
     
     /**
      * @category                       Private Class Method
-     * @description                    Gets the current active user's working project name
+     * @description                    Gets the current active user's working element name
      * @param platform                 String object that represents the Platform or IDE 
      *                                 that users are using to develop their project 
+     * @param element                  String representing the name of the element's resource 
+     *                                 Options available: Project, folder, file                                
      * @return                         String object representing the name of the active project
      * 
     */
-    private String getActiveProject (String platform) 
+    private String getActiveElement (String platform, String element) 
     {
     	try
     	{
@@ -204,19 +211,38 @@ public class TreeBuilder
     	    String path = file.getRawLocation().toOSString();
     	    String [] parts = path.split("\\/");
     	    // Checks IDE Platform
-    	    if (platform.equalsIgnoreCase("eclipse"))
+    	    if (platform.equalsIgnoreCase(ECLIPSE_PLATFORM))
     	    	runtimePlatform = "runtime-EclipseApplication";
-    	    else if (platform.equalsIgnoreCase("netbeans"))
+    	    else if (platform.equalsIgnoreCase(NETBEANS_PLATFORM))
     	    	runtimePlatform = "runtime-NetbeansApplication";
     	    // Gets the correct root working project
-    	    for (int i = 0; i<parts.length; i++)
-      		    if (parts[i].equalsIgnoreCase(runtimePlatform))
-      			      return parts[i+1];
-    	}
+    	    if (element.equalsIgnoreCase(ACTIVE_ELEMENT_FOLDER))
+    	    	return parts[parts.length - 2];
+    	    else if (element.equalsIgnoreCase(ACTIVE_ELEMENT_FILE))
+    	    	return parts[parts.length-1];
+    	    else if (element.equalsIgnoreCase(ACTIVE_ELEMENT_PROJECT))
+    	    {
+    	        for (int i = 0; i<parts.length; i++)
+    	            if (parts[i].equalsIgnoreCase(runtimePlatform) && element.equalsIgnoreCase("project"))
+      		    	    return parts[i+1];
+    	    }
+        }
     	catch (Exception e) 
     	{ 
     		System.out.println(e.getMessage()); 
     	}
     	return "";
+    }
+    
+    /**
+     * @category      Public Class Method
+     * @description   Gets the file active in the user's project
+     * @return        IFile object representing the active file
+     */
+    public IFile getActiveFile ()
+    {
+    	IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
+	    IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
+	    return file;
     }
 }
