@@ -108,9 +108,13 @@ public class TreeBuilder
     	IFile file = folder.getFile(fileName);
     	setFileContents(file, content);
     	return file;
-    }  
+    }
     
-    
+    public IFile getConfigFile (String filename)
+    {
+    	
+    	return getFolder(CONFIG_DIR).getFile(filename);
+    }
     
     public void setFileContents (IFile file, String contents)
     {
