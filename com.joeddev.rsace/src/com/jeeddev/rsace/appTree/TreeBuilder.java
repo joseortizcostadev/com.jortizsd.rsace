@@ -1,5 +1,5 @@
 package com.jeeddev.rsace.appTree;
-// init javadoc more docs
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,14 +24,14 @@ public class TreeBuilder
 {
 	public static TreeBuilder instance = new TreeBuilder();
 	private IFolder root;
-	private static final String VERSION = "1.0";
-	private static final String VENDOR = "com.jocdev.rsace";
-	private static final String ROOT_FOLDER = "Rsace";
-	private static final String CONFIG_DIR = "Rsace/RsaceConfigFiles";
-	private static final String RESOURCES_DIR = "Rsace/rscDir";
-	private static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
-	private static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
-	private static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
+	private String version = "1.0";
+	private String vendor = "com.jocdev.rsace";
+	public static final String ROOT_FOLDER = "Rsace";
+	public static final String CONFIG_DIR = "Rsace/RsaceConfigFiles";
+	public static final String RESOURCES_DIR = "Rsace/rscDir";
+	public static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
+	public static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
+	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
 	
 	private IProject proj;
 	
@@ -39,7 +39,7 @@ public class TreeBuilder
     {
     	this.proj = getWorkingProject();
     	this.root = getFolder(ROOT_FOLDER);
-    	buildConfigFiles(VENDOR,VERSION);
+    	buildConfigFiles(vendor,version);
     	
     }
     
