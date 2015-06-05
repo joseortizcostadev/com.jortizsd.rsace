@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import org.eclipse.core.runtime.CoreException;
 
-public class ResourcesBuilder implements TreeFilesInterface
+public class ResourcesBuilder implements InternalFileManagement
 {
 
 	@Override

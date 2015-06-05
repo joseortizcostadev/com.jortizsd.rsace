@@ -1,7 +1,7 @@
 /**
  * @author        Jose Ortiz Costa
  * @application   com.joeddev.rsace
- * @File          TreeFilesInterface.java
+ * @File          InternalFileManagement.java
  * @Date          04/06/2015
  * @Description   Creates signature methods to be implemented
  *                by others classes that need access to the files
@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 import org.eclipse.core.runtime.CoreException;
 
-public interface TreeFilesInterface 
+public interface InternalFileManagement 
 {
     public void insertData (Object [] data);
     public void removeData (Object [] data);

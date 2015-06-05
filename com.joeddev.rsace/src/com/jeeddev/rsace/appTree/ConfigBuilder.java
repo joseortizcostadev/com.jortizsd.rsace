@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 
-public class ConfigBuilder implements TreeFilesInterface
+public class ConfigBuilder implements InternalFileManagement
 {
 	private IFile file;
 	private TreeBuilder treeBuilder;
