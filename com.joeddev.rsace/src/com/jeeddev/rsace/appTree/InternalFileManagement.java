@@ -12,13 +12,16 @@
  */
 package com.jeeddev.rsace.appTree;
 
-import java.io.InputStream;
+import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 
 public interface InternalFileManagement 
 {
-    public void insertData (Object [] data);
-    public void removeData (Object [] data);
-    public InputStream getFileContents () throws CoreException;
+	public void CreateFile (IFolder folder, IFile file);
+	public void deleteFile (IFolder folder, IFile file);
+    public void setContents (IFile file,String contents);
+    public void appendContents (String contents);
+    public List <String> getFileContents ();
 }
