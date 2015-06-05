@@ -12,16 +12,24 @@ import org.eclipse.core.runtime.CoreException;
 
 public class ConfigBuilder implements InternalFileManagement
 {
-
-	@Override
-	public void CreateFile(IFolder folder, IFile file) {
-		// TODO Auto-generated method stub
-		
+    private IFolder rootConfigFolder;
+	public ConfigBuilder (IFolder configFolder)
+	{
+		this.rootConfigFolder = configFolder;
 	}
+	@Override
+	public void CreateFile(String filename) 
+	{
+		
+		 rootConfigFolder.getFile(filename);
+		
+    	
+    }
 
 	@Override
-	public void deleteFile(IFolder folder, IFile file) {
-		// TODO Auto-generated method stub
+	public void deleteFile(IFile file) throws CoreException 
+	{
+		file.delete(true, null);
 		
 	}
 
@@ -32,13 +40,18 @@ public class ConfigBuilder implements InternalFileManagement
 	}
 
 	@Override
-	public void appendContents(String contents) {
+	public void appendContents(IFile file, String contents) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public List<String> getFileContents() {
+	public List<String> getFileContents(IFile file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public IFolder getRootFolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}

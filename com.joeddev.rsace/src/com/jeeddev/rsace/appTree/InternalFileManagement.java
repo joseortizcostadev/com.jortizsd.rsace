@@ -16,12 +16,14 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.CoreException;
 
 public interface InternalFileManagement 
 {
-	public void CreateFile (IFolder folder, IFile file);
-	public void deleteFile (IFolder folder, IFile file);
-    public void setContents (IFile file,String contents);
-    public void appendContents (String contents);
-    public List <String> getFileContents ();
+	public IFolder getRootFolder ();
+	public void CreateFile (String filename);
+	public void deleteFile (IFile file) throws CoreException;
+    public void setContents (IFile file, String contents);
+    public void appendContents (IFile file, String contents);
+    public List <String> getFileContents (IFile file);
 }

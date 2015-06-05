@@ -42,6 +42,10 @@ public class TreeBuilder
 	public static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
 	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
 	private IProject proj; // User's working project
+	private ExternalFileManagement usrResourcesBuilder;
+	private InternalFileManagement configBuilder;
+	private InternalFileManagement resourcesBuilder;
+	
 	
 	/**
 	 * @category     Private Constructor
@@ -51,6 +55,9 @@ public class TreeBuilder
     {
     	this.proj = getWorkingProject();
     	getFolder(ROOT_FOLDER); // Creates root folder
+    	usrResourcesBuilder = new UsrResourcesBuilder();
+    	
+    	resourcesBuilder = new ResourcesBuilder ();
     	buildConfigFiles(vendor,version);
     }
     
@@ -74,6 +81,7 @@ public class TreeBuilder
     private void buildConfigFiles (String vendor, String version)
     {
     	IFolder configFolder = getFolder(CONFIG_DIR);
+    	configBuilder = new ConfigBuilder(configFolder);
     	String headerConfigFiles = "<?xml version=\"" + version + "\" encoding=\"UTF-8\"?>\n" + 
     	                           "<?rsace version=\"" + version + "\"?>";
     	// Creates the configuration files.

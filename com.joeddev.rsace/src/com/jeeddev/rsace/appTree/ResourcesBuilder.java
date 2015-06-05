@@ -11,13 +11,13 @@ public class ResourcesBuilder implements InternalFileManagement
 {
 
 	@Override
-	public void CreateFile(IFolder folder, IFile file) {
+	public void CreateFile(String filename) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteFile(IFolder folder, IFile file) {
+	public void deleteFile(IFile file) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -29,13 +29,19 @@ public class ResourcesBuilder implements InternalFileManagement
 	}
 
 	@Override
-	public void appendContents(String contents) {
+	public void appendContents(IFile file, String contents) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public List<String> getFileContents() {
+	public List<String> getFileContents(IFile file) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IFolder getRootFolder() {
 		// TODO Auto-generated method stub
 		return null;
 	}
