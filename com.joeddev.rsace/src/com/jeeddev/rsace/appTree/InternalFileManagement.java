@@ -99,8 +99,29 @@ abstract class InternalFileManagement
 		// No configuration files nor resources files should be deleted
 	}
 	
-	// Signature abstracts methods to be implemented by other classes
+	/**
+	 * 
+	 * @param file
+	 * @param contents
+	 */
 	abstract void appendContents (IFile file, String contents);
+	
+	/**
+	 * @category       Signature Class Method
+	 * @param vendor   String representing the file's vendor
+	 * @param version  String representing the file's version
+	 * @param context  String representing the context of the header 
+	 *                 e.g: The name of the file
+	 * @return         A String object representing the header content of the file
+	 * 
+	 */
     abstract String getHeaderContent(String vendor, String version, String context);
-	abstract List <String> getFileContents (IFile file);
+    
+    /**
+     * @category      Signature Class Method
+     * @param file    IFile object representing the file containing the contents 
+     * @return        List object representing a list which contains line by line the 
+     *                contents of the file
+     */
+    abstract List <String> getFileContents (IFile file);
 }
