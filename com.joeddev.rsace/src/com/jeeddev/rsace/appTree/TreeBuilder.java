@@ -30,8 +30,6 @@ public class TreeBuilder
 {
 	// Instance variables and constants
 	public static TreeBuilder instance = new TreeBuilder();
-	private  String version = "1.0";
-	public String vendor = "com.jocdev.rsace";
 	public static final String ACTIVE_ELEMENT_PROJECT = "project";
 	public static final String ACTIVE_ELEMENT_FOLDER = "folder";
 	public static final String ACTIVE_ELEMENT_FILE = "file";
@@ -40,7 +38,6 @@ public class TreeBuilder
 	public static final String ROOT_FOLDER = "Rsace";
 	public static final String CONFIG_DIR = "RsaceConfigFiles";
 	public static final String RESOURCES_DIR = "rscDir";
-	
 	private IProject proj; // User's working project
 	private ExternalFileManagement usrResourcesBuilder;
 	private InternalFileManagement configBuilder;
@@ -62,30 +59,11 @@ public class TreeBuilder
 	
 	public void buildAppTree (String serverMaker, String email)
 	{
-		buildConfigFiles(vendor, version);
+		buildConfigFiles(ConfigBuilder.VENDOR, ConfigBuilder.VERSION);
 		buildResourcesFiles(serverMaker, email);
 	}
 	
-	public void setVersion (String version)
-	{
-		this.version = version;
-	}
 	
-	public void setVendor (String vendor)
-	{
-		this.vendor = vendor;
-	}
-	
-	public String getVersion ()
-	{
-		return version;
-	}
-	
-	public String getVendor ()
-	{
-		return vendor;
-	}
-    
 	/**
 	 * @category     Singleton method
 	 * @description  Creates a single instance of this class
