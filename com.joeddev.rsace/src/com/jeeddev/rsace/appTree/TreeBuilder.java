@@ -14,6 +14,7 @@
 package com.jeeddev.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -21,6 +22,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
@@ -28,23 +30,22 @@ public class TreeBuilder
 {
 	// Instance variables and constants
 	public static TreeBuilder instance = new TreeBuilder();
-	private String version = "1.0";
-	private String vendor = "com.jocdev.rsace";
+	private  String version = "1.0";
+	public String vendor = "com.jocdev.rsace";
 	public static final String ACTIVE_ELEMENT_PROJECT = "project";
 	public static final String ACTIVE_ELEMENT_FOLDER = "folder";
 	public static final String ACTIVE_ELEMENT_FILE = "file";
 	public static final String ECLIPSE_PLATFORM = "Eclipse";
 	public static final String NETBEANS_PLATFORM = "Netbeans";
 	public static final String ROOT_FOLDER = "Rsace";
-	public static final String CONFIG_DIR = "Rsace/RsaceConfigFiles";
-	public static final String RESOURCES_DIR = "Rsace/rscDir";
-	public static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
-	public static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
-	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
+	public static final String CONFIG_DIR = "RsaceConfigFiles";
+	public static final String RESOURCES_DIR = "rscDir";
+	
 	private IProject proj; // User's working project
 	private ExternalFileManagement usrResourcesBuilder;
 	private InternalFileManagement configBuilder;
 	private InternalFileManagement resourcesBuilder;
+	private IFolder root;
 	
 	
 	/**
@@ -54,12 +55,36 @@ public class TreeBuilder
 	private TreeBuilder () 
     {
     	this.proj = getWorkingProject();
-    	getFolder(ROOT_FOLDER); // Creates root folder
-    	usrResourcesBuilder = new UsrResourcesBuilder();
+    	root = makeRoot(ROOT_FOLDER); // Creates root folder
     	
-    	resourcesBuilder = new ResourcesBuilder ();
-    	buildConfigFiles(vendor,version);
+    	
     }
+	
+	public void buildAppTree (String serverMaker, String email)
+	{
+		buildConfigFiles(vendor, version);
+		buildResourcesFiles(serverMaker, email);
+	}
+	
+	public void setVersion (String version)
+	{
+		this.version = version;
+	}
+	
+	public void setVendor (String vendor)
+	{
+		this.vendor = vendor;
+	}
+	
+	public String getVersion ()
+	{
+		return version;
+	}
+	
+	public String getVendor ()
+	{
+		return vendor;
+	}
     
 	/**
 	 * @category     Singleton method
@@ -78,17 +103,21 @@ public class TreeBuilder
      * @param vendor   String that represents the vendor's file
      * @param version  String that represents the version's file 
     */
-    private void buildConfigFiles (String vendor, String version)
+    public void buildConfigFiles (String vendor, String version)
     {
-    	IFolder configFolder = getFolder(CONFIG_DIR);
-    	configBuilder = new ConfigBuilder(configFolder);
-    	String headerConfigFiles = "<?xml version=\"" + version + "\" encoding=\"UTF-8\"?>\n" + 
-    	                           "<?rsace version=\"" + version + "\"?>";
-    	// Creates the configuration files.
-    	getFile(configFolder, MANIFEST_FILE_CONFIG, headerConfigFiles);
-    	getFile(configFolder, MEMBERS_FILE_CONFIG, headerConfigFiles);
-    	getFile(configFolder, RESOURCES_FILE_CONFIG, headerConfigFiles);
-    }
+    	configBuilder = new ConfigBuilder(root);
+    	IFolder configFolder = configBuilder.makeSubFolder(CONFIG_DIR);
+    	try
+    	{
+    	    configBuilder.makeFile(configFolder, ConfigBuilder.MANIFEST_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MANIFEST_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.MEMBERS_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MEMBERS_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.RESOURCES_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.RESOURCES_FILE_CONFIG));
+    	}
+    	catch (CoreException e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+	}
     
     /**
      * @category      Public Class Method
@@ -96,18 +125,19 @@ public class TreeBuilder
      *                with a base content
      * 
     */
-    public void buildResourcesFiles ()
+    public void buildResourcesFiles (String serverMaker, String email)
     {
-    	IFolder configFolder = getFolder(RESOURCES_DIR);
-    	String headerJavaTmp = "/**\n" + 
-    	                       "    File: usrFile_syn.java \n" + 
-    	                       "    Author: com.joeddev.rsace \n" + 
-    			               "    Date: 00/00/0000\n" +
-    	                       "*/";
-    	String headerRsaceFile = "##### Keeps Stages Changes #######";
-    	// Create resources files
-    	getFile(configFolder, "usrFile_syn.java", headerJavaTmp);
-    	getFile(configFolder, "usrFile.rsace", headerRsaceFile);
+    	resourcesBuilder = new ResourcesBuilder(root);
+    	IFolder configFolder = resourcesBuilder.makeSubFolder(RESOURCES_DIR);
+    	try
+    	{
+    	    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_FILE, resourcesBuilder.getHeaderContent(serverMaker, email, ResourcesBuilder.SYNC_FILE));
+		    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_TRAKER, resourcesBuilder.getHeaderContent(serverMaker, email, ResourcesBuilder.SYNC_TRAKER));
+    	}
+    	catch (CoreException e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
     	
     }
     
@@ -133,7 +163,7 @@ public class TreeBuilder
      * @param folderName    String representing the folderName to be created
      * @return              IFolder object representing the folder created
      */
-    private IFolder getFolder (String folderName)
+    private IFolder makeRoot (String folderName)
     {
     	try
     	{
@@ -172,7 +202,10 @@ public class TreeBuilder
     */
     public IFile getFile (String filename)
     {
+    	/*
     	return getFolder(CONFIG_DIR).getFile(filename);
+    	*/
+        return null;
     }
     
     /**

@@ -3,27 +3,104 @@
  * @application   com.joeddev.rsace
  * @File          InternalFileManagement.java
  * @Date          04/06/2015
- * @Description   Creates signature methods to be implemented
- *                by others classes that need access to the files
- *                from the rsace's tree structure 
- *                Note: The classes implementing this interface
- *                need to have a IFile as a parameter in
- *                their constructor 
+ * @Description   This abstract class implements methods to
+ *                handle Resources in the app's tree project
+ *                Also, this class contains abstract signature
+ *                methods to be implemented by other classes
+ *                that need to handle resources located inside
+ *                of the application's tree root
  */
 package com.jeeddev.rsace.appTree;
-
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-public interface InternalFileManagement 
+abstract class InternalFileManagement 
 {
-	public IFolder getRootFolder ();
-	public void CreateFile (String filename);
-	public void deleteFile (IFile file) throws CoreException;
-    public void setContents (IFile file, String contents);
-    public void appendContents (IFile file, String contents);
-    public List <String> getFileContents (IFile file);
+	public IFolder root;
+	public static final String VENDOR = "com.joeddev.rsace";
+    public static final String VERSION = "1.0";
+    /**
+     * @category     Abstract constructor cannot be instantiated directly
+     * @description  Sets the root folder of the application
+     * @param        rootAppFolder IFolder object representing the application's root folder
+     */
+	public InternalFileManagement (IFolder rootAppFolder)
+	{
+		root = rootAppFolder;
+	}
+	
+	/**
+	 * @category     Public Class Method   
+	 * @description  Gets the root folder of the application
+	 * @return       An IFolder object
+	 */
+	public  IFolder getRootFolder ()
+	{
+		return root;
+	}
+	
+	/**
+	 * @category             Public Class Method
+	 * @description          Makes a sub folder into the root folder of the application
+	 * @param subfolderName  String object representing the new subfolder's name
+	 * @return               An IFolder object representing the new subfolder created
+	 */
+	public IFolder makeSubFolder(String subfolderName) 
+	{
+		try
+    	{
+    	    IFolder folder = root.getFolder(subfolderName);
+    	    if (!folder.exists()) 
+        	    folder.create(IResource.NONE, true, null);
+    	    return folder;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+    	return null;
+		
+	}
+	
+	/**
+	 * @category               Public Class Method
+	 * @description            Makes a new resources file in the application tree
+	 * @param folder           IFolder object representing the folder that contains 
+	 * @param filename         String object representing the name of the new file
+	 * @param header           String object representing the header of the new file
+	 * @return                 An IFile object representing the new file resource created
+	 * @throws CoreException   An exception about the file
+	 */
+	public IFile makeFile (IFolder folder, String filename, String header) throws CoreException
+	{
+		IFile file = folder.getFile(filename);
+		if (!file.exists()) {
+		    byte[] bytes = header.getBytes();
+		    InputStream source = new ByteArrayInputStream(bytes);
+		    file.create(source, IResource.NONE, null);
+		}
+		return file;
+		
+	}
+	
+	/**
+	 * @category                Public Class Method
+	 * @description             Deletes the application's tree
+	 * 
+	 */
+	public void deleteRoot () 
+	{
+		// Empty method.
+		// No configuration files nor resources files should be deleted
+	}
+	
+	// Signature abstracts methods to be implemented by other classes
+	abstract void appendContents (IFile file, String contents);
+    abstract String getHeaderContent(String vendor, String version, String context);
+	abstract List <String> getFileContents (IFile file);
 }
