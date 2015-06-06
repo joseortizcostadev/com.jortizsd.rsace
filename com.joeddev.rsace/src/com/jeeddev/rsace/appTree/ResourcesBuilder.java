@@ -7,7 +7,7 @@
  *                InternalFileManagement, and implements its
  *                signature methods.
  *                This class handles the resources
- *                files of this application
+ *                files of this application.
  */
 package com.jeeddev.rsace.appTree;
 import java.util.List;
