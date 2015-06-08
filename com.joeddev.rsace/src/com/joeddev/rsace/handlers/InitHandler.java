@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.ConfigBuilder;
 import com.jeeddev.rsace.appTree.TreeBuilder;
+import com.joeddev.rsace.preferences.ServerPreferences;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -46,10 +47,11 @@ public class InitHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		treeBuilder.buildAppTree(System.getProperty("user.home"), "<Set your email in preferences>");
-		//treeBuilder.buildConfigFiles(TreeBuilder.vendor, TreeBuilder.version);
-		//treeBuilder.buildResourcesFiles();
-		MessageDialog.openInformation(
+		ServerPreferences serverPreferences = new ServerPreferences ();
+		String author = (String) serverPreferences.getAuthor();
+		String email = (String) serverPreferences.getEmail();
+		treeBuilder.buildAppTree(author, email);
+		 MessageDialog.openInformation(
 				window.getShell(),
 				"Remote Synchrnization and Code Editor",
 				"Welcome to Rsace. Now, you can synchronize and edit your file remotely from the Rsace's view and editor");
