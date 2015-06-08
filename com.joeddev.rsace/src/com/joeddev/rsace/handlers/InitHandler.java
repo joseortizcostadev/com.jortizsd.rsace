@@ -53,9 +53,10 @@ public class InitHandler extends AbstractHandler {
 		TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
 		ServerPreferences serverPreferences = new ServerPreferences ();
 		String author = (String) serverPreferences.getAuthor();
-		String email = (String) serverPreferences.getEmail();
+        String email = (String) serverPreferences.getEmail();
 		treeBuilder.buildAppTree(author, email);
-		ServerConfigWriter scw = new ServerConfigWriter ("members");
+	    ServerConfigWriter scw = new ServerConfigWriter ("members");
+	    scw.createServerOwner("id", "joselito", author, email, false);
 		
 		
 		 MessageDialog.openInformation(
