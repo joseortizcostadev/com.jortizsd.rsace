@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-abstract class InternalFileManagement 
+abstract class AbstractInternalFileManagement 
 {
 	public IFolder root;
 	public static final String VENDOR = "com.joeddev.rsace";
@@ -29,7 +29,7 @@ abstract class InternalFileManagement
      * @description  Sets the root folder of the application
      * @param        rootAppFolder IFolder object representing the application's root folder
      */
-	public InternalFileManagement (IFolder rootAppFolder)
+	public AbstractInternalFileManagement (IFolder rootAppFolder)
 	{
 		root = rootAppFolder;
 	}
@@ -124,4 +124,5 @@ abstract class InternalFileManagement
      *                contents of the file
      */
     abstract List <String> getFileContents (IFile file);
+    abstract IFile getFile (String filename);
 }

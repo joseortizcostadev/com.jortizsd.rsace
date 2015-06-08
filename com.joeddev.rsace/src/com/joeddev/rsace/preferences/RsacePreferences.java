@@ -46,7 +46,7 @@ public class RsacePreferences
 		
 	}
 	
-	public void setSectionHeader (String header)
+	private void setSectionHeader (String header)
 	{
 	    setDescription(header);
 	}

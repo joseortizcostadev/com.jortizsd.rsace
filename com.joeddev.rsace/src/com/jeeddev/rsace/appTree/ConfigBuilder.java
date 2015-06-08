@@ -11,15 +11,18 @@
  */
 package com.jeeddev.rsace.appTree;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 
-public class ConfigBuilder extends InternalFileManagement
+public class ConfigBuilder extends AbstractInternalFileManagement
 {
 	// public static instance variables
 	public static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
-	public static final String MEMBERS_FILE_CONFIG = "rsace_members.xml";
+	public static final String SERVER_FILE_CONFIG = "rsace_server.xml";
+	public static final String CLIENT_FILE_CONFIG = "rsace_client.xml";
 	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
+	
 	
 	/**
 	 * @category          Class Constructor
@@ -32,7 +35,7 @@ public class ConfigBuilder extends InternalFileManagement
 	}
 
 	/**
-	 * @see InternalFileManagement class
+	 * @see AbstractInternalFileManagement class
 	 */
 	@Override
 	void appendContents(IFile file, String contents) 
@@ -41,7 +44,7 @@ public class ConfigBuilder extends InternalFileManagement
 		
 	}
     /**
-     * @see InternalFileManagement class
+     * @see AbstractInternalFileManagement class
      */
 	@Override
 	List<String> getFileContents(IFile file) {
@@ -50,7 +53,7 @@ public class ConfigBuilder extends InternalFileManagement
 	}
 
     /**
-     * @see InternalFileManagement class
+     * @see AbstractInternalFileManagement class
      */
 	@Override
 	String getHeaderContent(String vendor, String version, String context) {
@@ -62,6 +65,12 @@ public class ConfigBuilder extends InternalFileManagement
 				        
 		return header;
 	}
+
+    @Override
+    IFile getFile(String filename) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
 	

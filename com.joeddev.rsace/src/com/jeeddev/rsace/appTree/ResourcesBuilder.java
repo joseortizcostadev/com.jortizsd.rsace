@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 
-public class ResourcesBuilder extends InternalFileManagement
+public class ResourcesBuilder extends AbstractInternalFileManagement
 {
 	
     public static final String SYNC_FILE = "_sync.java";
@@ -32,7 +32,7 @@ public class ResourcesBuilder extends InternalFileManagement
     }
     
     /**
-	 * @see InternalFileManagement class
+	 * @see AbstractInternalFileManagement class
 	 */
 	@Override
 	void appendContents(IFile file, String contents) {
@@ -41,7 +41,7 @@ public class ResourcesBuilder extends InternalFileManagement
 	}
     
 	/**
-	 * @see InternalFileManagement class
+	 * @see AbstractInternalFileManagement class
 	 */
 	@Override
 	List<String> getFileContents(IFile file) {
@@ -50,7 +50,7 @@ public class ResourcesBuilder extends InternalFileManagement
 	}
 	
 	/**
-	 * @see InternalFileManagement class
+	 * @see AbstractInternalFileManagement class
 	 */
 	@Override
 	String getHeaderContent(String author, String email, String context) {
@@ -61,6 +61,12 @@ public class ResourcesBuilder extends InternalFileManagement
 				        "*/\n";
 	    return header;
 	}
+
+    @Override
+    IFile getFile(String filename) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 	
 	
 	

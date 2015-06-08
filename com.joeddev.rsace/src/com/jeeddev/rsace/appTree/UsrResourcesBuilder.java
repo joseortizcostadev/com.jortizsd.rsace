@@ -2,7 +2,7 @@ package com.jeeddev.rsace.appTree;
 
 import java.util.List;
 
-public class UsrResourcesBuilder implements ExternalFileManagement
+public class UsrResourcesBuilder implements AbstractExternalFileManagement
 {
 
 	@Override

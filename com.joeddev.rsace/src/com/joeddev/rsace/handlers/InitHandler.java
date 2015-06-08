@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.ConfigBuilder;
+import com.jeeddev.rsace.appTree.ServerConfigWriter;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.joeddev.rsace.preferences.ServerPreferences;
 
@@ -44,17 +45,28 @@ public class InitHandler extends AbstractHandler {
 	 * the command has been executed, so extract extract the needed information
 	 * from the application context.
 	 */
-	public Object execute(ExecutionEvent event) throws ExecutionException {
+	public Object execute(ExecutionEvent event) throws ExecutionException
+	{
+	    try
+	    {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
 		ServerPreferences serverPreferences = new ServerPreferences ();
 		String author = (String) serverPreferences.getAuthor();
 		String email = (String) serverPreferences.getEmail();
 		treeBuilder.buildAppTree(author, email);
+		ServerConfigWriter scw = new ServerConfigWriter ("members");
+		
+		
 		 MessageDialog.openInformation(
 				window.getShell(),
 				"Remote Synchrnization and Code Editor",
 				"Welcome to Rsace. Now, you can synchronize and edit your file remotely from the Rsace's view and editor");
+	    }
+	    catch (Exception e)
+	    {
+	        System.out.println(e.getMessage());
+	    }
 		
 		return null;
 	}

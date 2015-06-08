@@ -39,9 +39,9 @@ public class TreeBuilder
 	public static final String CONFIG_DIR = "RsaceConfigFiles";
 	public static final String RESOURCES_DIR = "rscDir";
 	private IProject proj; // User's working project
-	private ExternalFileManagement usrResourcesBuilder;
-	private InternalFileManagement configBuilder;
-	private InternalFileManagement resourcesBuilder;
+	private AbstractExternalFileManagement usrResourcesBuilder;
+	private AbstractInternalFileManagement configBuilder;
+	private AbstractInternalFileManagement resourcesBuilder;
 	private IFolder root;
 	
 	
@@ -49,7 +49,7 @@ public class TreeBuilder
 	 * @category     Private Constructor
 	 * @description  Initializes base components
 	*/
-	private TreeBuilder () 
+	protected TreeBuilder () 
     {
     	this.proj = getWorkingProject();
     	root = makeRoot(ROOT_FOLDER); // Creates root folder
@@ -88,7 +88,8 @@ public class TreeBuilder
     	try
     	{
     	    configBuilder.makeFile(configFolder, ConfigBuilder.MANIFEST_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MANIFEST_FILE_CONFIG));
-		    configBuilder.makeFile(configFolder, ConfigBuilder.MEMBERS_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MEMBERS_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.SERVER_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.SERVER_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.CLIENT_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.CLIENT_FILE_CONFIG));
 		    configBuilder.makeFile(configFolder, ConfigBuilder.RESOURCES_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.RESOURCES_FILE_CONFIG));
     	}
     	catch (CoreException e)
@@ -178,12 +179,12 @@ public class TreeBuilder
      * @param filename  String object representing the file's name
      * @return          IFile object representing the file
     */
-    public IFile getFile (String filename)
+    public IFile getFile (String dirName, String filename)
     {
-    	/*
-    	return getFolder(CONFIG_DIR).getFile(filename);
-    	*/
-        return null;
+    	
+    	return root.getFolder(dirName).getFile(filename);
+    	
+       
     }
     
     /**
@@ -264,4 +265,6 @@ public class TreeBuilder
 	    IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
 	    return file;
     }
+    
+    
 }
