@@ -49,4 +49,13 @@ public class ServerConfigWriter extends AbstractTreeWriter
         saveInConfigFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.SERVER_FILE_CONFIG);
     }
     
+    public void updateServerOwner (String keyId, String valueId, String ownerName, String ownerEmail, boolean isSessionActive)
+    {
+        setId("owner", keyId, valueId);
+        setMemberName(ownerName);
+        setMemberEmail(ownerEmail);
+        setSessionStatus(isSessionActive);
+        updateInConfigFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.SERVER_FILE_CONFIG);
+    }
+    
 }

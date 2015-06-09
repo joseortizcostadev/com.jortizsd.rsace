@@ -57,7 +57,8 @@ public class InitHandler extends AbstractHandler {
 		treeBuilder.buildAppTree(author, email);
 	    ServerConfigWriter scw = new ServerConfigWriter ("members");
 	    scw.createServerOwner("id", "joselito", author, email, false);
-		
+	    ServerConfigWriter sc = new ServerConfigWriter ("options");
+	    sc.updateServerOwner("id", "jo", author, email, true);
 		
 		 MessageDialog.openInformation(
 				window.getShell(),
