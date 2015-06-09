@@ -56,9 +56,9 @@ public class InitHandler extends AbstractHandler {
 		String author = (String) serverPreferences.getAuthor();
         String email = (String) serverPreferences.getEmail();
 		treeBuilder.buildAppTree(author, email);
-	    Developer sender = new Developer("owner", author, email, true, true);
+	    Developer sender = new Developer("yo", "jose", "em", true, true);
 	    sender.setFileTarget(ConfigBuilder.SERVER_FILE_CONFIG);
-	    sender.syncWithRsace();
+	    sender.addToTeam();
 		
 		 MessageDialog.openInformation(
 				window.getShell(),

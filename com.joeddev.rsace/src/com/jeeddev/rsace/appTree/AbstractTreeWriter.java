@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,6 +27,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 abstract class AbstractTreeWriter extends TreeBuilder
 {
@@ -81,7 +83,7 @@ abstract class AbstractTreeWriter extends TreeBuilder
     // Needs
    
     
-    protected InputStream writeInEmptyFile (IFile file, Document doc)
+    protected InputStream getStream (IFile file, Document doc)
     {
         try
         {
@@ -104,9 +106,109 @@ abstract class AbstractTreeWriter extends TreeBuilder
         }
         return null;
     }
-   
+     
+    public ArrayList <Developer> getDevelopers (IFile file)
+    {
+        try
+        { 
+           String id, name, email;
+           boolean isActive, isSender;
+           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+           Document doc = documentBuilder.parse(file.getContents());
+           doc.getDocumentElement().normalize();
+           NodeList nList = doc.getElementsByTagName("developer");
+           ArrayList <Developer> developers = new ArrayList<>();
+           for (int i = 0; i<nList.getLength(); i++)
+           {
+               Node nNode = nList.item(i);
+               if (nNode.getNodeType() == Node.ELEMENT_NODE) 
+               {
+                   Element eElement = (Element) nNode;
+                   id = eElement.getAttribute("id");
+                   name = eElement.getElementsByTagName("name").item(0).getTextContent();
+                   email = eElement.getElementsByTagName("email").item(0).getTextContent();
+                   isActive = Boolean.valueOf(eElement.getElementsByTagName("active").item(0).getTextContent());
+                   isSender = Boolean.valueOf(eElement.getElementsByTagName("sender").item(0).getTextContent());
+                   developers.add(new Developer(id,name,email,isActive,isSender));
+                   
+               }
+               
+           }
+           return developers;
+        }
+        catch (Exception e)
+        {
+            
+        }
+        return null;
+    }
     
+    public Developer getDeveloperByName (String name, boolean isRequester)
+    {
+        String fileContext;
+        
+        if (isRequester)
+            fileContext = ConfigBuilder.SERVER_FILE_CONFIG;
+        else
+            fileContext = ConfigBuilder.CLIENT_FILE_CONFIG;
+        getFile(TreeBuilder.CONFIG_DIR, fileContext );
+        for (Developer dev : getDevelopers(getFile(TreeBuilder.CONFIG_DIR, fileContext )))
+            if (dev.getName().equalsIgnoreCase(name))
+                return dev;
+        return null;
+    }
     
+    public Developer getDeveloperById (String id, boolean isRequester)
+    {
+        String fileContext;
+        
+        if (isRequester)
+            fileContext = ConfigBuilder.SERVER_FILE_CONFIG;
+        else
+            fileContext = ConfigBuilder.CLIENT_FILE_CONFIG;
+        getFile(TreeBuilder.CONFIG_DIR, fileContext );
+        for (Developer dev : getDevelopers(getFile(TreeBuilder.CONFIG_DIR, fileContext )))
+            if (dev.getId().equalsIgnoreCase(id))
+                return dev;
+        return null;
+    }
     
+    public Developer addToDeveloperTeam (String id, String name, String email, boolean isActive, Boolean isSender)
+    {
+        try
+        {
+           Developer dev = new Developer (id, name, email, isActive, isSender);
+           String fileTarget;
+        
+           if (isSender)
+               fileTarget = ConfigBuilder.SERVER_FILE_CONFIG;
+           else
+               fileTarget = ConfigBuilder.CLIENT_FILE_CONFIG;
+        
+           InputStream is;
+           IFile file = getFile(TreeBuilder.CONFIG_DIR, fileTarget );
+           System.out.println("fileEmpty");
+           dev.prepareToJoinDeveloperTeam();
+           is = getStream(file, this.doc);
+           file.setContents(is, IResource.NONE, null);
+        
+           if (file.getContents() == null)
+           {
+               
+           }
+           else
+           {
+               
+           }
+           return dev;
+        }
+        catch (Exception e)
+        {
+            
+        }
+    
+        return null;
+    }
 
 }
