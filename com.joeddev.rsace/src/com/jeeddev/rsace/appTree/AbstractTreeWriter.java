@@ -79,102 +79,32 @@ abstract class AbstractTreeWriter extends TreeBuilder
     
     
     // Needs
-    public void saveInConfigFile (String folderName, String fileName)
+   
+    
+    protected InputStream writeInEmptyFile (IFile file, Document doc)
     {
-     // write the content into xml file
         try
         {
-        IFile file = getFile(folderName, fileName);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(new StringWriter());
-        transformer.transform(source, result);
-        String xmlString=result.getWriter().toString();
-        byte[] bytes = xmlString.getBytes();
-        InputStream sources = new ByteArrayInputStream(bytes);
-        file.setContents(sources, IResource.NONE, null);
-        
-        
+            
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new StringWriter());
+            transformer.transform(source, result);
+            String xmlString=result.getWriter().toString();
+            byte[] bytes = xmlString.getBytes();
+            return new ByteArrayInputStream(bytes);
+            
         }
         catch (Exception e)
         {
             System.out.println(e.getMessage());
         }
+        return null;
     }
-    
-    public void updateInConfigFile (String folderName, String fileName)
-    {
-     // write the content into xml file
-        try
-        {
-        IFile file = getFile(folderName, fileName);
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-        File f = null;
-        DOMSource source = new DOMSource(doc);
-        IPath location = file.getLocation();
-        if (location != null)
-          f = location.toFile();
-        StreamResult result = new StreamResult(new StringWriter());
-        
-        // Output to console for testing
-        // StreamResult result = new StreamResult(System.out);
- 
-        transformer.transform(source, result);
-        String xmlString=result.getWriter().toString();
-     // Inserts contents using binary approach 
-        byte[] bytes = xmlString.getBytes();
-        InputStream sources = new ByteArrayInputStream(bytes);
-        file.appendContents(sources, IResource.NONE, null);
-        
-        file.refreshLocal(IResource.DEPTH_INFINITE, null);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.getMessage());
-        }
-    }
-    /*
-    public void append ()
-    {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse("server.xml");
-        Element root = document.getDocumentElement();
-        
-        Collection<Node> servers = new ArrayList<Node>();
-        servers.add(new Server());
-
-        for (Server server : servers) {
-            // server elements
-            Element newServer = document.createElement("server");
-            root.appendChild(newServer);
-
-            Element name = document.createElement("name");
-            name.appendChild(document.createTextNode(server.getName()));
-            newServer.appendChild(name);
-
-            Element port = document.createElement("port");
-            port.appendChild(document.createTextNode(Integer.toString(server.getPort())));
-            newServer.appendChild(port);
-
-            root.appendChild(newServer);
-        }
-
-        DOMSource source = new DOMSource(document);
-
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        StreamResult result = new StreamResult("server.xml");
-        transformer.transform(source, result);
-    }
-    */
-    
+   
     
     
     

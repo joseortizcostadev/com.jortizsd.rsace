@@ -25,7 +25,8 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.ConfigBuilder;
-import com.jeeddev.rsace.appTree.ServerConfigWriter;
+import com.jeeddev.rsace.appTree.Developer;
+
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.joeddev.rsace.preferences.ServerPreferences;
 
@@ -55,10 +56,9 @@ public class InitHandler extends AbstractHandler {
 		String author = (String) serverPreferences.getAuthor();
         String email = (String) serverPreferences.getEmail();
 		treeBuilder.buildAppTree(author, email);
-	    ServerConfigWriter scw = new ServerConfigWriter ("members");
-	    scw.createServerOwner("id", "joselito", author, email, false);
-	    ServerConfigWriter sc = new ServerConfigWriter ("options");
-	    sc.updateServerOwner("id", "jo", author, email, true);
+	    Developer sender = new Developer("owner", author, email, true, true);
+	    sender.setFileTarget(ConfigBuilder.SERVER_FILE_CONFIG);
+	    sender.syncWithRsace();
 		
 		 MessageDialog.openInformation(
 				window.getShell(),
