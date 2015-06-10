@@ -58,7 +58,7 @@ public class InitHandler extends AbstractHandler {
 		treeBuilder.buildAppTree(author, email);
 	    Developer sender = new Developer("yo", "jose", "em", true, true);
 	    TreeWriter configWriter = TreeWriter.getInstance();
-	    configWriter.addDeveloperToTeam(sender,false);
+	    configWriter.addDeveloperToTeam(sender,true);
 		
 		 MessageDialog.openInformation(
 				window.getShell(),

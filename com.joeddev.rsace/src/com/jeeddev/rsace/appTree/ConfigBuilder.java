@@ -19,9 +19,8 @@ public class ConfigBuilder extends AbstractInternalFileManagement
 {
 	// public static instance variables
 	public static final String MANIFEST_FILE_CONFIG = "rsace_manifest.xml";
-	public static final String SERVER_FILE_CONFIG = "rsace_server.xml";
-	public static final String CLIENT_FILE_CONFIG = "rsace_client.xml";
-	public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
+	public static final String TEAM_FILE_CONFIG = "rsace_team.xml";
+    public static final String RESOURCES_FILE_CONFIG = "rsace_resources.xml";
 	
 	
 	/**

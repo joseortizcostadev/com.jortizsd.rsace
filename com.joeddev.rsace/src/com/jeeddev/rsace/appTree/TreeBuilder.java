@@ -88,8 +88,7 @@ public class TreeBuilder
     	try
     	{
     	    configBuilder.makeFile(configFolder, ConfigBuilder.MANIFEST_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MANIFEST_FILE_CONFIG));
-		    configBuilder.makeFile(configFolder, ConfigBuilder.SERVER_FILE_CONFIG, "");
-		    configBuilder.makeFile(configFolder, ConfigBuilder.CLIENT_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.CLIENT_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.TEAM_FILE_CONFIG, "");
 		    configBuilder.makeFile(configFolder, ConfigBuilder.RESOURCES_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.RESOURCES_FILE_CONFIG));
     	}
     	catch (CoreException e)

@@ -87,7 +87,7 @@ public class TreeWriter extends TreeBuilder
     
     public void addDeveloperToTeam (Developer dev, boolean addFirst) throws SAXException, IOException, CoreException, ParserConfigurationException
     {
-        IFile file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.SERVER_FILE_CONFIG);
+        IFile file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
         DocumentBuilderFactory docBuilF = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder =  docBuilF.newDocumentBuilder();
         Document document;
@@ -112,6 +112,7 @@ public class TreeWriter extends TreeBuilder
         setChildNode(document, developer, "session_owner", String.valueOf(dev.isSender()));
         InputStream is = getStream(file, document);
         file.setContents(is, IResource.NONE, null);
+        
     }
 
     
@@ -183,9 +184,9 @@ public class TreeWriter extends TreeBuilder
         String fileContext;
         
         if (isRequester)
-            fileContext = ConfigBuilder.SERVER_FILE_CONFIG;
+            fileContext = ConfigBuilder.TEAM_FILE_CONFIG;
         else
-            fileContext = ConfigBuilder.CLIENT_FILE_CONFIG;
+            fileContext = ConfigBuilder.TEAM_FILE_CONFIG;
         getFile(TreeBuilder.CONFIG_DIR, fileContext );
         for (Developer dev : getDevelopers(getFile(TreeBuilder.CONFIG_DIR, fileContext )))
             if (dev.getName().equalsIgnoreCase(name))
@@ -198,9 +199,9 @@ public class TreeWriter extends TreeBuilder
         String fileContext;
         
         if (isRequester)
-            fileContext = ConfigBuilder.SERVER_FILE_CONFIG;
+            fileContext = ConfigBuilder.TEAM_FILE_CONFIG;
         else
-            fileContext = ConfigBuilder.CLIENT_FILE_CONFIG;
+            fileContext = ConfigBuilder.TEAM_FILE_CONFIG;
         getFile(TreeBuilder.CONFIG_DIR, fileContext );
         for (Developer dev : getDevelopers(getFile(TreeBuilder.CONFIG_DIR, fileContext )))
             if (dev.getId().equalsIgnoreCase(id))
