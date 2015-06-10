@@ -4,6 +4,7 @@ package com.jeeddev.rsace.appTree;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.nio.file.Path;
@@ -22,32 +23,36 @@ import javax.xml.transform.stream.StreamResult;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-abstract class AbstractTreeWriter extends TreeBuilder
+public class TreeWriter extends TreeBuilder
 {
     DocumentBuilderFactory docBuilderFactory;
     DocumentBuilder docBuilder;
     Document doc;
     TreeBuilder configBuilder;
     IFile configF;
+    public static TreeWriter instance = new TreeWriter() ;
     
-    public AbstractTreeWriter() throws ParserConfigurationException 
+    private TreeWriter()  
     {
         
-        super();
-        docBuilderFactory = DocumentBuilderFactory.newInstance();
-        docBuilder =  docBuilderFactory.newDocumentBuilder();
-        doc = docBuilder.newDocument();
-        // TODO Auto-generated constructor stub
+         super();
     }
     
-    public Element createRoot (String rootName )
+    public static TreeWriter getInstance ()
+    {
+        return instance;
+    }
+    
+    public Element createRoot (Document doc, String rootName )
     {
         Element rootElement = doc.createElement(rootName);
         doc.appendChild(rootElement);
@@ -55,7 +60,7 @@ abstract class AbstractTreeWriter extends TreeBuilder
         
     }
     
-    public Element createElement (Element root, String elementName)
+    public Element createElement (Document doc,Element root, String elementName)
     {
         Element element = doc.createElement(elementName);
         root.appendChild(element);
@@ -63,7 +68,7 @@ abstract class AbstractTreeWriter extends TreeBuilder
         
     }
     
-    public void setAtrribute (Element element, String attributeName, String attValue)
+    public void setAtrribute (Document doc , Element element, String attributeName, String attValue)
     {
      // set attribute to staff element
         Attr attr = doc.createAttribute(attributeName);
@@ -71,7 +76,7 @@ abstract class AbstractTreeWriter extends TreeBuilder
         element.setAttributeNode(attr);
     }
     
-    public void setChildNode (Element parent, String elementName, String value)
+    public void setChildNode (Document doc, Element parent, String elementName, String value)
     {
      
         Element firstname = doc.createElement(elementName);
@@ -80,8 +85,37 @@ abstract class AbstractTreeWriter extends TreeBuilder
     }
     
     
-    // Needs
-   
+    public void addDeveloperToTeam (Developer dev, boolean addFirst) throws SAXException, IOException, CoreException, ParserConfigurationException
+    {
+        IFile file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.SERVER_FILE_CONFIG);
+        DocumentBuilderFactory docBuilF = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder =  docBuilF.newDocumentBuilder();
+        Document document;
+        Element root;
+        if (!addFirst)
+        {
+             System.out.println("Im greater than 0");
+             document = docBuilder.parse(file.getContents());
+             root = document.getDocumentElement();
+        }
+        else
+        {
+            System.out.println("I am less than 0");
+            document = docBuilder.newDocument();
+            root = createRoot(document, "developers");
+        }
+        Element developer =  createElement (document, root, "developer");
+        setAtrribute(document, developer, "id", dev.getId());
+        setChildNode(document, developer, "name", dev.getName());
+        setChildNode(document, developer, "email", dev.getEmail());
+        setChildNode(document, developer, "session_active", String.valueOf(dev.isActive()));
+        setChildNode(document, developer, "session_owner", String.valueOf(dev.isSender()));
+        InputStream is = getStream(file, document);
+        file.setContents(is, IResource.NONE, null);
+    }
+
+    
+    
     
     protected InputStream getStream (IFile file, Document doc)
     {
@@ -174,41 +208,16 @@ abstract class AbstractTreeWriter extends TreeBuilder
         return null;
     }
     
-    public Developer addToDeveloperTeam (String id, String name, String email, boolean isActive, Boolean isSender)
-    {
-        try
-        {
-           Developer dev = new Developer (id, name, email, isActive, isSender);
-           String fileTarget;
-        
-           if (isSender)
-               fileTarget = ConfigBuilder.SERVER_FILE_CONFIG;
-           else
-               fileTarget = ConfigBuilder.CLIENT_FILE_CONFIG;
-        
-           InputStream is;
-           IFile file = getFile(TreeBuilder.CONFIG_DIR, fileTarget );
-           System.out.println("fileEmpty");
-           dev.prepareToJoinDeveloperTeam();
-           is = getStream(file, this.doc);
-           file.setContents(is, IResource.NONE, null);
-        
-           if (file.getContents() == null)
-           {
-               
-           }
-           else
-           {
-               
-           }
-           return dev;
-        }
-        catch (Exception e)
-        {
-            
-        }
     
-        return null;
+    
+    public Document getDocParser (IFile file) throws ParserConfigurationException, SAXException, IOException, CoreException
+    {
+        
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.parse(file.getContents());
+        doc.getDocumentElement().normalize();
+        return doc;
     }
 
 }

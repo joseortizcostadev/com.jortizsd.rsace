@@ -26,8 +26,8 @@ import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.ConfigBuilder;
 import com.jeeddev.rsace.appTree.Developer;
-
 import com.jeeddev.rsace.appTree.TreeBuilder;
+import com.jeeddev.rsace.appTree.TreeWriter;
 import com.joeddev.rsace.preferences.ServerPreferences;
 
 /**
@@ -57,8 +57,8 @@ public class InitHandler extends AbstractHandler {
         String email = (String) serverPreferences.getEmail();
 		treeBuilder.buildAppTree(author, email);
 	    Developer sender = new Developer("yo", "jose", "em", true, true);
-	    sender.setFileTarget(ConfigBuilder.SERVER_FILE_CONFIG);
-	    sender.addToTeam();
+	    TreeWriter configWriter = TreeWriter.getInstance();
+	    configWriter.addDeveloperToTeam(sender,false);
 		
 		 MessageDialog.openInformation(
 				window.getShell(),
