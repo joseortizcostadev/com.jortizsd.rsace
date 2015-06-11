@@ -24,12 +24,12 @@ import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
+import com.jeeddev.rsace.appTree.AppManifestBuild;
 import com.jeeddev.rsace.appTree.ConfigBuilder;
+import com.jeeddev.rsace.appTree.Developer;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.jeeddev.rsace.appTree.TreeReader;
 import com.jeeddev.rsace.appTree.TreeWriter;
-import com.joeddev.rsace.configResources.AppManifestBuild;
-import com.joeddev.rsace.configResources.Developer;
 import com.joeddev.rsace.preferences.DVTPreferencesGetter;
 
 /**
@@ -66,10 +66,10 @@ public class InitHandler extends AbstractHandler {
            String email = (String) serverPreferences.getEmail();
            String id = (String) serverPreferences.getId();
            treeBuilder.buildAppTree(author, email);
-           Developer sender = new Developer(id, author, email, false, true);
-           TreeWriter configWriter = TreeWriter.getInstance();
-           configWriter.addDeveloperLeaderForThisSession(sender);
-           configWriter.makeManifestFile(new AppManifestBuild());
+           Developer developer = new Developer(id, author, email, false, true);
+           AppManifestBuild manifest = AppManifestBuild.getInstance();
+           developer.setAsSessionOwner();
+           manifest.makeManifestFile();
            MessageDialog.openInformation(
                 window.getShell(),
                 "Remote Synchrnization and Code Editor",

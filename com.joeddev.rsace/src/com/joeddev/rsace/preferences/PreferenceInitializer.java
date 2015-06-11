@@ -3,7 +3,7 @@ package com.joeddev.rsace.preferences;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import com.jeeddev.rsace.appTree.TreeWriter;
+
 import com.joeddev.rsace.Activator;
 
 /**

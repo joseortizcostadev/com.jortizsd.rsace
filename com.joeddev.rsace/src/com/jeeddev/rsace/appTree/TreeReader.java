@@ -13,21 +13,19 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.joeddev.rsace.configResources.AppManifestBuild;
-
-public class TreeReader 
+public class TreeReader extends TreeWriter
 {
-    TreeWriter  treeWriter;
+  
     public TreeReader ()
     {
-        treeWriter = TreeWriter.getInstance();
+        super();
     }
     
     public AppManifestBuild getManifestData () throws SAXException, IOException, CoreException, ParserConfigurationException
     {
-        IFile file = treeWriter.getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.MANIFEST_FILE_CONFIG);
-        AppManifestBuild manifest = new AppManifestBuild();
-        Document document = treeWriter.getDocumentToParse(file);
+        IFile file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.MANIFEST_FILE_CONFIG);
+        AppManifestBuild manifest = AppManifestBuild.getInstance();
+        Document document = getDocumentToParse(file);
         getAppAttributes (document, manifest);
         return manifest;
         
