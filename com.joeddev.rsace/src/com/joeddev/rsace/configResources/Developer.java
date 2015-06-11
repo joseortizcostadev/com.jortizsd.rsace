@@ -1,4 +1,4 @@
-package com.jeeddev.rsace.appTree;
+package com.joeddev.rsace.configResources;
 
 
 

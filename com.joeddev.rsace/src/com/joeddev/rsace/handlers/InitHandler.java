@@ -25,10 +25,11 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.ConfigBuilder;
-import com.jeeddev.rsace.appTree.Developer;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.jeeddev.rsace.appTree.TreeWriter;
-import com.joeddev.rsace.preferences.ServerPreferences;
+import com.joeddev.rsace.configResources.AppManifestBuild;
+import com.joeddev.rsace.configResources.Developer;
+import com.joeddev.rsace.preferences.DVTPreferencesGetter;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -48,28 +49,36 @@ public class InitHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
-	    try
-	    {
+	    
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		ServerPreferences serverPreferences = new ServerPreferences ();
-		String author = (String) serverPreferences.getAuthor();
-        String email = (String) serverPreferences.getEmail();
-		treeBuilder.buildAppTree(author, email);
-	    Developer sender = new Developer("yo", "jose", "em", true, true);
-	    TreeWriter configWriter = TreeWriter.getInstance();
-	    configWriter.addDeveloperToTeam(sender,true);
-		
-		 MessageDialog.openInformation(
-				window.getShell(),
-				"Remote Synchrnization and Code Editor",
-				"Welcome to Rsace. Now, you can synchronize and edit your file remotely from the Rsace's view and editor");
-	    }
-	    catch (Exception e)
-	    {
-	        System.out.println(e.getMessage());
-	    }
-		
+		initApp(window);
 		return null;
 	}
+	
+	private void initApp (IWorkbenchWindow window)
+	{
+	    try
+        {
+           TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
+           DVTPreferencesGetter serverPreferences = new DVTPreferencesGetter ();
+           String author = (String) serverPreferences.getAuthor();
+           String email = (String) serverPreferences.getEmail();
+           String id = (String) serverPreferences.getId();
+           treeBuilder.buildAppTree(author, email);
+           Developer sender = new Developer(id, author, email, false, true);
+           TreeWriter configWriter = TreeWriter.getInstance();
+           configWriter.addDeveloperLeaderForThisSession(sender);
+           configWriter.makeManifestFile(new AppManifestBuild());
+           MessageDialog.openInformation(
+                window.getShell(),
+                "Remote Synchrnization and Code Editor",
+                "Welcome to Rsace. Now, you can synchronize and edit your file remotely from the Rsace's view and editor");
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+	}
+	
+	
 }

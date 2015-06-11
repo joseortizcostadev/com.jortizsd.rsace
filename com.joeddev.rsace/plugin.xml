@@ -44,9 +44,16 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="com.joeddev.rsace.preferences.RsacePreferences"
+            class="com.joeddev.rsace.preferences.RsacePreferencesPage"
             id="com.joeddev.rsace.preferences.RsacePreferences"
-            name="Rsace General Information">
+            name="Rsace">
+           
+      </page>
+      <page
+            class="com.joeddev.rsace.preferences.DVTPreferencesPage"
+            id="com.joeddev.rsace.preferences.RsacePreferences"
+            name="Developers Team"
+            category="com.joeddev.rsace.preferences.RsacePreferences">
            
       </page>
    </extension>

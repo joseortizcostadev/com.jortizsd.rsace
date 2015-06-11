@@ -1,8 +1,12 @@
 package com.joeddev.rsace.preferences;
 
 import org.eclipse.jface.preference.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
+
 import com.joeddev.rsace.Activator;
 
 /**
@@ -19,14 +23,14 @@ import com.joeddev.rsace.Activator;
  * be accessed directly via the preference store.
  */
 
-public class RsacePreferences
+public class DVTPreferencesPage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 
-	public RsacePreferences() {
+	public DVTPreferencesPage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Server Information ( The user )");
+		setDescription("Developer Team Settings");
 	}
 	
 	/**
@@ -37,12 +41,14 @@ public class RsacePreferences
 	 */
 	public void createFieldEditors() {
 		//addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, "&Directory preference:", getFieldEditorParent()));
-		//addField(new BooleanFieldEditor(PreferenceConstants.P_BOOLEAN,"&An example of a boolean preference",getFieldEditorParent()));
-        //addField(new RadioGroupFieldEditor(PreferenceConstants.P_CHOICE, "An example of a multiple-choice preference",1,new String[][] { { "&Choice 1", "choice1" }, {"C&hoice 2", "choice2" }}, getFieldEditorParent()));
-	    setSectionHeader("Server Information ( The user ) ");
-		addField(new StringFieldEditor(PreferenceConstants.P_STRING_AUTHOR_SERVER, "&Author:", getFieldEditorParent()));
-		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
 		
+       
+	    // addField(new RadioGroupFieldEditor(PreferenceConstants.P_CHOICE, "An example of a multiple-choice preference",1,new String[][] { { "&Choice 1", "choice1" }, {"C&hoice 2", "choice2" }}, getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceConstants.P_STRING_AUTHOR_SERVER, "&Developer session owner:", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceConstants.P_STRING_ID, "&Id:", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS,"&Allow Remote Session Sharing",getFieldEditorParent()));
+        
 		
 	}
 	
