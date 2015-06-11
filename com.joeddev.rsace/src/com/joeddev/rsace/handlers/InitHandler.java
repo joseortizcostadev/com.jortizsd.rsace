@@ -3,6 +3,7 @@ package com.joeddev.rsace.handlers;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -12,6 +13,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -66,14 +71,25 @@ public class InitHandler extends AbstractHandler {
            String email = (String) serverPreferences.getEmail();
            String id = (String) serverPreferences.getId();
            treeBuilder.buildAppTree(author, email);
+           boolean result;
+           if (author.equalsIgnoreCase("your_name_or_username_here"))
+           {
+        	   result =   MessageDialog.openQuestion(window.getShell(), "Remote Sinchronization and Code Editor", 
+        			                      "Welcome to RSACE. It is higly recomended to set up your developer preferences before starting to work with this plu-gin. " + 
+        	                              "Would you like to set up your developer preferences?");
+               if (result)
+               {
+            	   System.out.println(result);
+               }
+        		 
+           }
            Developer developer = new Developer(id, author, email, false, true);
            AppManifestBuild manifest = AppManifestBuild.getInstance();
-           developer.setAsSessionOwner();
            manifest.makeManifestFile();
-           MessageDialog.openInformation(
-                window.getShell(),
-                "Remote Synchrnization and Code Editor",
-                "Welcome to Rsace. Now, you can synchronize and edit your file remotely from the Rsace's view and editor");
+           developer.setAsSessionOwner();
+           
+           
+          
         }
         catch (Exception e)
         {

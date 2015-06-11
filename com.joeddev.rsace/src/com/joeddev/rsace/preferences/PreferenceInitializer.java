@@ -21,11 +21,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.setDefault(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS, true);
 	    store.setDefault(PreferenceConstants.P_STRING_AUTHOR_SERVER,
-				System.getProperty("user.home"));
+				"your_name_or_username_here");
 		store.setDefault(PreferenceConstants.P_STRING_EMAIL_SERVER,
                 "youremail@email.com");
 		store.setDefault(PreferenceConstants.P_STRING_ID,
-                "your_id");
+                "your_id_here");
 		
 	}
 

@@ -135,23 +135,24 @@ public class Developer extends TreeWriter
         { 
            String id, name, email;
            boolean isActive, isSender;
-           DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-           Document doc = documentBuilder.parse(file.getContents());
-           doc.getDocumentElement().normalize();
-           NodeList nList = doc.getElementsByTagName("developer");
+           Document document = getDocumentToParse(file);
+           document.getDocumentElement().normalize();
+           NodeList nList = document.getElementsByTagName("developer");
            ArrayList <Developer> developers = new ArrayList<>();
+           
            for (int i = 0; i<nList.getLength(); i++)
            {
+        	   
                Node nNode = nList.item(i);
                if (nNode.getNodeType() == Node.ELEMENT_NODE) 
                {
+            	   
                    Element eElement = (Element) nNode;
                    id = eElement.getAttribute("id");
                    name = eElement.getElementsByTagName("name").item(0).getTextContent();
                    email = eElement.getElementsByTagName("email").item(0).getTextContent();
-                   isActive = Boolean.valueOf(eElement.getElementsByTagName("active").item(0).getTextContent());
-                   isSender = Boolean.valueOf(eElement.getElementsByTagName("sender").item(0).getTextContent());
+                   isActive = Boolean.valueOf(eElement.getElementsByTagName("session_active").item(0).getTextContent());
+                   isSender = Boolean.valueOf(eElement.getElementsByTagName("session_owner").item(0).getTextContent());
                    developers.add(new Developer(id,name,email,isActive,isSender));
                    
                }
