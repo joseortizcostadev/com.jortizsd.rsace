@@ -112,7 +112,7 @@ public class TreeWriter extends TreeBuilder
         
     }
     
-    private Document getDocumentToParse (IFile file) throws SAXException, IOException, CoreException, ParserConfigurationException
+    public Document getDocumentToParse (IFile file) throws SAXException, IOException, CoreException, ParserConfigurationException
     {
         
         DocumentBuilderFactory docBuilF = DocumentBuilderFactory.newInstance();
@@ -223,6 +223,7 @@ public class TreeWriter extends TreeBuilder
         
         
     }
+    
     
     
     public void makeManifestFile (AppManifestBuild manifest) throws ParserConfigurationException, CoreException
