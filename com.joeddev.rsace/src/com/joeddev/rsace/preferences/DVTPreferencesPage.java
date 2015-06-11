@@ -1,5 +1,6 @@
 package com.joeddev.rsace.preferences;
 
+import org.eclipse.core.internal.resources.Marker;
 import org.eclipse.jface.preference.*;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -26,11 +27,13 @@ import com.joeddev.rsace.Activator;
 public class DVTPreferencesPage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
-
+	IPreferenceStore store;
 	public DVTPreferencesPage() {
 		super(GRID);
+		
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Developer Team Settings");
+		store = Activator.getDefault().getPreferenceStore();
 	}
 	
 	/**
@@ -48,14 +51,34 @@ public class DVTPreferencesPage
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_ID, "&Id:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS,"&Allow Remote Session Sharing",getFieldEditorParent()));
+		
         
 		
+	}
+	
+	public void updateId(String id)
+	{
+		
+		store.setValue(PreferenceConstants.P_STRING_ID, id);
+	}
+	public void updateAuthor(String author)
+	{
+		
+		store.setValue(PreferenceConstants.P_STRING_AUTHOR_SERVER, author);
+	}
+	
+	public void updateEmail(String email)
+	{
+		
+		store.setValue(PreferenceConstants.P_STRING_EMAIL_SERVER, email);
 	}
 	
 	private void setSectionHeader (String header)
 	{
 	    setDescription(header);
 	}
+	
+	
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)

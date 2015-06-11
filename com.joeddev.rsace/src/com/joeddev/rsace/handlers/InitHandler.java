@@ -1,5 +1,6 @@
 package com.joeddev.rsace.handlers;
 
+import java.awt.Dialog;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.internal.preferences.Activator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -30,12 +32,14 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.AppManifestBuild;
+import com.jeeddev.rsace.appTree.AskSetPreferencesDialog;
 import com.jeeddev.rsace.appTree.ConfigBuilder;
 import com.jeeddev.rsace.appTree.Developer;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.jeeddev.rsace.appTree.TreeReader;
 import com.jeeddev.rsace.appTree.TreeWriter;
 import com.joeddev.rsace.preferences.DVTPreferencesGetter;
+import com.joeddev.rsace.preferences.DVTPreferencesPage;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
@@ -46,6 +50,8 @@ public class InitHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
+	
+	private final String INITIAL_PREFERENCES_MARKER = "your_name_or_username_here";
 	public InitHandler() {
 	}
 
@@ -65,28 +71,26 @@ public class InitHandler extends AbstractHandler {
 	{
 	    try
         {
+	       
            TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
            DVTPreferencesGetter serverPreferences = new DVTPreferencesGetter ();
            String author = (String) serverPreferences.getAuthor();
-           String email = (String) serverPreferences.getEmail();
-           String id = (String) serverPreferences.getId();
-           treeBuilder.buildAppTree(author, email);
-           boolean result;
-           if (author.equalsIgnoreCase("your_name_or_username_here"))
+           String email = null, id = null;
+           if (serverPreferences.getAuthor().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
            {
-        	   result =   MessageDialog.openQuestion(window.getShell(), "Remote Sinchronization and Code Editor", 
-        			                      "Welcome to RSACE. It is higly recomended to set up your developer preferences before starting to work with this plu-gin. " + 
-        	                              "Would you like to set up your developer preferences?");
-               if (result)
-               {
-            	   System.out.println(result);
-               }
-        		 
+        	   AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
+        	   askPreferencesDialog.open();
            }
+           author = (String) serverPreferences.getAuthor();
+           email = (String) serverPreferences.getEmail();
+           id = (String) serverPreferences.getId();
+           treeBuilder.buildAppTree(author, email);
            Developer developer = new Developer(id, author, email, false, true);
+           developer.setAsSessionOwner();
            AppManifestBuild manifest = AppManifestBuild.getInstance();
            manifest.makeManifestFile();
-           developer.setAsSessionOwner();
+           
+          
            
            
           
