@@ -213,7 +213,7 @@ public class TreeWriter extends TreeBuilder
         setAtrribute(document,appName,"version", "1.0");
         setAtrribute(document,appName,"product", "debugging");
         Element launcher =  createElement (document, root, "Launcher");
-        setAtrribute(document, launcher, "times_executed", "0");
+        setAtrribute(document, launcher, "times_executed", "1");
         Element appEntryPoint =  createElement (document, root, "AppMain");
         setAtrribute(document, appEntryPoint, "entry_point", "InitHandler.class");
         Element remotePermissions =  createElement (document, root, "Remote_Session");
@@ -223,6 +223,8 @@ public class TreeWriter extends TreeBuilder
         
         
     }
+    
+    
     public void makeManifestFile (AppManifestBuild manifest) throws ParserConfigurationException, CoreException
     {
         IFile file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.MANIFEST_FILE_CONFIG);

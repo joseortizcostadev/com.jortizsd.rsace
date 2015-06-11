@@ -7,8 +7,9 @@
       <command
             categoryId="Rsace.commands.category"
             id="Rsace.commands.initcommand"
-            name="Remote Synchronization with Rsace">
+            name="Develop with Rsace">
       </command>
+      
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -40,6 +41,7 @@
          			</visibleWhen>
             </command>
       </menuContribution>
+       
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
