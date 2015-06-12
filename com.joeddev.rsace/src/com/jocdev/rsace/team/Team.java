@@ -1,18 +1,28 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          Team.java
+ * @Date          04/06/2015
+ * @Description   This class extends Developer class, and 
+ *                handles all the remote data related to 
+ *                all the developers participating in this
+ *                session
+ */
 package com.jocdev.rsace.team;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 public class Team extends Developer
 {
+	/**
+	 * @category Constructor
+	 */
     public Team ()
     {
-    	
+    	// Empty constructor
     }
     
     /**
