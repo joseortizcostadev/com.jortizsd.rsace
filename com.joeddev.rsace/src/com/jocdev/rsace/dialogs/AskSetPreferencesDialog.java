@@ -1,5 +1,12 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.jocdev.rsace
+ * @File          AskSetPreferencesDialog.java
+ * @Date          04/06/2015
+ * @Description   This class creates a dialog asking the
+ *                users to enter their developer's preferences
+ */
 package com.jocdev.rsace.dialogs;
-
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -11,9 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
-
 import com.jocdev.rsace.preferences.DVTPreferencesPage;
-
 import org.eclipse.swt.widgets.Button;
 
 public class AskSetPreferencesDialog extends TitleAreaDialog {

@@ -1,53 +1,33 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          InitHandler.java
+ * @Date          04/06/2015
+ * @Description   This class is the starting point
+ *                of the application where this plug-in
+ *                and all its components and resources
+ *                are initialized for the first time 
+ */
 package com.jocdev.rsace.handlers;
-
-import java.awt.Dialog;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.internal.preferences.Activator;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITreeSelection;
-import org.eclipse.jface.viewers.TreePath;
-import org.eclipse.jface.viewers.TreeSelection;
-
 import com.jocdev.rsace.appTree.AppManifestBuild;
-import com.jocdev.rsace.appTree.ConfigBuilder;
 import com.jocdev.rsace.appTree.TreeBuilder;
-import com.jocdev.rsace.appTree.TreeReader;
-import com.jocdev.rsace.appTree.TreeWriter;
 import com.jocdev.rsace.appTree.UsrResourcesBuilder;
 import com.jocdev.rsace.dialogs.AskSetPreferencesDialog;
 import com.jocdev.rsace.preferences.DVTPreferencesGetter;
-import com.jocdev.rsace.preferences.DVTPreferencesPage;
 import com.jocdev.rsace.team.Developer;
 
 /**
- * Our sample handler extends AbstractHandler, an IHandler base class.
+ * Our handler extends AbstractHandler, an IHandler base class.
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class InitHandler extends AbstractHandler {
+public class InitHandler extends AbstractHandler 
+{
 	/**
 	 * The constructor.
 	 */
@@ -68,6 +48,11 @@ public class InitHandler extends AbstractHandler {
 		return null;
 	}
 	
+	/**
+	 * @category      Private Class Method
+	 * @description   Initializes all the component and resources of this application
+	 * @param window  IWorkbenchWindow object representing the actual window
+	 */
 	private void initApp (IWorkbenchWindow window)
 	{
 	    try
@@ -92,11 +77,6 @@ public class InitHandler extends AbstractHandler {
            manifest.makeManifestFile();
            UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
            usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE);
-           
-          
-           
-           
-          
         }
         catch (Exception e)
         {
