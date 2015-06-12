@@ -65,7 +65,7 @@ public class AppManifestBuild extends TreeWriter
     /**
      * @category      Public Class Method
      * @description   Sets this application's version
-     * @param appName String representing this app's version
+     * @param appVersion String representing this app's version
     */
     public void setAppVersion (String appVersion)
     {
@@ -75,7 +75,7 @@ public class AppManifestBuild extends TreeWriter
     /**
      * @category      Public Class Method
      * @description   Sets this application's product
-     * @param appName String representing this app's product
+     * @param appProduct String representing this app's product
     */
     public void setAppProduct (String appProduct)
     {
@@ -83,9 +83,9 @@ public class AppManifestBuild extends TreeWriter
     }
     
     /**
-     * @category      Public Class Method
-     * @description   Sets this application's entry point 
-     * @param appName String representing this app's entry point
+     * @category                  Public Class Method
+     * @description               Sets this application's entry point 
+     * @param entryPointClassName String representing this app's entry point
     */
     public void setEntryPoint (String entryPointClassName)
     {

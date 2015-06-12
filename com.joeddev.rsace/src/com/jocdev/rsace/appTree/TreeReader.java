@@ -1,16 +1,20 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          TreeReader.java
+ * @Date          04/06/2015
+ * @Description   This class provides methods to read data 
+ *                from the configurations and resources 
+ *                files of this applications  
+ */
 package com.jocdev.rsace.appTree;
-
 import java.io.IOException;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class TreeReader extends TreeWriter
