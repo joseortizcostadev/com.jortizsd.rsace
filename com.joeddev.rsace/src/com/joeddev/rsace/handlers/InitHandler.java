@@ -32,12 +32,12 @@ import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jeeddev.rsace.appTree.AppManifestBuild;
-import com.jeeddev.rsace.appTree.AskSetPreferencesDialog;
 import com.jeeddev.rsace.appTree.ConfigBuilder;
 import com.jeeddev.rsace.appTree.Developer;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.jeeddev.rsace.appTree.TreeReader;
 import com.jeeddev.rsace.appTree.TreeWriter;
+import com.joeddev.rsace.dialogs.AskSetPreferencesDialog;
 import com.joeddev.rsace.preferences.DVTPreferencesGetter;
 import com.joeddev.rsace.preferences.DVTPreferencesPage;
 

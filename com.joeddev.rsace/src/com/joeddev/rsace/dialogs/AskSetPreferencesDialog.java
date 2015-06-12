@@ -1,4 +1,4 @@
-package com.jeeddev.rsace.appTree;
+package com.joeddev.rsace.dialogs;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -39,37 +39,37 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);
 		GridData gd_container = new GridData(GridData.FILL_BOTH);
-		gd_container.heightHint = 170;
+		gd_container.heightHint = 171;
 		container.setLayoutData(gd_container);
 		
 		Label lblSetUpYour = new Label(container, SWT.NONE);
 		lblSetUpYour.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.BOLD));
-		lblSetUpYour.setBounds(10, 0, 269, 19);
+		lblSetUpYour.setBounds(10, 5, 269, 19);
 		lblSetUpYour.setText("Set up your developer team preferences:");
 		
 		developerIdText = new Text(container, SWT.BORDER);
-		developerIdText.setBounds(10, 40, 430, 19);
+		developerIdText.setBounds(10, 50, 430, 19);
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel.setBounds(10, 20, 87, 14);
+		lblNewLabel.setBounds(10, 30, 87, 14);
 		lblNewLabel.setText("Developer's Id");
 		
 		Label lblNewLabel_1 = new Label(container, SWT.NONE);
 		lblNewLabel_1.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel_1.setBounds(10, 65, 112, 14);
+		lblNewLabel_1.setBounds(10, 75, 112, 14);
 		lblNewLabel_1.setText("Developer's Name");
 		
 		developerNameText = new Text(container, SWT.BORDER);
-		developerNameText.setBounds(10, 85, 430, 19);
+		developerNameText.setBounds(10, 96, 430, 19);
 		
 		Label lblNewLabel_2 = new Label(container, SWT.NONE);
 		lblNewLabel_2.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel_2.setBounds(10, 110, 112, 14);
+		lblNewLabel_2.setBounds(10, 121, 112, 14);
 		lblNewLabel_2.setText("Developer's Email");
 		
 		developerEmailText = new Text(container, SWT.BORDER);
-		developerEmailText.setBounds(10, 130, 430, 19);
+		developerEmailText.setBounds(10, 141, 430, 19);
 
 		return area;
 	}
@@ -89,17 +89,14 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed() 
 	{
-	    
+		dvtPreferences.updateId(developerIdText.getText());
 	    dvtPreferences.updateAuthor(developerNameText.getText());
+	    dvtPreferences.updateEmail(developerEmailText.getText());
 	    super.okPressed();
-	    
 	}
 	
 	
-	private void initAppConfiguration ()
-	{
-		
-	}
+	
 
 	/**
 	 * Return the initial size of the dialog.
