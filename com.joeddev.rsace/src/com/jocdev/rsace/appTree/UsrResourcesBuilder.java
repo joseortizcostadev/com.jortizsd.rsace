@@ -1,26 +1,45 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.jocdev.rsace
+ * @File          UsrResourcesBuilder.java
+ * @Date          04/06/2015
+ * @Description   This class extends TreeBuilder class, and 
+ *                provides methods build and handle the necessary resources
+ *                for this application 
+ */
 package com.jocdev.rsace.appTree;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.List;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 public class UsrResourcesBuilder extends TreeBuilder
 {
+	// final instance constants for the resources files
     public static final String SYNC_FILE = "_sync.java";
     public static final String REMOTE_MODE = "remote";
     public static final String LOCAL_MODE = "local";
-	public UsrResourcesBuilder() {
+    
+    /**
+     * @category constructor
+     */
+	public UsrResourcesBuilder() 
+	{
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
-
+    
+	/**
+	 * @category    Public Class Method
+	 * @description Synchronizes a file with another        
+	 * @param mode  String object representing the sync modes
+	 *              there are two modes available. Sync in local
+	 *              mode, and in remote mode. You get this modes
+	 *              calling the static modes from this class 
+	 * @throws      CoreException
+	 * @throws      IOException
+	 */
 	public void syncFile(String mode) throws CoreException, IOException
 	{
 		IFile usrFile = getActiveFile();

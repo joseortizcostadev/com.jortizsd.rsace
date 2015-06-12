@@ -158,7 +158,6 @@ public class TreeWriter extends TreeBuilder
     {
         try
         {
-            
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
@@ -170,7 +169,6 @@ public class TreeWriter extends TreeBuilder
             String xmlString=result.getWriter().toString();
             byte[] bytes = xmlString.getBytes();
             return new ByteArrayInputStream(bytes);
-            
         }
         catch (Exception e)
         {
