@@ -124,5 +124,11 @@ abstract class AbstractInternalFileManagement
      *                contents of the file
      */
     abstract List <String> getFileContents (IFile file);
+    
+    /**
+     * @category         Signature Class Method
+     * @param filename   String representing the name of the file
+     * @return           IFile object representing the file returned
+     */
     abstract IFile getFile (String filename);
 }
