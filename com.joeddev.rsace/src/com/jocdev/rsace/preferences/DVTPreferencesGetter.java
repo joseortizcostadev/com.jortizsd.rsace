@@ -1,4 +1,4 @@
-package com.joeddev.rsace.preferences;
+package com.jocdev.rsace.preferences;
 
 public class DVTPreferencesGetter extends DVTPreferencesPage 
 {

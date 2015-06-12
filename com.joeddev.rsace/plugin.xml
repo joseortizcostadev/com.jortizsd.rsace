@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="com.joeddev.rsace.handlers.InitHandler"
+            class="com.jocdev.rsace.handlers.InitHandler"
             commandId="Rsace.commands.initcommand">
       </handler>
    </extension>
@@ -46,13 +46,13 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="com.joeddev.rsace.preferences.RsacePreferencesPage"
+            class="com.jocdev.rsace.preferences.RsacePreferencesPage"
             id="com.joeddev.rsace.preferences.RsacePreferences"
             name="Rsace">
            
       </page>
       <page
-            class="com.joeddev.rsace.preferences.DVTPreferencesPage"
+            class="com.jocdev.rsace.preferences.DVTPreferencesPage"
             id="com.joeddev.rsace.preferences.RsacePreferences"
             name="Developers Team"
             category="com.joeddev.rsace.preferences.RsacePreferences">
@@ -62,7 +62,7 @@
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
-            class="com.joeddev.rsace.preferences.PreferenceInitializer">
+            class="com.jocdev.rsace.preferences.PreferenceInitializer">
       </initializer>
    </extension>
 </plugin>

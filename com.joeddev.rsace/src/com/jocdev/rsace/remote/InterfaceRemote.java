@@ -1,10 +1,10 @@
-package com.joeddev.rsace.remote;
+package com.jocdev.rsace.remote;
 
 import java.rmi.Remote;
 
 import org.eclipse.core.resources.IFile;
 
-import com.jeeddev.rsace.appTree.Developer;
+import com.jocdev.rsace.appTree.Developer;
 
 public interface InterfaceRemote extends Remote
 {

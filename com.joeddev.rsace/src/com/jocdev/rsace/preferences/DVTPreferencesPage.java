@@ -1,4 +1,4 @@
-package com.joeddev.rsace.preferences;
+package com.jocdev.rsace.preferences;
 
 import org.eclipse.core.internal.resources.Marker;
 import org.eclipse.jface.preference.*;
@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
-import com.joeddev.rsace.Activator;
+import com.jocdev.rsace.Activator;
 
 /**
  * This class represents a preference page that

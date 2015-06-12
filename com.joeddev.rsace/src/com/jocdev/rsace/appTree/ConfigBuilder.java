@@ -9,7 +9,7 @@
  *                This class handles the configuration
  *                files of this application
  */
-package com.jeeddev.rsace.appTree;
+package com.jocdev.rsace.appTree;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;

@@ -1,10 +1,9 @@
-package com.joeddev.rsace.preferences;
+package com.jocdev.rsace.preferences;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-
-import com.joeddev.rsace.Activator;
+import com.jocdev.rsace.Activator;
 
 /**
  * Class used to initialize default preference values.

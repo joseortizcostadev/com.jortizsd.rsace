@@ -1,4 +1,4 @@
-package com.joeddev.rsace;
+package com.jocdev.rsace;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

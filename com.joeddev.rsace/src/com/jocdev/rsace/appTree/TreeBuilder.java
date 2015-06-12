@@ -11,7 +11,7 @@
  *                which contain the base for rsace's configuration files, and 
  *                resources files respectively. 
  */
-package com.jeeddev.rsace.appTree;
+package com.jocdev.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 

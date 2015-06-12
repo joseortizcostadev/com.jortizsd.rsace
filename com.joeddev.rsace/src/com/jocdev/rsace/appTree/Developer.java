@@ -1,13 +1,18 @@
-package com.jeeddev.rsace.appTree;
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          Developer.java
+ * @Date          04/06/2015
+ * @Description   This singleton class extends TreeWritter, and 
+ *                handle all the data related to the developers
+ *                using this application
+ */
 
+package com.jocdev.rsace.appTree;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -17,7 +22,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.jeeddev.rsace.appTree.*;
 public class Developer extends TreeWriter
 {
     private IFile file;

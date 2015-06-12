@@ -1,4 +1,4 @@
-package com.joeddev.rsace.dialogs;
+package com.jocdev.rsace.dialogs;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -12,7 +12,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 
-import com.joeddev.rsace.preferences.DVTPreferencesPage;
+import com.jocdev.rsace.preferences.DVTPreferencesPage;
+
 import org.eclipse.swt.widgets.Button;
 
 public class AskSetPreferencesDialog extends TitleAreaDialog {

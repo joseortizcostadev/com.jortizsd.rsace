@@ -1,10 +1,10 @@
-package com.joeddev.rsace.preferences;
+package com.jocdev.rsace.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.joeddev.rsace.Activator;
+import com.jocdev.rsace.Activator;
 
 public class RsacePreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 

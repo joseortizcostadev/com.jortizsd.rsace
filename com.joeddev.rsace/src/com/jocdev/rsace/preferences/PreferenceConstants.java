@@ -1,4 +1,4 @@
-package com.joeddev.rsace.preferences;
+package com.jocdev.rsace.preferences;
 
 /**
  * Constant definitions for plug-in preferences
