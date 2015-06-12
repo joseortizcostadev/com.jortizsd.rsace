@@ -13,11 +13,13 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 
 import com.joeddev.rsace.preferences.DVTPreferencesPage;
+import org.eclipse.swt.widgets.Button;
 
 public class AskSetPreferencesDialog extends TitleAreaDialog {
 	private Text developerIdText;
 	private Text developerNameText;
 	private Text developerEmailText;
+	private Button allowSyncPermissionsBtn;
 	private DVTPreferencesPage dvtPreferences;
 
 	/**
@@ -27,7 +29,7 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	public AskSetPreferencesDialog(Shell parentShell) {
 		super(parentShell);
 		dvtPreferences = new DVTPreferencesPage();
-		setTitle("Remote Synchronization and Code Editor");
+		
 	}
 
 	/**
@@ -42,35 +44,35 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		gd_container.heightHint = 171;
 		container.setLayoutData(gd_container);
 		
-		Label lblSetUpYour = new Label(container, SWT.NONE);
-		lblSetUpYour.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.BOLD));
-		lblSetUpYour.setBounds(10, 5, 269, 19);
-		lblSetUpYour.setText("Set up your developer team preferences:");
-		
 		developerIdText = new Text(container, SWT.BORDER);
-		developerIdText.setBounds(10, 50, 430, 19);
+		developerIdText.setBounds(10, 30, 430, 19);
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel.setBounds(10, 30, 87, 14);
+		lblNewLabel.setBounds(10, 10, 87, 14);
 		lblNewLabel.setText("Developer's Id");
 		
 		Label lblNewLabel_1 = new Label(container, SWT.NONE);
 		lblNewLabel_1.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel_1.setBounds(10, 75, 112, 14);
+		lblNewLabel_1.setBounds(10, 55, 112, 14);
 		lblNewLabel_1.setText("Developer's Name");
 		
 		developerNameText = new Text(container, SWT.BORDER);
-		developerNameText.setBounds(10, 96, 430, 19);
+		developerNameText.setBounds(10, 73, 430, 19);
 		
 		Label lblNewLabel_2 = new Label(container, SWT.NONE);
 		lblNewLabel_2.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel_2.setBounds(10, 121, 112, 14);
+		lblNewLabel_2.setBounds(10, 98, 112, 14);
 		lblNewLabel_2.setText("Developer's Email");
 		
 		developerEmailText = new Text(container, SWT.BORDER);
-		developerEmailText.setBounds(10, 141, 430, 19);
-
+		developerEmailText.setBounds(10, 118, 430, 19);
+		
+		allowSyncPermissionsBtn = new Button(container, SWT.CHECK);
+		allowSyncPermissionsBtn.setBounds(10, 142, 430, 18);
+		allowSyncPermissionsBtn.setText("Allow remote synchronization with other developers ( Recomended )");
+        allowSyncPermissionsBtn.setSelection(true);
+       
 		return area;
 	}
 
@@ -92,10 +94,21 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		dvtPreferences.updateId(developerIdText.getText());
 	    dvtPreferences.updateAuthor(developerNameText.getText());
 	    dvtPreferences.updateEmail(developerEmailText.getText());
+	    dvtPreferences.updatePermissions( allowSyncPermissionsBtn.getSelection());
 	    super.okPressed();
 	}
 	
-	
+	@Override
+    protected Control createContents(Composite parent) {
+        Control contents = super.createContents(parent);
+
+        setTitle("Remote Synchronization and Code Editor");
+        setMessage("Set up your developer's team preferences");
+
+       
+
+        return contents;
+    }
 	
 
 	/**
@@ -105,5 +118,4 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	protected Point getInitialSize() {
 		return new Point(450, 300);
 	}
-
 }

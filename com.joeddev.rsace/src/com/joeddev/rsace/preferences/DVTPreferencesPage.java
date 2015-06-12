@@ -73,6 +73,11 @@ public class DVTPreferencesPage
 		store.setValue(PreferenceConstants.P_STRING_EMAIL_SERVER, email);
 	}
 	
+	public void updatePermissions (boolean hasPermissions)
+	{
+		store.setValue(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS, hasPermissions);
+	}
+	
 	private void setSectionHeader (String header)
 	{
 	    setDescription(header);

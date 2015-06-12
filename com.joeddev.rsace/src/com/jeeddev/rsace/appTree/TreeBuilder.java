@@ -39,7 +39,6 @@ public class TreeBuilder
 	public static final String CONFIG_DIR = "RsaceConfigFiles";
 	public static final String RESOURCES_DIR = "rscDir";
 	private IProject proj; // User's working project
-	private AbstractExternalFileManagement usrResourcesBuilder;
 	private AbstractInternalFileManagement configBuilder;
 	private AbstractInternalFileManagement resourcesBuilder;
 	private IFolder root;

@@ -19,7 +19,7 @@ public class ResourcesBuilder extends AbstractInternalFileManagement
 {
 	
     public static final String SYNC_FILE = "_sync.java";
-    public static final String SYNC_TRAKER = "sync_rsc.rsace";
+    public static final String SYNC_TRAKER = "_sync.rsace";
     
     /**
 	 * @category          Class Constructor
@@ -54,10 +54,14 @@ public class ResourcesBuilder extends AbstractInternalFileManagement
 	 */
 	@Override
 	String getHeaderContent(String author, String email, String context) {
-		String header = "/* \n" + 
-				        "  // Author: " + author + "\n" + 
-				        "  // File:   " + context + "\n" + 
-				        "  // Email:  " + email + "\n" + 
+		String header = "/** \n" + 
+				        "   @file_mode: Rsace Synchronization Mode \n" + 
+				        "   @Developer's session owner: " + author + "\n" + 
+				        "   @File:   " + context + "\n" + 
+				        "   @Email:  " + email + "\n" + 
+				        "   @Developers joined to this session:  " + author + "\n" +
+				        "   @Note: This header will be removed after the synchronization \n" +
+				        "          of this file is finished \n" +
 				        "*/\n";
 	    return header;
 	}

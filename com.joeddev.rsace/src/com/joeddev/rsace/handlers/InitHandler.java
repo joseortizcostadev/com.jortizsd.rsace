@@ -37,6 +37,7 @@ import com.jeeddev.rsace.appTree.Developer;
 import com.jeeddev.rsace.appTree.TreeBuilder;
 import com.jeeddev.rsace.appTree.TreeReader;
 import com.jeeddev.rsace.appTree.TreeWriter;
+import com.jeeddev.rsace.appTree.UsrResourcesBuilder;
 import com.joeddev.rsace.dialogs.AskSetPreferencesDialog;
 import com.joeddev.rsace.preferences.DVTPreferencesGetter;
 import com.joeddev.rsace.preferences.DVTPreferencesPage;
@@ -89,6 +90,8 @@ public class InitHandler extends AbstractHandler {
            developer.setAsSessionOwner();
            AppManifestBuild manifest = AppManifestBuild.getInstance();
            manifest.makeManifestFile();
+           UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
+           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE);
            
           
            
