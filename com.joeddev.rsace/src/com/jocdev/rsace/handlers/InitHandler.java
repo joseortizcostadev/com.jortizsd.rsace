@@ -28,6 +28,9 @@ import com.jocdev.rsace.team.Developer;
  */
 public class InitHandler extends AbstractHandler 
 {
+	public static final String MENU_SYNC = "Sync";
+	public static final String MENU_NEW_TEAM = "New Developer Team";
+	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	/**
 	 * The constructor.
 	 */
@@ -42,9 +45,22 @@ public class InitHandler extends AbstractHandler
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
-	    
-		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		initApp(window);
+		
+	    try
+	    {
+		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		   if (event.getCommand().getName().equalsIgnoreCase(MENU_SYNC))
+		      initApp(window);
+		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
+			  System.out.println("New Developer Team");
+		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
+				  System.out.println("New Developer");
+		   return null;
+	    }
+	    catch (Exception e)
+	    {
+	    	System.out.println(e.getMessage());
+	    }
 		return null;
 	}
 	
@@ -60,14 +76,14 @@ public class InitHandler extends AbstractHandler
 	       
            TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
            DVTPreferencesGetter serverPreferences = new DVTPreferencesGetter ();
-           String author = (String) serverPreferences.getAuthor();
+           String author = (String) serverPreferences.getUsername();
            String email = null, id = null;
-           if (serverPreferences.getAuthor().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
+           if (serverPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
            {
         	   AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
         	   askPreferencesDialog.open();
            }
-           author = (String) serverPreferences.getAuthor();
+           author = (String) serverPreferences.getUsername();
            email = (String) serverPreferences.getEmail();
            id = (String) serverPreferences.getId();
            treeBuilder.buildAppTree(author, email);

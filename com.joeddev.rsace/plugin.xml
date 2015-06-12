@@ -6,8 +6,18 @@
          point="org.eclipse.ui.commands">
       <command
             categoryId="Rsace.commands.category"
-            id="Rsace.commands.initcommand"
-            name="Develop with Rsace">
+            id="Rsace.commands.sync"
+            name="Sync">
+      </command>
+      <command
+            categoryId="Rsace.commands.category"
+            id="Rsace.commands.developerTeam"
+            name="New Developer Team">
+      </command>
+      <command
+            categoryId="Rsace.commands.category"
+            id="Rsace.commands.developer"
+            name="New Developer">
       </command>
       
    </extension>
@@ -15,21 +25,35 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="com.jocdev.rsace.handlers.InitHandler"
-            commandId="Rsace.commands.initcommand">
+            commandId="Rsace.commands.sync">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.jocdev.rsace.handlers.InitHandler"
+            commandId="Rsace.commands.developerTeam">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.jocdev.rsace.handlers.InitHandler"
+            commandId="Rsace.commands.developer">
       </handler>
    </extension>
    <!-- Menu -->
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+            allPopups="true"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer?after=additions">
+            <menu label="Sync with Rsace">
             <command
-                  commandId="Rsace.commands.initcommand"
-                  id="TestPopupMenu.menus.sampleCommand"
-                  icon="icons/syn.png"
-                  mnemonic="S">
- 
-                    <visibleWhen>
+                  commandId="Rsace.commands.sync"
+                  style="push"
+                  icon="icons/syn.png">
+                  <visibleWhen>
 				           <with variable="activeMenuSelection">
 				            <iterate
 				                 ifEmpty="false">
@@ -40,9 +64,17 @@
 				           </with>
          			</visibleWhen>
             </command>
-      </menuContribution>
-       
-   </extension>
+            <command
+              commandId="Rsace.commands.developerTeam"
+              style="push">
+             </command>
+            <command
+              commandId="Rsace.commands.developer"
+              style="push">
+            </command>
+       </menu>
+  </menuContribution>   
+  </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
