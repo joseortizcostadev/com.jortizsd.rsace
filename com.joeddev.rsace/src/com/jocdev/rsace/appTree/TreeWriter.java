@@ -1,17 +1,19 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.joeddev.rsace
+ * @File          TreeWriter.java
+ * @Date          04/06/2015
+ * @Description   This class extends TreeBuilder class, and 
+ *                provides methods to write data 
+ *                in the configurations and resources 
+ *                files of this applications  
+ */
 package com.jocdev.rsace.appTree;
-
-
-
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Random;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,38 +22,38 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.w3c.dom.Attr;
-import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class TreeWriter extends TreeBuilder
 {
-    DocumentBuilderFactory docBuilderFactory;
-    DocumentBuilder docBuilder;
-    Document doc;
-    TreeBuilder configBuilder;
-    IFile configF;
+   
+    protected TreeBuilder configBuilder;
+    protected IFile configF; // will save the file to write in
     
-    
+    /**
+     * @category Constructor
+     */
     protected TreeWriter()  
     {
         
          super();
     }
     
-   
-    
+    /**
+     * @category             Public Class Method
+     * @description          Creates the root element for a configuration file  
+     * @param doc            Document object representing the document builder 
+     *                       of a configuration file
+     * @param rootName       String object representing the name of the root element 
+     * @param elementNS      String object representing the NS element 
+     * @param headerComment  String object representing the header of a configuration file
+     * @return               Element object representing the new root element
+     */
     public Element createRoot (Document doc, String rootName, String elementNS, String headerComment )
     {
         Element rootElement =  doc.createElementNS(elementNS, rootName);
@@ -60,14 +62,31 @@ public class TreeWriter extends TreeBuilder
         return rootElement;
         
     }
-     public Element createElement (Document doc,Element root, String elementName)
+    
+    /**
+     * @category           Public Class Method
+     * @description        Creates a new element
+     * @param doc          Document object representing the document builder
+     * @param root         Element object representing the parent element
+     * @param elementName  String object representing the name of the new element 
+     * @return             Element object representing the new element created
+     */
+    public Element createElement (Document doc,Element root, String elementName)
     {
         Element element = doc.createElement(elementName);
         root.appendChild(element);
         return element;
-        
     }
     
+    /**
+     * @category            Public Class Method
+     * @description         Sets the attributes for a existing element
+     * @param doc           Document object representing the document builder
+     * @param element       Element object representing the element that will 
+     *                      will store the new attributes
+     * @param attributeName String object representing the new attribute's key 
+     * @param attValue      String object representing the new atributes's value 
+     */
     public void setAtrribute (Document doc , Element element, String attributeName, String attValue)
     {
      // set attribute to staff element
@@ -76,6 +95,14 @@ public class TreeWriter extends TreeBuilder
         element.setAttributeNode(attr);
     }
     
+    /**
+     * @category           Public Class Method
+     * @description        Creates a child Node
+     * @param doc          Document object representing the document builder
+     * @param parent       Element object representing the parent of the new child node
+     * @param elementName  String object representing the parent's node name
+     * @param value        String object representing the value that will hold the new child node
+     */
     public void setChildNode (Document doc, Element parent, String elementName, String value)
     {
      
@@ -84,8 +111,14 @@ public class TreeWriter extends TreeBuilder
         parent.appendChild(firstname);
     }
     
-    
-   
+    /**
+     * @category     Public Class Method
+     * @description  Creates and gets a new Document object   
+     * @param file   IFile object representing the file where the 
+     *               new document will build all the elements
+     * @return       Document object representing the new Document object
+     * @throws       ParserConfigurationException
+     */
     protected Document getNewDocument (IFile file) throws ParserConfigurationException
     {
         DocumentBuilderFactory docBuilF = DocumentBuilderFactory.newInstance();
@@ -94,6 +127,16 @@ public class TreeWriter extends TreeBuilder
         
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Creates and gets a parsed Document object     
+     * @param file   IFile object representing the file where the 
+     * @return       Document object representing the parsed Document
+     * @throws       SAXException
+     * @throws       IOException
+     * @throws       CoreException
+     * @throws       ParserConfigurationException
+     */
     public Document getDocumentToParse (IFile file) throws SAXException, IOException, CoreException, ParserConfigurationException
     {
         
@@ -101,7 +144,16 @@ public class TreeWriter extends TreeBuilder
         DocumentBuilder docBuilder =  docBuilF.newDocumentBuilder();
         return docBuilder.parse(file.getContents());
     }
-
+    
+    /**
+     * @category     Public Class Method
+     * @description  Gets and creates a new InputStream object from the
+     *               contents of a given resource file ready to be inserted 
+     *               in a configuration file
+     * @param file   IFile object representing the resource file 
+     * @param doc    Document object representing the Document builder object
+     * @return       InputStream object representing the contents of the resource file given
+     */
     protected InputStream getStream (IFile file, Document doc)
     {
         try
@@ -126,31 +178,4 @@ public class TreeWriter extends TreeBuilder
         }
         return null;
     }
-     
-    public static String createRandomId ()
-    {
-        
-        int id = 0;
-        for (int i = 0; i<5; i++)
-        {
-            id += randInt(1, 500);
-        }
-        return String.valueOf(id);
-        
-        
-    }
-    
-    public static int randInt(int min, int max) {
-
-        // NOTE: Usually this should be a field rather than a method
-        // variable so that it is not re-seeded every call.
-        Random rand = new Random();
-
-        // nextInt is normally exclusive of the top value,
-        // so add 1 to make it inclusive
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
-    }
-
 }
