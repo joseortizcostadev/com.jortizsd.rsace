@@ -156,22 +156,7 @@ public class TreeBuilder
     	return null;
     }
     
-    /** 
-     * @category        Private Class Method
-     * @description     Creates a file in the user's working project     
-     * @param folder    IFolder object that represents the file's folder
-     * @param fileName  String object that represents the name of the file
-     * @param content   String object that represents the header content of the file
-     * @return          IFile object that represents the file created
-     */
-    private  IFile getFile (IFolder folder, String fileName, String header)
-    {
-    	IFile file = folder.getFile(fileName);
-    	setFileContents(file, header); // Creates headers
-    	return file;
-    }
-    
-    /**
+   /**
      * @category        Public Class Method     
      * @description     Gets the file given as argument   
      * @param filename  String object representing the file's name
@@ -181,8 +166,6 @@ public class TreeBuilder
     {
     	
     	return root.getFolder(dirName).getFile(filename);
-    	
-       
     }
     
     /**
