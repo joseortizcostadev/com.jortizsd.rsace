@@ -4,7 +4,7 @@ import java.rmi.Remote;
 
 import org.eclipse.core.resources.IFile;
 
-import com.jocdev.rsace.appTree.Developer;
+import com.jocdev.rsace.team.Developer;
 
 public interface InterfaceRemote extends Remote
 {

@@ -8,11 +8,13 @@
  *                using this application
  */
 
-package com.jocdev.rsace.appTree;
+package com.jocdev.rsace.team;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -21,9 +23,13 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import com.jocdev.rsace.appTree.ConfigBuilder;
+import com.jocdev.rsace.appTree.TreeBuilder;
+import com.jocdev.rsace.appTree.TreeWriter;
 public class Developer extends TreeWriter
 {
-    private IFile file;
+    protected IFile file;
     private String id;
     private String name;
     private String email;
@@ -111,35 +117,64 @@ public class Developer extends TreeWriter
     }
     
     /**
-     * 
-     * @return
-     */
+     * @category     Public Class Method
+     * @description  Gets this developer's id 
+     * @return       String object representing this developer's id
+    */
     public String getId ()
     {
         return id;
     }
+    
+    /**
+     * @category     Public Class Method
+     * @description  Gets this developer's name 
+     * @return       String object representing this developer's name
+    */
     public String getName ()
     {
         return name;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Gets this developer's email
+     * @return       String object representing this developer's email
+    */
     public String getEmail ()
     {
         return email;
     }
     
-    public boolean isSender ()
+    /**
+     * @category     Public Class Method
+     * @description  Determines if this developer is the owner of a session 
+     * @return       True if the developer is the owner of a session. Otherwise, returns false.
+     * @see          com.jocdev.rsace.appTree.AppManifestBuilder
+    */
+    public boolean isSessionOwner ()
     {
         return isTheSender;
     }
     
-    public boolean isActive ()
+    /**
+     * @category     Public Class Method
+     * @description  Determines the developer's session is active
+     * @return       True if the developer's session is active. Otherwise, returns false.
+     * @see          com.jocdev.rsace.appTree.AppManifestBuilder
+    */
+    public boolean isSessionActive ()
     {
         return active;
     }
     
-   
-    
+    /**
+     * @category        Private Class Method
+     * @description     This method prepares the developer's information to be inserted
+     *                  in the configuration file
+     * @param root      Element object representing the root node
+     * @param document  Document object representing the document to create the root node
+     */
     private void prepareDeveloperInfo (Element root, Document document)
     {
        
@@ -147,11 +182,18 @@ public class Developer extends TreeWriter
         setAtrribute(document, developer, "id", getId());
         setChildNode(document, developer, "name", getName());
         setChildNode(document, developer, "email", getEmail());
-        setChildNode(document, developer, "session_active", String.valueOf(isActive()));
-        setChildNode(document, developer, "session_owner", String.valueOf(isSender()));
+        setChildNode(document, developer, "session_active", String.valueOf(isSessionActive()));
+        setChildNode(document, developer, "session_owner", String.valueOf(isSessionOwner()));
         
     }
     
+    /**
+     * @category    Public Class Method
+     * @description This method creates a developer as the session owner, and subscribes
+     *              it to the configuration file
+     * @throws      ParserConfigurationException
+     * @throws      CoreException
+     */
     public void setAsSessionOwner () throws ParserConfigurationException, CoreException
     {
         Document document = getNewDocument(file);
@@ -164,6 +206,15 @@ public class Developer extends TreeWriter
         
     }
     
+    /**
+     * @category    Public Class Method
+     * @description This method adds a developer to a team of developers, and insert the
+     *              new developer's information in a configuration file
+     * @throws      SAXException
+     * @throws      IOException
+     * @throws      CoreException
+     * @throws      ParserConfigurationException
+     */
     public void addToTeam () throws SAXException, IOException, CoreException, ParserConfigurationException
     {
         Document document = getDocumentToParse(file);
@@ -174,60 +225,6 @@ public class Developer extends TreeWriter
         file.setContents(is, IResource.NONE, null);
     }
     
-    // Get it to work
-    public ArrayList <Developer> getDevelopersInTeam ()
-    {
-        try
-        { 
-           String id, name, email;
-           boolean isActive, isSender;
-           Document document = getDocumentToParse(file);
-           document.getDocumentElement().normalize();
-           NodeList nList = document.getElementsByTagName("developer");
-           ArrayList <Developer> developers = new ArrayList<>();
-           
-           for (int i = 0; i<nList.getLength(); i++)
-           {
-        	   
-               Node nNode = nList.item(i);
-               if (nNode.getNodeType() == Node.ELEMENT_NODE) 
-               {
-            	   
-                   Element eElement = (Element) nNode;
-                   id = eElement.getAttribute("id");
-                   name = eElement.getElementsByTagName("name").item(0).getTextContent();
-                   email = eElement.getElementsByTagName("email").item(0).getTextContent();
-                   isActive = Boolean.valueOf(eElement.getElementsByTagName("session_active").item(0).getTextContent());
-                   isSender = Boolean.valueOf(eElement.getElementsByTagName("session_owner").item(0).getTextContent());
-                   developers.add(new Developer(id,name,email,isActive,isSender));
-                   
-               }
-               
-           }
-           return developers;
-        }
-        catch (Exception e)
-        {
-            
-        }
-        return null;
-    }
     
-    public Developer getDeveloperFromTeamByName (String name)
-    {
-        
-        for (Developer dev : getDevelopersInTeam())
-            if (dev.getName().equalsIgnoreCase(name))
-                return dev;
-        return null;
-    }
-    
-    public Developer getDeveloperFromTeamById (String id)
-    {
-       for (Developer dev : getDevelopersInTeam())
-            if (dev.getId().equalsIgnoreCase(id))
-                return dev;
-        return null;
-    }
    
 }

@@ -33,7 +33,6 @@ import org.eclipse.jface.viewers.TreeSelection;
 
 import com.jocdev.rsace.appTree.AppManifestBuild;
 import com.jocdev.rsace.appTree.ConfigBuilder;
-import com.jocdev.rsace.appTree.Developer;
 import com.jocdev.rsace.appTree.TreeBuilder;
 import com.jocdev.rsace.appTree.TreeReader;
 import com.jocdev.rsace.appTree.TreeWriter;
@@ -41,6 +40,7 @@ import com.jocdev.rsace.appTree.UsrResourcesBuilder;
 import com.jocdev.rsace.dialogs.AskSetPreferencesDialog;
 import com.jocdev.rsace.preferences.DVTPreferencesGetter;
 import com.jocdev.rsace.preferences.DVTPreferencesPage;
+import com.jocdev.rsace.team.Developer;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.
