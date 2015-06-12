@@ -21,7 +21,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 public class Developer extends TreeWriter
 {
     private IFile file;
@@ -31,12 +30,26 @@ public class Developer extends TreeWriter
     private boolean active;
     private boolean isTheSender;
     
+    /**
+     * @category Constructor
+     */
     public Developer () 
     {
         super();
         file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
     }
-    public Developer (String id, String name, String email, boolean isActive, boolean isTheSender) 
+    
+    /**
+     * @category           Constructor
+     * @param id           String object representing the developer's id
+     * @param name         String object representing the developer's name or userName
+     * @param email        String object representing the developer's email
+     * @param isActive     boolean representing true if the session for this developer is 
+     *                     active.
+     * @param isTheOwner   boolean representing true if the developer is the owner of this
+     *                     session
+     */
+    public Developer (String id, String name, String email, boolean isActive, boolean isTheOwner) 
     {
         super();
         file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
@@ -44,34 +57,63 @@ public class Developer extends TreeWriter
         this.name = name;
         this.email = email;
         this.active = isActive;
-        this.isTheSender = isTheSender;
+        this.isTheSender = isTheOwner;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Sets the developer's id
+     * @param id     String object representing the developer's id
+    */
     public void setId (String id)
     {
        this.id = id;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Sets the developer's name
+     * @param name     String object representing the developer's name
+    */
     public void setName (String name)
     {
        this.name = name;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Sets the developer's email
+     * @param email    String object representing the developer's email
+    */
     public void setEmail (String email)
     {
        this.email = email;
     }
     
+    /**
+     * @category           Public Class Method
+     * @description        Sets this developer as the session's owner
+     * @param isSender     boolean object. When true, it sets this developer as the session owner
+    */
     public void setAsSender (boolean isSender)
     {
         this.isTheSender = isSender;
     }
     
+    /**
+     * @category           Public Class Method
+     * @description        Sets this session as active for this developer
+     * @param isActive     boolean object. When true, session is active
+    */
     public void setActive (boolean isActive)
     {
         this.active = isActive;
     }
     
+    /**
+     * 
+     * @return
+     */
     public String getId ()
     {
         return id;
