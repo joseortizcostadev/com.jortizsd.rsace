@@ -55,7 +55,7 @@ public class ConfigBuilder extends AbstractInternalFileManagement
      * @see AbstractInternalFileManagement class
      */
 	@Override
-	String getHeaderContent(String vendor, String version, String context) {
+	String getHeaderContent(String team, String vendor, String version, String context, boolean isSessionOpen) {
 		String header = "<?xml version=" + version + " encoding=\"UTF-8\"?>\n" + 
 	                    "<!-- \n" +
 				        "  Author: " + vendor + "\n" + 

@@ -115,7 +115,7 @@ abstract class AbstractInternalFileManagement
 	 * @return         A String object representing the header content of the file
 	 * 
 	 */
-    abstract String getHeaderContent(String vendor, String version, String context);
+    abstract String getHeaderContent(String team, String vendor, String version, String context, boolean isSessionOpened);
     
     /**
      * @category      Signature Class Method

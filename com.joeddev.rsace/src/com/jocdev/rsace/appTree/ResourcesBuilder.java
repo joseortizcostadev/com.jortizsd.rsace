@@ -53,16 +53,22 @@ public class ResourcesBuilder extends AbstractInternalFileManagement
 	 * @see AbstractInternalFileManagement class
 	 */
 	@Override
-	String getHeaderContent(String author, String email, String context) {
-		String header = "/** \n" + 
-				        "   @file_mode: Rsace Synchronization Mode \n" + 
-				        "   @Developer's session owner: " + author + "\n" + 
-				        "   @File:   " + context + "\n" + 
-				        "   @Email:  " + email + "\n" + 
-				        "   @Developers joined to this session:  " + author + "\n" +
-				        "   @Note: This header will be removed after the synchronization \n" +
-				        "          of this file is finished \n" +
-				        "*/\n";
+	String getHeaderContent(String team, String author, String email, String context, boolean isSessionOpened) 
+	{
+		String isSessionOpenedToString = "Session Closed";
+		if (isSessionOpened)
+			isSessionOpenedToString = "Session Open";
+			
+		String header = "//******************************************************************************\\\n" + 
+				        "// file_mode:           Rsace Synchronization Mode                              \\\n" +  
+				        "// Developer owner:    " + author + "                                           \\\n" + 
+				        "// File:               " + context + "                                          \\\n" + 
+				        "// Email:              " + email + "                                            \\\n" + 
+				        "// Session:            " + isSessionOpenedToString + "                          \\\n" +
+				        "// Team:               " + team + "                                             \\\n" +
+				        "// Note:                This header will be removed after the synchronization   \\\n" +   
+				        "//                      of this file is finished                                \\\n" +                                  
+				        "//******************************************************************************\\\n";
 	    return header;
 	}
 

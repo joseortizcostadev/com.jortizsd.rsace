@@ -7,7 +7,12 @@
       <command
             categoryId="Rsace.commands.category"
             id="Rsace.commands.sync"
-            name="Sync">
+            name="Synchronize">
+      </command>   
+      <command
+            categoryId="Rsace.commands.category"
+            id="Rsace.commands.syncSession"
+            name="Open Remote Session">
       </command>
       <command
             categoryId="Rsace.commands.category"
@@ -26,6 +31,13 @@
       <handler
             class="com.jocdev.rsace.handlers.InitHandler"
             commandId="Rsace.commands.sync">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="com.jocdev.rsace.handlers.InitHandler"
+            commandId="Rsace.commands.syncSession">
       </handler>
    </extension>
    <extension
@@ -64,6 +76,10 @@
 				           </with>
          			</visibleWhen>
             </command>
+            <command
+              commandId="Rsace.commands.syncSession"
+              style="push">
+             </command>
             <command
               commandId="Rsace.commands.developerTeam"
               style="push">

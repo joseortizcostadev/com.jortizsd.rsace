@@ -28,7 +28,8 @@ import com.jocdev.rsace.team.Developer;
  */
 public class InitHandler extends AbstractHandler 
 {
-	public static final String MENU_SYNC = "Sync";
+	public static final String MENU_NEW_SYNC = "Synchronize";
+	public static final String MENU_NEW_SESSION = "Open Remote Session";
 	public static final String MENU_NEW_TEAM = "New Developer Team";
 	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	/**
@@ -49,8 +50,17 @@ public class InitHandler extends AbstractHandler
 	    try
 	    {
 		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		   if (event.getCommand().getName().equalsIgnoreCase(MENU_SYNC))
-		      initApp(window);
+		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SYNC))
+			  initApp(window);
+		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
+		   {
+			  // Do team adding work here and add it to preferences
+			  //before opening section
+			   
+			  // Open session 
+			  UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
+	          usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE);
+		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
 			  System.out.println("New Developer Team");
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
@@ -91,8 +101,7 @@ public class InitHandler extends AbstractHandler
            developer.setAsSessionOwner();
            AppManifestBuild manifest = AppManifestBuild.getInstance();
            manifest.makeManifestFile();
-           UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
-           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE);
+           
         }
         catch (Exception e)
         {

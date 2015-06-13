@@ -86,9 +86,9 @@ public class TreeBuilder
     	IFolder configFolder = configBuilder.makeSubFolder(CONFIG_DIR);
     	try
     	{
-    	    configBuilder.makeFile(configFolder, ConfigBuilder.MANIFEST_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.MANIFEST_FILE_CONFIG));
+    	    configBuilder.makeFile(configFolder, ConfigBuilder.MANIFEST_FILE_CONFIG, configBuilder.getHeaderContent("My Team", vendor, version, ConfigBuilder.MANIFEST_FILE_CONFIG, false));
 		    configBuilder.makeFile(configFolder, ConfigBuilder.TEAM_FILE_CONFIG, "");
-		    configBuilder.makeFile(configFolder, ConfigBuilder.RESOURCES_FILE_CONFIG, configBuilder.getHeaderContent(vendor, version, ConfigBuilder.RESOURCES_FILE_CONFIG));
+		    configBuilder.makeFile(configFolder, ConfigBuilder.RESOURCES_FILE_CONFIG, configBuilder.getHeaderContent("My Team", vendor, version, ConfigBuilder.RESOURCES_FILE_CONFIG, false));
     	}
     	catch (CoreException e)
     	{
@@ -108,8 +108,8 @@ public class TreeBuilder
     	IFolder configFolder = resourcesBuilder.makeSubFolder(RESOURCES_DIR);
     	try
     	{
-    	    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_FILE, resourcesBuilder.getHeaderContent(serverMaker, email, ResourcesBuilder.SYNC_FILE));
-		    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_TRAKER, resourcesBuilder.getHeaderContent(serverMaker, email, ResourcesBuilder.SYNC_TRAKER));
+    	    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_FILE, resourcesBuilder.getHeaderContent("My Team", serverMaker, email, ResourcesBuilder.SYNC_FILE, false));
+		    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_TRAKER, resourcesBuilder.getHeaderContent("My Team", serverMaker, email, ResourcesBuilder.SYNC_TRAKER, false));
     	}
     	catch (CoreException e)
     	{
