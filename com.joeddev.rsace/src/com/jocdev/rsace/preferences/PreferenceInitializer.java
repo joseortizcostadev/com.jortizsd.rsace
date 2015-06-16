@@ -16,10 +16,23 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	 * 
 	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
 	 */
+	IPreferenceStore store;
 	public void initializeDefaultPreferences() 
 	{
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		store.setDefault(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS, true);
+		store = Activator.getDefault().getPreferenceStore();
+		initRsaceGeneralSettings();
+		initDeveloperTeamSettings();
+		initRemoteSessionSettings();
+    }
+	
+	private void initRsaceGeneralSettings ()
+	{
+		
+	}
+	
+    private void initDeveloperTeamSettings ()
+    {
+    	store.setDefault(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS, true);
 	    store.setDefault(PreferenceConstants.P_STRING_AUTHOR_SERVER,
 				"your_name_or_username_here");
 		store.setDefault(PreferenceConstants.P_STRING_EMAIL_SERVER,
@@ -28,9 +41,15 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 "your_id_here");
 		store.setDefault(PreferenceConstants.P_TEAM_NAME, "No team found");
 		store.setDefault(PreferenceConstants.P_TEAM_ID, "No id found");
+    }
+    
+    private void initRemoteSessionSettings ()
+    {
+    	store.setDefault(PreferenceConstants.P_REMOTE_HOST_URL, "http://localhost");
+		store.setDefault(PreferenceConstants.P_REMOTE_HOST_ALIAS, "Sets your alias for your host");
+		store.setDefault(PreferenceConstants.P_REMOTE_HOST_PORT, "11109");
 		
-		
-	}
+    }
 	
 	
 	

@@ -106,6 +106,13 @@
             category="com.joeddev.rsace.preferences.RsacePreferences">
            
       </page>
+      <page
+            class="com.jocdev.rsace.preferences.RemotePreferencesPage"
+            id="com.joeddev.rsace.preferences.RsacePreferences"
+            name="Remote Sessions"
+            category="com.joeddev.rsace.preferences.RsacePreferences">
+           
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

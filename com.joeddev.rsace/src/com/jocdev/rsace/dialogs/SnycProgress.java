@@ -39,28 +39,17 @@ public class SnycProgress extends Dialog {
 		Display display = getParent().getDisplay();
 		
 		final int maximum = progressBar.getMaximum();
-		new Thread() {
+		display.timerExec(100, new Runnable() {
+			int i = 0;
 			@Override
-			
 			public void run() {
-				for (final int[] i = new int[1]; i[0] <= maximum; i[0]++) {
-				try {Thread.sleep (100);} catch (Throwable th) {}
 				
-					if (display.isDisposed()) return;
-					display.asyncExec(new Runnable() {
-						@Override
-						public void run() {
-						
-						if (progressBar.isDisposed ()) return;
-							progressBar.setSelection(i[0]);
-					    if (progressBar.getSelection() == 100)
-					    	shell.dispose();
-						}
-						
-					});
-				}
+				if (progressBar.isDisposed()) return;
+				progressBar.setSelection(i++);
+				if (i <= progressBar.getMaximum()) display.timerExec(100, this);
+				if (progressBar.getSelection() == 100) shell.dispose();
 			}
-		}.start();
+		});
         
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {

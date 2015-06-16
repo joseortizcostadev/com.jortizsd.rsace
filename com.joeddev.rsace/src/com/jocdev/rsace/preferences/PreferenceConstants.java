@@ -22,4 +22,14 @@ public class PreferenceConstants {
 	public static final String P_TEAM_NAME = "teamName";
 	
 	public static final String P_TEAM_ID = "teamId";
+	
+	public static final String P_REMOTE_HOST_URL = "hostUrl";
+	
+	public static final String P_REMOTE_HOST_ALIAS = "hostAlias";
+	
+	public static final String P_REMOTE_HOST_PORT = "hostPort";
+	
+	
+	
+	
 }
