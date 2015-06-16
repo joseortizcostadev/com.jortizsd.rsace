@@ -9,17 +9,26 @@
  *                are initialized for the first time 
  */
 package com.jocdev.rsace.handlers;
+import java.io.InputStream;
+import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+
 import com.jocdev.rsace.appTree.AppManifestBuild;
+import com.jocdev.rsace.appTree.ResourcesBuilder;
 import com.jocdev.rsace.appTree.TreeBuilder;
 import com.jocdev.rsace.appTree.UsrResourcesBuilder;
 import com.jocdev.rsace.dialogs.AskSetPreferencesDialog;
+import com.jocdev.rsace.dialogs.SnycProgress;
+
 import com.jocdev.rsace.preferences.DVTPreferencesGetter;
 import com.jocdev.rsace.team.Developer;
+import com.jocdev.rsace.team.Team;
 
 /**
  * Our handler extends AbstractHandler, an IHandler base class.
@@ -51,15 +60,14 @@ public class InitHandler extends AbstractHandler
 	    {
 		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SYNC))
+		   
 			  initApp(window);
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
 			  // Do team adding work here and add it to preferences
 			  //before opening section
 			   
-			  // Open session 
-			  UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
-	          usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE);
+			  
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
 			  System.out.println("New Developer Team");
@@ -87,7 +95,8 @@ public class InitHandler extends AbstractHandler
            TreeBuilder treeBuilder = TreeBuilder.getRsaceTreeInstance();
            DVTPreferencesGetter serverPreferences = new DVTPreferencesGetter ();
            String author = (String) serverPreferences.getUsername();
-           String email = null, id = null;
+           String email = null, id = null, teamName, teamId;
+           Team team;
            if (serverPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
            {
         	   AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
@@ -96,13 +105,22 @@ public class InitHandler extends AbstractHandler
            author = (String) serverPreferences.getUsername();
            email = (String) serverPreferences.getEmail();
            id = (String) serverPreferences.getId();
+           teamName = (String) serverPreferences.getTeamName();
+           teamId = (String) serverPreferences.getTeamId();
            treeBuilder.buildAppTree(author, email);
-           Developer developer = new Developer(id, author, email, false, true);
-           developer.setAsSessionOwner();
+           team = Team.createNewTeam(teamName,teamId);
+           Developer developer = new Developer(team, id, author, email, false, true);
+           developer.setAsSessionOwner(team);
            AppManifestBuild manifest = AppManifestBuild.getInstance();
            manifest.makeManifestFile();
-           
-        }
+           // Open session 
+		   UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
+		   InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
+	       usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+	       treeBuilder.refreshAppTree();
+	       
+	       new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER).open();
+	    }
         catch (Exception e)
         {
             System.out.println(e.getMessage());

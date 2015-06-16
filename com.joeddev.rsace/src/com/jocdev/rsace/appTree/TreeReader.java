@@ -10,8 +10,11 @@
  */
 package com.jocdev.rsace.appTree;
 import java.io.IOException;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -65,4 +68,6 @@ public class TreeReader extends TreeWriter
         manifest.setAppVersion(appAttributes.item(1).getNodeValue());
         manifest.setAppProduct(appAttributes.item(2).getNodeValue());
     }
+    
+    
 }

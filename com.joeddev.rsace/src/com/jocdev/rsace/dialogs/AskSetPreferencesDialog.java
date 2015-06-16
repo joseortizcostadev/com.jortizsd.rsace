@@ -20,6 +20,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 import com.jocdev.rsace.preferences.DVTPreferencesPage;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.ProgressBar;
 
 public class AskSetPreferencesDialog extends TitleAreaDialog {
 	private Text developerIdText;
@@ -27,6 +28,8 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	private Text developerEmailText;
 	private Button allowSyncPermissionsBtn;
 	private DVTPreferencesPage dvtPreferences;
+	private Text teamText;
+	private Text teamIdText;
 
 	/**
 	 * Create the dialog.
@@ -51,11 +54,11 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		container.setLayoutData(gd_container);
 		
 		developerIdText = new Text(container, SWT.BORDER);
-		developerIdText.setBounds(10, 30, 430, 19);
+		developerIdText.setBounds(353, 73, 87, 19);
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel.setBounds(10, 10, 87, 14);
+		lblNewLabel.setBounds(353, 53, 87, 14);
 		lblNewLabel.setText("Developer's Id");
 		
 		Label lblNewLabel_1 = new Label(container, SWT.NONE);
@@ -64,7 +67,7 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		lblNewLabel_1.setText("Developer's Name");
 		
 		developerNameText = new Text(container, SWT.BORDER);
-		developerNameText.setBounds(10, 73, 430, 19);
+		developerNameText.setBounds(10, 73, 337, 19);
 		
 		Label lblNewLabel_2 = new Label(container, SWT.NONE);
 		lblNewLabel_2.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
@@ -75,9 +78,26 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 		developerEmailText.setBounds(10, 118, 430, 19);
 		
 		allowSyncPermissionsBtn = new Button(container, SWT.CHECK);
+		allowSyncPermissionsBtn.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
 		allowSyncPermissionsBtn.setBounds(10, 142, 430, 18);
 		allowSyncPermissionsBtn.setText("Allow remote synchronization with other developers ( Recomended )");
         allowSyncPermissionsBtn.setSelection(true);
+        
+        teamIdText = new Text(container, SWT.BORDER);
+        teamIdText.setBounds(353, 30, 87, 19);
+        
+        teamText = new Text(container, SWT.BORDER);
+        teamText.setBounds(10, 30, 337, 19);
+        
+        Label lblNewLabel_3 = new Label(container, SWT.NONE);
+        lblNewLabel_3.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
+        lblNewLabel_3.setBounds(350, 10, 60, 14);
+        lblNewLabel_3.setText("Team's Id");
+        
+        Label lblTeamName = new Label(container, SWT.NONE);
+        lblTeamName.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
+        lblTeamName.setBounds(10, 10, 129, 14);
+        lblTeamName.setText("Create a new team:");
        
 		return area;
 	}
@@ -101,6 +121,8 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	    dvtPreferences.updateAuthor(developerNameText.getText());
 	    dvtPreferences.updateEmail(developerEmailText.getText());
 	    dvtPreferences.updatePermissions( allowSyncPermissionsBtn.getSelection());
+	    dvtPreferences.updateTeamName(teamText.getText());
+	    dvtPreferences.updateTeamId(teamIdText.getText());
 	    super.okPressed();
 	}
 	

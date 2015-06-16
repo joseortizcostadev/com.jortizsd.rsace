@@ -108,7 +108,7 @@ public class TreeBuilder
     	IFolder configFolder = resourcesBuilder.makeSubFolder(RESOURCES_DIR);
     	try
     	{
-    	    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_FILE, resourcesBuilder.getHeaderContent("My Team", serverMaker, email, ResourcesBuilder.SYNC_FILE, false));
+    	    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_FILE,"");
 		    resourcesBuilder.makeFile(configFolder, ResourcesBuilder.SYNC_TRAKER, resourcesBuilder.getHeaderContent("My Team", serverMaker, email, ResourcesBuilder.SYNC_TRAKER, false));
     	}
     	catch (CoreException e)
@@ -245,6 +245,16 @@ public class TreeBuilder
     	IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
 	    IFile file = (IFile) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFile.class);
 	    return file;
+    }
+    
+    public IFolder getAppRootFolder ()
+    {
+    	return root;
+    }
+    
+    public void refreshAppTree () throws CoreException
+    {
+    	root.refreshLocal(IResource.DEPTH_INFINITE, null);
     }
     
     

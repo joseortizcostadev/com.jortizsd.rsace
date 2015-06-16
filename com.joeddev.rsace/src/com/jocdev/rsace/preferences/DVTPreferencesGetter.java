@@ -62,4 +62,17 @@ public class DVTPreferencesGetter extends DVTPreferencesPage
          return super.getPreferenceStore().getString(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS);
      }
      
+     public Object getTeamId ()
+     {
+    	 return super.getPreferenceStore().getString(PreferenceConstants.P_TEAM_ID);
+     }
+     
+     public Object getTeamName ()
+     {
+    	 return super.getPreferenceStore().getString(PreferenceConstants.P_TEAM_NAME);
+     }
+     
+     
+     
+     
 }

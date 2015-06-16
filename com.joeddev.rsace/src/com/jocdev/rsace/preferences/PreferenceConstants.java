@@ -16,4 +16,10 @@ public class PreferenceConstants {
 	public static final String P_STRING_EMAIL_SERVER = "emailPreference";
 	
 	public static final String P_STRING_ID = "idPreference";
+	
+	public static final String P_CONBO_TEAM ="conboTeamPreference";
+	
+	public static final String P_TEAM_NAME = "teamName";
+	
+	public static final String P_TEAM_ID = "teamId";
 }

@@ -1,7 +1,10 @@
 package com.jocdev.rsace.preferences;
 
 import org.eclipse.core.internal.resources.Marker;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.*;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Label;
@@ -9,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import com.jocdev.rsace.Activator;
+import com.jocdev.rsace.team.Team;
 
 /**
  * This class represents a preference page that
@@ -28,12 +32,16 @@ public class DVTPreferencesPage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 	IPreferenceStore store;
+	
+	
 	public DVTPreferencesPage() {
 		super(GRID);
 		
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
-		setDescription("Developer Team Settings");
+		setDescription("Developers Teams Preferences");
 		store = Activator.getDefault().getPreferenceStore();
+		
+		
 	}
 	
 	/**
@@ -51,9 +59,8 @@ public class DVTPreferencesPage
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_ID, "&Id:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS,"&Allow Remote Session Sharing",getFieldEditorParent()));
-		
-        
-		
+		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_NAME, "&Team:", getFieldEditorParent()));
+		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_ID, "&Team's id:", getFieldEditorParent()));
 	}
 	
 	public void updateId(String id)
@@ -78,9 +85,14 @@ public class DVTPreferencesPage
 		store.setValue(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS, hasPermissions);
 	}
 	
-	private void setSectionHeader (String header)
+	public void updateTeamName (String teamName)
 	{
-	    setDescription(header);
+		store.setValue(PreferenceConstants.P_TEAM_NAME, teamName);
+	}
+	
+	public void updateTeamId (String teamId)
+	{
+		store.setValue(PreferenceConstants.P_TEAM_ID, teamId);
 	}
 	
 	

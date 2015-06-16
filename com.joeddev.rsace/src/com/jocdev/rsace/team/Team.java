@@ -9,20 +9,66 @@
  *                session
  */
 package com.jocdev.rsace.team;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.eclipse.core.resources.IResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import com.jocdev.rsace.appTree.ConfigBuilder;
+import com.jocdev.rsace.appTree.TreeBuilder;
 public class Team extends Developer
 {
+	private List <Developer >developers;
+	private String teamName;
+	private String teamId;
+    public static final String TEAM_CONTEXT = "team";
+	public static final String ID_CONTEXT = "id";
+	public static final String NAME_CONTEXT = "name";
 	/**
 	 * @category Constructor
 	 */
-    public Team ()
+	private Team (String teamName, String teamId)
     {
-    	// Empty constructor
+        developers = new ArrayList<>();
+        this.teamName = teamName;
+        this.teamId = teamId;
+       
+        
+        
+    }
+	
+	private Team (String teamName)
+	{
+		
+	}
+	
+	
+	
+	
+    
+    public static Team createNewTeam (String id, String teamName)
+    {
+    	
+    	return new Team(id,teamName);
+    }
+    
+    
+    
+    
+   
+    public String getTeamName ()
+    {
+    	return this.teamName;
+    }
+    
+    public String getTeamId()
+    {
+    	return this.teamId;
     }
     
     /**
@@ -32,7 +78,7 @@ public class Team extends Developer
      * @return      List object containing all the developers working at this session 
      * @see         com.jocdev.rsace.team.Developer
      */
-    public List <Developer> getDevelopersInTeam ()
+    public List <Developer> getDevelopers ()
     {
         try
         { 
@@ -40,28 +86,34 @@ public class Team extends Developer
            boolean isActive, isSender;
            Document document = getDocumentToParse(file);
            document.getDocumentElement().normalize();
-           NodeList nList = document.getElementsByTagName("developer");
-           ArrayList <Developer> developers = new ArrayList<>();
-           
-           for (int i = 0; i<nList.getLength(); i++)
+           NodeList  teams = document.getElementsByTagName(Team.TEAM_CONTEXT);
+           for (int i = 0; i<teams.getLength(); i++)
            {
-        	   
-               Node nNode = nList.item(i);
-               if (nNode.getNodeType() == Node.ELEMENT_NODE) 
-               {
-            	   
-                   Element eElement = (Element) nNode;
-                   id = eElement.getAttribute("id");
-                   name = eElement.getElementsByTagName("name").item(0).getTextContent();
-                   email = eElement.getElementsByTagName("email").item(0).getTextContent();
-                   isActive = Boolean.valueOf(eElement.getElementsByTagName("session_active").item(0).getTextContent());
-                   isSender = Boolean.valueOf(eElement.getElementsByTagName("session_owner").item(0).getTextContent());
-                   developers.add(new Developer(id,name,email,isActive,isSender));
-                   
+           	   Element tmpTeam = (Element) teams.item(i);
+           	   if (tmpTeam.getAttribute("id").equalsIgnoreCase(getTeamId()))
+           	   {
+           		    NodeList developersList = teams.item(i).getChildNodes();
+           		    for (int j = 0; j<developersList.getLength(); j++ )
+           		    {
+           		    	if (developersList.item(j).getNodeType() == Node.ELEMENT_NODE) 
+                        {
+                     	   
+                            Element developer = (Element) developersList.item(j);
+                            id = developer.getAttribute("id");
+                            name = developer.getElementsByTagName("name").item(0).getTextContent();
+                            email = developer.getElementsByTagName("email").item(0).getTextContent();
+                            isActive = Boolean.valueOf(developer.getElementsByTagName("session_active").item(0).getTextContent());
+                            isSender = Boolean.valueOf(developer.getElementsByTagName("session_owner").item(0).getTextContent());
+                            developers.add(new Developer(id,name,email,isActive,isSender));
+                            
+                        }
+           		    }
+           		    
                }
-               
            }
+           
            return developers;
+           
         }
         catch (Exception e)
         {
@@ -69,6 +121,8 @@ public class Team extends Developer
         }
         return null;
     }
+    
+   
     
     /**
      * @category    Public Class Method
@@ -80,7 +134,7 @@ public class Team extends Developer
     public Developer getDeveloperFromTeamByName (String name)
     {
         
-        for (Developer dev : getDevelopersInTeam())
+        for (Developer dev : getDevelopers())
             if (dev.getName().equalsIgnoreCase(name))
                 return dev;
         return null;
@@ -95,9 +149,25 @@ public class Team extends Developer
      */
     public Developer getDeveloperFromTeamById (String id)
     {
-       for (Developer dev : getDevelopersInTeam())
+       for (Developer dev : getDevelopers())
             if (dev.getId().equalsIgnoreCase(id))
                 return dev;
         return null;
     }
+    
+    @Override
+    public String toString ()
+    {
+    	String teamContext;
+    	teamContext = "Team: " + getTeamName() + "\n" + 
+    			      "Team's id: " + getTeamId() + "\n" + 
+    			      "Developers members of this team: \n";
+    	for (Developer dev : getDevelopers())
+    		 teamContext+= dev.toString() + "\n";
+    	return teamContext;
+    			      
+    		
+    }
+    
+    
 }

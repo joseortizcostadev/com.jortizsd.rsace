@@ -9,6 +9,7 @@ import com.jocdev.rsace.Activator;
  * Class used to initialize default preference values.
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
+	
 
 	/*
 	 * (non-Javadoc)
@@ -25,8 +26,13 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
                 "youremail@email.com");
 		store.setDefault(PreferenceConstants.P_STRING_ID,
                 "your_id_here");
+		store.setDefault(PreferenceConstants.P_TEAM_NAME, "No team found");
+		store.setDefault(PreferenceConstants.P_TEAM_ID, "No id found");
+		
 		
 	}
+	
+	
 	
 	
 

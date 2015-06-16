@@ -59,16 +59,16 @@ public class ResourcesBuilder extends AbstractInternalFileManagement
 		if (isSessionOpened)
 			isSessionOpenedToString = "Session Open";
 			
-		String header = "//******************************************************************************\\\n" + 
-				        "// file_mode:           Rsace Synchronization Mode                              \\\n" +  
-				        "// Developer owner:    " + author + "                                           \\\n" + 
-				        "// File:               " + context + "                                          \\\n" + 
-				        "// Email:              " + email + "                                            \\\n" + 
-				        "// Session:            " + isSessionOpenedToString + "                          \\\n" +
-				        "// Team:               " + team + "                                             \\\n" +
-				        "// Note:                This header will be removed after the synchronization   \\\n" +   
-				        "//                      of this file is finished                                \\\n" +                                  
-				        "//******************************************************************************\\\n";
+		String header = "/**\n" + 
+				        "// @file_mode:             Rsace Synchronization Mode\n" +  
+				        "// @DeveloperSessionOwner: " + author + "\n" + 
+				        "// @File:                  " + context + "\n" + 
+				        "// @Email:                 " + email + "\n" + 
+				        "// @Session:               " + isSessionOpenedToString + "\n" +
+				        "// @Team:                  " + team + "\n" +
+				        "// @Note:                  This header will be removed after the synchronization\n" +   
+				        "//                         of this file is finished\n" +                                  
+				        "*/\n";
 	    return header;
 	}
 
