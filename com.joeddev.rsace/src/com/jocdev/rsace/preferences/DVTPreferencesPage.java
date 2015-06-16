@@ -54,13 +54,14 @@ public class DVTPreferencesPage
 		//addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, "&Directory preference:", getFieldEditorParent()));
 		
        
-	    // addField(new RadioGroupFieldEditor(PreferenceConstants.P_CHOICE, "An example of a multiple-choice preference",1,new String[][] { { "&Choice 1", "choice1" }, {"C&hoice 2", "choice2" }}, getFieldEditorParent()));
+	   
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_AUTHOR_SERVER, "&Developer session owner:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_ID, "&Id:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS,"&Allow Remote Session Sharing",getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_NAME, "&Team:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_ID, "&Team's id:", getFieldEditorParent()));
+		
 	}
 	
 	public void updateId(String id)

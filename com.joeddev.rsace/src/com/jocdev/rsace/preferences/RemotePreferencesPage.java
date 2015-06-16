@@ -2,6 +2,7 @@ package com.jocdev.rsace.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -23,14 +24,15 @@ public class RemotePreferencesPage extends FieldEditorPreferencePage implements 
     @Override
     public void init(IWorkbench arg0) 
     {
-    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_URL, "&Host Url or Ip Adress: ", getFieldEditorParent()));
-    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_ALIAS, "&Host Alias : ", getFieldEditorParent()));
-    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_PORT, "&Port : ", getFieldEditorParent()));
+    	
 	}
 
     @Override
     protected void createFieldEditors() 
     {
-	    // TODO Auto-generated method stub
+    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_URL, "&Host Url or Ip Adress: ", getFieldEditorParent()));
+    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_ALIAS, "&Host Alias : ", getFieldEditorParent()));
+    	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_PORT, "&Port : ", getFieldEditorParent()));
+    	addField(new RadioGroupFieldEditor(PreferenceConstants.P_CHOICE, "Connection Rejected Preferences",1,new String[][] { { "&Send a joining invitation for this session by email", "choice1" }, {"&Send automatic request every 5 minutes, with a maximum of three requestes", "choice2" }}, getFieldEditorParent()));
 	}
 }
