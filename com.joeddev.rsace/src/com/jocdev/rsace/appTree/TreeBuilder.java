@@ -257,5 +257,10 @@ public class TreeBuilder
     	root.refreshLocal(IResource.DEPTH_INFINITE, null);
     }
     
+    public boolean isPluginSynchronizedLocally ()
+    {
+    	return getFile(RESOURCES_DIR, UsrResourcesBuilder.SYNC_FILE).exists();
+    }
+    
     
 }

@@ -26,6 +26,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		initRsaceGeneralSettings();
 		initDeveloperTeamSettings();
 		initRemoteSessionSettings();
+		
     }
 	
 	private void initRsaceGeneralSettings ()
@@ -50,9 +51,11 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     {
     	store.setDefault(PreferenceConstants.P_REMOTE_HOST_URL, "http://localhost");
 		store.setDefault(PreferenceConstants.P_REMOTE_HOST_ALIAS, "Sets your alias for your host");
-		store.setDefault(PreferenceConstants.P_REMOTE_HOST_PORT, "11109");
+		store.setDefault(PreferenceConstants.P_REMOTE_HOST_PORT, 11109);
 		
     }
+    
+   
 	
 	
 	

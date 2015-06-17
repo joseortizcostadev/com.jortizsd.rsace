@@ -35,4 +35,20 @@ public class RemotePreferencesPage extends FieldEditorPreferencePage implements 
     	addField(new StringFieldEditor(PreferenceConstants.P_REMOTE_HOST_PORT, "&Port : ", getFieldEditorParent()));
     	addField(new RadioGroupFieldEditor(PreferenceConstants.P_CHOICE, "Connection Rejected Preferences",1,new String[][] { { "&Send a joining invitation for this session by email", "choice1" }, {"&Send automatic request every 5 minutes, with a maximum of three requestes", "choice2" }}, getFieldEditorParent()));
 	}
+    
+    public void updateHostIpOrUrl (String urlOrIp)
+    {
+    	store.setValue(PreferenceConstants.P_REMOTE_HOST_URL, urlOrIp);
+    }
+    
+    public void updateHostAlias (String alias)
+    {
+    	store.setValue(PreferenceConstants.P_REMOTE_HOST_ALIAS, alias);
+    }
+    
+    public void updateHostPort (int port)
+    {
+    	
+    	store.setValue(PreferenceConstants.P_REMOTE_HOST_PORT, port);
+    }
 }

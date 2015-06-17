@@ -29,6 +29,8 @@ public class PreferenceConstants {
 	
 	public static final String P_REMOTE_HOST_PORT = "hostPort";
 	
+	public static final String P_TEST = "text";
+	
 	
 	
 	
