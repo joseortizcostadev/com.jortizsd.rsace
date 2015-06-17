@@ -51,6 +51,7 @@ public class UsrResourcesBuilder extends TreeBuilder
 	 */
 	public void syncFile(String mode, InputStream headerInputStream) throws CoreException, IOException
 	{
+		saveUserWork();
 		IFile usrFile = getActiveFile(); // user's file to be synchronized.
 		IFile syncFile = getFile(TreeBuilder.RESOURCES_DIR, SYNC_FILE); // new file
 		InputStream fileStream = usrFile.getContents();
@@ -103,6 +104,8 @@ public class UsrResourcesBuilder extends TreeBuilder
 		 InputStream source = new ByteArrayInputStream(bytes);
 		 return source;
 	}
+	
+	
 
 	
 

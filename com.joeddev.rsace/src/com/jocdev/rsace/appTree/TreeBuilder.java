@@ -23,6 +23,8 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
@@ -58,6 +60,7 @@ public class TreeBuilder
 	
 	public void buildAppTree (String serverMaker, String email)
 	{
+		
 		buildConfigFiles(ConfigBuilder.VENDOR, ConfigBuilder.VERSION);
 		buildResourcesFiles(serverMaker, email);
 	}
@@ -260,6 +263,13 @@ public class TreeBuilder
     public boolean isPluginSynchronizedLocally ()
     {
     	return getFile(RESOURCES_DIR, UsrResourcesBuilder.SYNC_FILE).exists();
+    }
+    
+    public void saveUserWork ()
+    {
+    	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+    	IEditorPart editor = page.getActiveEditor();
+    	page.saveEditor(editor, true /* confirm */);
     }
     
     

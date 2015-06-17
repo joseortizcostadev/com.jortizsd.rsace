@@ -10,6 +10,8 @@
  */
 package com.jocdev.rsace.handlers;
 import java.io.InputStream;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -42,6 +44,15 @@ public class InitHandler extends AbstractHandler
 	public static final String MENU_NEW_TEAM = "New Developer Team";
 	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	private TreeBuilder treeBuilder;
+	private DVTPreferencesGetter serverPreferences;
+	private AppManifestBuild manifest;
+	private UsrResourcesBuilder usrResourcesBuilder;
+	private String author;
+	private String email; 
+	private String id; 
+	private String teamName; 
+	private String teamId;
+    private Team team;
 	
 	/**
 	 * The constructor.
@@ -51,6 +62,10 @@ public class InitHandler extends AbstractHandler
 	public InitHandler() 
 	{
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
+		serverPreferences = new DVTPreferencesGetter ();
+	    manifest = AppManifestBuild.getInstance();
+	    usrResourcesBuilder = new UsrResourcesBuilder();
+	    author = (String) serverPreferences.getUsername();
 	}
 
 	/**
@@ -69,16 +84,18 @@ public class InitHandler extends AbstractHandler
 			   if (!treeBuilder.isPluginSynchronizedLocally())
 	           {
 				   
+				   Instant start = Instant.now();
 				   initApp(window);
+				   Instant end = Instant.now();
+				   System.out.println(Duration.between(start, end));
 	           }
 			   else
 			   {
-				   
-				   MessageDialog.openInformation(window.getShell(),
-						                         "Rsace Information",
-						                         "Your file is already synchronized with Rsace's resources in local mode. " + 
-						                         "Open a new remote session in order to synchronize this file remotely");
+				   InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
+		           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+		           
 			   }
+			   new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER).open();
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
@@ -110,12 +127,6 @@ public class InitHandler extends AbstractHandler
 	    try
         {
 	           
-               
-           
-               DVTPreferencesGetter serverPreferences = new DVTPreferencesGetter ();
-               String author = (String) serverPreferences.getUsername();
-               String email = null, id = null, teamName, teamId;
-               Team team;
                if (serverPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
                {
         	       AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
@@ -130,14 +141,12 @@ public class InitHandler extends AbstractHandler
                team = Team.createNewTeam(teamName,teamId);
                Developer developer = new Developer(team, id, author, email, false, true);
                developer.setAsSessionOwner(team);
-               AppManifestBuild manifest = AppManifestBuild.getInstance();
                manifest.makeManifestFile();
                // Open session 
-		       UsrResourcesBuilder usrResourcesBuilder = new UsrResourcesBuilder();
 		       InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
 	           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
 	           treeBuilder.refreshAppTree();
-	           new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER).open();
+	          
            
 	    }
         catch (Exception e)
