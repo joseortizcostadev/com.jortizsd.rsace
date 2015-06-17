@@ -16,6 +16,8 @@ public class SnycProgress extends Dialog {
 	protected Shell shell;
 	protected ProgressBar progressBar;
 	final Thread countThread = null;
+	final String [] initProcessesNames;
+	final int [] initProcessesTimes;
 
 	/**
 	 * Create the dialog.
@@ -25,6 +27,10 @@ public class SnycProgress extends Dialog {
 	public SnycProgress(Shell parent, int style) {
 		super(parent, style);
 	    setText("Rsace Resources Synchronization");
+	    initProcessesNames = new String [14];
+	    initProcessesTimes = new int [14];
+	    
+	    
 	    
 	}
 
@@ -39,14 +45,14 @@ public class SnycProgress extends Dialog {
 		Display display = getParent().getDisplay();
 		
 		final int maximum = progressBar.getMaximum();
-		display.timerExec(100, new Runnable() {
+		display.timerExec(10, new Runnable() {
 			int i = 0;
 			@Override
 			public void run() {
 				
 				if (progressBar.isDisposed()) return;
 				progressBar.setSelection(i++);
-				if (i <= progressBar.getMaximum()) display.timerExec(100, this);
+				if (i <= progressBar.getMaximum()) display.timerExec(10, this);
 				if (progressBar.getSelection() == 100) shell.dispose();
 			}
 		});

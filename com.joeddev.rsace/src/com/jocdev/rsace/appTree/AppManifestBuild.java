@@ -16,13 +16,12 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import com.jocdev.rsace.preferences.DVTPreferencesGetter;
+import com.jocdev.rsace.preferences.DVTPreferencesPage;
 
 public class AppManifestBuild extends TreeWriter
 {
     private static final AppManifestBuild instance = new AppManifestBuild();
-    private DVTPreferencesGetter devPreferencesGetter; // preferences page
+    private DVTPreferencesPage devPreferencesPage; // preferences page
     private IFile file;
     int launch; // number of times the program is execited
     boolean hasSessionPermission;
@@ -37,7 +36,7 @@ public class AppManifestBuild extends TreeWriter
     private AppManifestBuild ()
     {
         super();
-        this.devPreferencesGetter = new DVTPreferencesGetter();
+        this.devPreferencesPage = new DVTPreferencesPage();
         // Empty manifest file
         this.file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.MANIFEST_FILE_CONFIG);
     }
@@ -150,7 +149,7 @@ public class AppManifestBuild extends TreeWriter
         Element appEntryPoint =  createElement (document, root, "AppMain");
         setAtrribute(document, appEntryPoint, "entry_point", "InitHandler.class");
         Element remotePermissions =  createElement (document, root, "Remote_Session");
-        String permissions = String.valueOf(devPreferencesGetter.getRemotePermissionsState());
+        String permissions = String.valueOf(devPreferencesPage.getRemotePermissionsState());
         setAtrribute(document, remotePermissions, "permissions", permissions);
     }
     

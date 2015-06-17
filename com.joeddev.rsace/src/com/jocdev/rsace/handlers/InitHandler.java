@@ -28,7 +28,7 @@ import com.jocdev.rsace.appTree.TreeBuilder;
 import com.jocdev.rsace.appTree.UsrResourcesBuilder;
 import com.jocdev.rsace.dialogs.AskSetPreferencesDialog;
 import com.jocdev.rsace.dialogs.SnycProgress;
-import com.jocdev.rsace.preferences.DVTPreferencesGetter;
+import com.jocdev.rsace.preferences.DVTPreferencesPage;
 import com.jocdev.rsace.team.Developer;
 import com.jocdev.rsace.team.Team;
 
@@ -44,7 +44,7 @@ public class InitHandler extends AbstractHandler
 	public static final String MENU_NEW_TEAM = "New Developer Team";
 	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	private TreeBuilder treeBuilder;
-	private DVTPreferencesGetter serverPreferences;
+	private DVTPreferencesPage developerPreferences;
 	private AppManifestBuild manifest;
 	private UsrResourcesBuilder usrResourcesBuilder;
 	private String author;
@@ -62,10 +62,10 @@ public class InitHandler extends AbstractHandler
 	public InitHandler() 
 	{
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		serverPreferences = new DVTPreferencesGetter ();
+		developerPreferences = new DVTPreferencesPage ();
 	    manifest = AppManifestBuild.getInstance();
 	    usrResourcesBuilder = new UsrResourcesBuilder();
-	    author = (String) serverPreferences.getUsername();
+	    author = (String) developerPreferences.getUsername();
 	}
 
 	/**
@@ -127,16 +127,16 @@ public class InitHandler extends AbstractHandler
 	    try
         {
 	           
-               if (serverPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
+               if (developerPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
                {
         	       AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
         	       askPreferencesDialog.open();
                }
-               author = (String) serverPreferences.getUsername();
-               email = (String) serverPreferences.getEmail();
-               id = (String) serverPreferences.getId();
-               teamName = (String) serverPreferences.getTeamName();
-               teamId = (String) serverPreferences.getTeamId();
+               author = (String) developerPreferences.getUsername();
+               email = (String) developerPreferences.getEmail();
+               id = (String) developerPreferences.getId();
+               teamName = (String) developerPreferences.getTeamName();
+               teamId = (String) developerPreferences.getTeamId();
                treeBuilder.buildAppTree(author, email);
                team = Team.createNewTeam(teamName,teamId);
                Developer developer = new Developer(team, id, author, email, false, true);
