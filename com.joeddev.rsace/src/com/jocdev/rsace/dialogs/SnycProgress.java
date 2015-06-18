@@ -10,14 +10,19 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.jocdev.rsace.Task;
+
 public class SnycProgress extends Dialog {
 
 	protected Object result;
 	protected Shell shell;
 	protected ProgressBar progressBar;
+	Label lblProcesses;
 	final Thread countThread = null;
 	final String [] initProcessesNames;
 	final int [] initProcessesTimes;
+	private Display display;
+	static int counter;
 
 	/**
 	 * Create the dialog.
@@ -37,25 +42,38 @@ public class SnycProgress extends Dialog {
 	/**
 	 * Open the dialog.
 	 * @return the result
+	 * @throws InterruptedException 
 	 */
-	public Object open() {
+	public Object open() throws InterruptedException {
+		
 		createContents();
 		shell.open();
 		shell.layout();
-		Display display = getParent().getDisplay();
+		display = getParent().getDisplay();
+		// Work done in background by progressBar
 		
-		final int maximum = progressBar.getMaximum();
-		display.timerExec(10, new Runnable() {
-			int i = 0;
-			@Override
-			public void run() {
+		for (int i =0; i<=100; i++)
+		{
+			
+			try 
+			{
+				Thread.sleep(10);
 				
-				if (progressBar.isDisposed()) return;
-				progressBar.setSelection(i++);
-				if (i <= progressBar.getMaximum()) display.timerExec(10, this);
-				if (progressBar.getSelection() == 100) shell.dispose();
+				
 			}
-		});
+			catch (Throwable th)
+			{
+				
+			}
+			progressBar.setSelection(i);
+			if (progressBar.getSelection() == 100)
+				shell.dispose();
+		}
+		
+		
+	    
+		
+		
         
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -66,7 +84,7 @@ public class SnycProgress extends Dialog {
 		return result;
 	}
 	
-	         
+	 
 
 	/**
 	 * Create contents of the dialog.
@@ -86,8 +104,8 @@ public class SnycProgress extends Dialog {
 		lblSynchronizingResources.setBounds(20, 10, 163, 16);
 		lblSynchronizingResources.setText("Synchronizing Resources...");
 		
-		Label lblProcesses = new Label(shell, SWT.NONE);
-		lblProcesses.setBounds(20, 54, 60, 14);
+		lblProcesses = new Label(shell, SWT.NONE);
+		lblProcesses.setBounds(20, 54, 355, 14);
 		lblProcesses.setText("Processes");
 		
 

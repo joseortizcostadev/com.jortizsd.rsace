@@ -17,11 +17,14 @@ import java.util.List;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import com.jocdev.rsace.AbstractTaskBuilder;
+import com.jocdev.rsace.Task;
 import com.jocdev.rsace.appTree.AppManifestBuild;
 import com.jocdev.rsace.appTree.ResourcesBuilder;
 import com.jocdev.rsace.appTree.TreeBuilder;
@@ -53,6 +56,8 @@ public class InitHandler extends AbstractHandler
 	private String teamName; 
 	private String teamId;
     private Team team;
+    private SnycProgress syncProgress;
+   
 	
 	/**
 	 * The constructor.
@@ -66,6 +71,7 @@ public class InitHandler extends AbstractHandler
 	    manifest = AppManifestBuild.getInstance();
 	    usrResourcesBuilder = new UsrResourcesBuilder();
 	    author = (String) developerPreferences.getUsername();
+	    
 	}
 
 	/**
@@ -74,28 +80,26 @@ public class InitHandler extends AbstractHandler
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
-		
 	    try
 	    {
 		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		   syncProgress = new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER);
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SYNC))
 		   {
 			   
 			   if (!treeBuilder.isPluginSynchronizedLocally())
-	           {
-				   
-				   Instant start = Instant.now();
-				   initApp(window);
-				   Instant end = Instant.now();
-				   System.out.println(Duration.between(start, end));
-	           }
+			   {
+	              initApp(window);
+	              syncProgress.open();
+			   }
 			   else
 			   {
 				   InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
 		           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
-		           
-			   }
-			   new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER).open();
+		           syncProgress.open();
+		       }
+			   
+			   
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {

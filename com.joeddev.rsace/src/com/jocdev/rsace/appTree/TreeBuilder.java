@@ -28,6 +28,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
+import com.jocdev.rsace.AbstractTaskBuilder;
+import com.jocdev.rsace.Task;
+
 public class TreeBuilder 
 {
 	// Instance variables and constants
@@ -46,6 +49,8 @@ public class TreeBuilder
 	private IFolder root;
 	
 	
+	
+	
 	/**
 	 * @category     Private Constructor
 	 * @description  Initializes base components
@@ -60,9 +65,12 @@ public class TreeBuilder
 	
 	public void buildAppTree (String serverMaker, String email)
 	{
-		
+		Task task = new Task("Configuration files", Task.MODE_MILISECONDS);
+		task.startTime();
 		buildConfigFiles(ConfigBuilder.VENDOR, ConfigBuilder.VERSION);
 		buildResourcesFiles(serverMaker, email);
+		task.stopTime();
+		
 	}
 	
 	
@@ -255,6 +263,13 @@ public class TreeBuilder
     	return root;
     }
     
+    public void refreshUserRootProject () throws CoreException
+    {
+    	IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
+	    IFolder folder = (IFolder) workbenchPart.getSite().getPage().getActiveEditor().getEditorInput().getAdapter(IFolder.class);
+	    folder.refreshLocal(1, null);
+    }
+    
     public void refreshAppTree () throws CoreException
     {
     	root.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -271,6 +286,8 @@ public class TreeBuilder
     	IEditorPart editor = page.getActiveEditor();
     	page.saveEditor(editor, true /* confirm */);
     }
+    
+ 
     
     
 }

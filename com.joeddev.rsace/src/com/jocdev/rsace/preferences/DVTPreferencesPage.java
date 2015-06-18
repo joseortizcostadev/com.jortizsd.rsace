@@ -12,6 +12,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
 import com.jocdev.rsace.Activator;
+import com.jocdev.rsace.Task;
 import com.jocdev.rsace.team.Team;
 
 /**
@@ -32,7 +33,7 @@ public class DVTPreferencesPage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage {
 	IPreferenceStore store;
-	
+	Task task;
 	
 	public DVTPreferencesPage() {
 		super(GRID);
@@ -40,7 +41,7 @@ public class DVTPreferencesPage
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("Developers Teams Preferences");
 		store = Activator.getDefault().getPreferenceStore();
-		
+		task = new Task("Build developer preferences", Task.MODE_MILISECONDS);
 		
 	}
 	
@@ -53,15 +54,14 @@ public class DVTPreferencesPage
 	public void createFieldEditors() {
 		//addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH, "&Directory preference:", getFieldEditorParent()));
 		
-       
-	   
-		addField(new StringFieldEditor(PreferenceConstants.P_STRING_AUTHOR_SERVER, "&Developer session owner:", getFieldEditorParent()));
+        task.startTime();
+	    addField(new StringFieldEditor(PreferenceConstants.P_STRING_AUTHOR_SERVER, "&Developer session owner:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_EMAIL_SERVER, "&Email:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_STRING_ID, "&Id:", getFieldEditorParent()));
 		addField(new BooleanFieldEditor(PreferenceConstants.P_REMOTE_SHARING_PERMISSIONS,"&Allow Remote Session Sharing",getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_NAME, "&Team:", getFieldEditorParent()));
 		addField(new StringFieldEditor(PreferenceConstants.P_TEAM_ID, "&Team's id:", getFieldEditorParent()));
-		
+		task.stopTime();
 	}
 	
 	public void updateId(String id)

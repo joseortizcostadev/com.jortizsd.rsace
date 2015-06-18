@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
+import com.jocdev.rsace.Task;
 import com.jocdev.rsace.team.Developer;
 
 public class UsrResourcesBuilder extends TreeBuilder
@@ -28,6 +29,7 @@ public class UsrResourcesBuilder extends TreeBuilder
     public static final String LOCAL_MODE = "local";
     public static final String FILE_MODE_LOCAL = "Synchronized Local Mode";
     public static final String FILE_MODE_REMOTE = "Remote Session Mode";
+    private Task task;
     
     
     /**
@@ -36,6 +38,7 @@ public class UsrResourcesBuilder extends TreeBuilder
 	public UsrResourcesBuilder() 
 	{
 		super();
+		task = new Task("Updating _Sync.java", Task.MODE_MILISECONDS);
 		
 	}
     
@@ -51,6 +54,7 @@ public class UsrResourcesBuilder extends TreeBuilder
 	 */
 	public void syncFile(String mode, InputStream headerInputStream) throws CoreException, IOException
 	{
+		task.startTime();
 		saveUserWork();
 		IFile usrFile = getActiveFile(); // user's file to be synchronized.
 		IFile syncFile = getFile(TreeBuilder.RESOURCES_DIR, SYNC_FILE); // new file
@@ -64,6 +68,7 @@ public class UsrResourcesBuilder extends TreeBuilder
         {
         	// Sync in remote mode implementation
         }
+        task.stopTime();
 	}
 	
 	public InputStream getHeaderStreamForSyncFile (String fileMode, String devSessionOwner, String fileName, String email,
