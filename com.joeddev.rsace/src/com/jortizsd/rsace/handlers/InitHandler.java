@@ -8,7 +8,7 @@
  *                and all its components and resources
  *                are initialized for the first time 
  */
-package com.jocdev.rsace.handlers;
+package com.jortizsd.rsace.handlers;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
@@ -23,17 +23,17 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.jocdev.rsace.AbstractTaskBuilder;
-import com.jocdev.rsace.Task;
-import com.jocdev.rsace.appTree.AppManifestBuild;
-import com.jocdev.rsace.appTree.ResourcesBuilder;
-import com.jocdev.rsace.appTree.TreeBuilder;
-import com.jocdev.rsace.appTree.UsrResourcesBuilder;
-import com.jocdev.rsace.dialogs.AskSetPreferencesDialog;
-import com.jocdev.rsace.dialogs.SnycProgress;
-import com.jocdev.rsace.preferences.DVTPreferencesPage;
-import com.jocdev.rsace.team.Developer;
-import com.jocdev.rsace.team.Team;
+import com.jortizsd.rsace.AbstractTaskBuilder;
+import com.jortizsd.rsace.Task;
+import com.jortizsd.rsace.appTree.AppManifestBuild;
+import com.jortizsd.rsace.appTree.ResourcesBuilder;
+import com.jortizsd.rsace.appTree.TreeBuilder;
+import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
+import com.jortizsd.rsace.dialogs.AskSetPreferencesDialog;
+import com.jortizsd.rsace.dialogs.SnycProgress;
+import com.jortizsd.rsace.preferences.DVTPreferencesPage;
+import com.jortizsd.rsace.team.Developer;
+import com.jortizsd.rsace.team.Team;
 
 /**
  * Our handler extends AbstractHandler, an IHandler base class.
@@ -44,7 +44,7 @@ public class InitHandler extends AbstractHandler
 {
 	public static final String MENU_NEW_SYNC = "Synchronize";
 	public static final String MENU_NEW_SESSION = "Open Remote Session";
-	public static final String MENU_NEW_TEAM = "New Developer Team";
+	public static final String MENU_NEW_TEAM = "Add Developers to Team";
 	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	private TreeBuilder treeBuilder;
 	private DVTPreferencesPage developerPreferences;

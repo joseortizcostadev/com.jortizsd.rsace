@@ -8,7 +8,7 @@
  *                from the configurations and resources 
  *                files of this applications  
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -39,7 +39,7 @@ public class TreeReader extends TreeWriter
      * @throws      IOException
      * @throws      CoreException
      * @throws      ParserConfigurationException
-     * @see         com.jocdev.rsace.appTree.AppManifestBuild
+     * @see         com.jortizsd.rsace.appTree.AppManifestBuild
      */
     public AppManifestBuild getManifestData () throws SAXException, IOException, CoreException, ParserConfigurationException
     {
@@ -58,7 +58,7 @@ public class TreeReader extends TreeWriter
      *                  in the manifest
      * @param manifest  AppManifestBuild representing the manifest object that will store 
      *                  those attributes
-     * @see             com.jocdev.rsace.appTree.AppManifestBuild
+     * @see             com.jortizsd.rsace.appTree.AppManifestBuild
      */
     private void getAppAttributes (Document document, AppManifestBuild manifest)
     {

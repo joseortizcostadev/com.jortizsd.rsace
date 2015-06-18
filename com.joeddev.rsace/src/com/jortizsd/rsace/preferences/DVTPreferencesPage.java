@@ -1,4 +1,4 @@
-package com.jocdev.rsace.preferences;
+package com.jortizsd.rsace.preferences;
 
 import org.eclipse.core.internal.resources.Marker;
 import org.eclipse.jface.action.Separator;
@@ -11,9 +11,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.IWorkbench;
 
-import com.jocdev.rsace.Activator;
-import com.jocdev.rsace.Task;
-import com.jocdev.rsace.team.Team;
+import com.jortizsd.rsace.Activator;
+import com.jortizsd.rsace.Task;
+import com.jortizsd.rsace.team.Team;
 
 /**
  * This class represents a preference page that
@@ -108,7 +108,7 @@ public class DVTPreferencesPage
      * @category     Public Class Method
      * @description  Gets the developer's name or user name from its preferences page
      * @return       Object representing the developer's name or user name
-     * @see          com.jocdev.rsace.team.Developer class
+     * @see          com.jortizsd.rsace.team.Developer class
     */
     public Object getUsername() 
     {
@@ -119,7 +119,7 @@ public class DVTPreferencesPage
      * @category     Public Class Method
      * @description  Gets the developer's email from its preferences page
      * @return       Object representing the developer's email
-     * @see          com.jocdev.rsace.team.Developer class
+     * @see          com.jortizsd.rsace.team.Developer class
     */
     public Object getEmail()
     {
@@ -130,7 +130,7 @@ public class DVTPreferencesPage
      * @category     Public Class Method
      * @description  Gets the developer's id from its preferences page
      * @return       Object representing the developer's id
-     * @see          com.jocdev.rsace.team.Developer class
+     * @see          com.jortizsd.rsace.team.Developer class
     */
     public Object getId()
     {
@@ -141,7 +141,7 @@ public class DVTPreferencesPage
      * @category     Public Class Method
      * @description  Gets the state of the remote session permissions
      * @return       Object representing the state of the remote session permissions
-     * @see          com.jocdev.rsace.team.Developer class
+     * @see          com.jortizsd.rsace.team.Developer class
     */
     public Object getRemotePermissionsState ()
     {

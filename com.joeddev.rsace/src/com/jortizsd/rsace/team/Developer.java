@@ -8,7 +8,7 @@
  *                using this application
  */
 
-package com.jocdev.rsace.team;
+package com.jortizsd.rsace.team;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,9 +24,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.jocdev.rsace.appTree.ConfigBuilder;
-import com.jocdev.rsace.appTree.TreeBuilder;
-import com.jocdev.rsace.appTree.TreeWriter;
+import com.jortizsd.rsace.appTree.ConfigBuilder;
+import com.jortizsd.rsace.appTree.TreeBuilder;
+import com.jortizsd.rsace.appTree.TreeWriter;
 public class Developer extends TreeWriter
 {
     protected IFile file;
@@ -192,7 +192,7 @@ public class Developer extends TreeWriter
      * @category     Public Class Method
      * @description  Determines if this developer is the owner of a session 
      * @return       True if the developer is the owner of a session. Otherwise, returns false.
-     * @see          com.jocdev.rsace.appTree.AppManifestBuilder
+     * @see          com.jortizsd.rsace.appTree.AppManifestBuilder
     */
     public boolean isSessionOwner ()
     {
@@ -203,7 +203,7 @@ public class Developer extends TreeWriter
      * @category     Public Class Method
      * @description  Determines the developer's session is active
      * @return       True if the developer's session is active. Otherwise, returns false.
-     * @see          com.jocdev.rsace.appTree.AppManifestBuilder
+     * @see          com.jortizsd.rsace.appTree.AppManifestBuilder
     */
     public boolean isSessionActive ()
     {

@@ -6,10 +6,12 @@
  * @Description   This interface provides signature methods 
  *                for remote communication between developers
  */
-package com.jocdev.rsace.remote;
+package com.jortizsd.rsace.remote;
 import java.rmi.Remote;
+
 import org.eclipse.core.resources.IFile;
-import com.jocdev.rsace.team.Developer;
+
+import com.jortizsd.rsace.team.Developer;
 
 public interface InterfaceRemote extends Remote
 {

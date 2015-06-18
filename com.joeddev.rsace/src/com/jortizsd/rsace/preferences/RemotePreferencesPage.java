@@ -1,4 +1,4 @@
-package com.jocdev.rsace.preferences;
+package com.jortizsd.rsace.preferences;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -7,7 +7,7 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import com.jocdev.rsace.Activator;
+import com.jortizsd.rsace.Activator;
 
 public class RemotePreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {

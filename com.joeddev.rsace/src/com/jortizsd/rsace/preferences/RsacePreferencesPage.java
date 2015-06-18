@@ -5,11 +5,12 @@
  * @Date          04/06/2015
  * @Description   This class creates the general preferences page for this application
  */
-package com.jocdev.rsace.preferences;
+package com.jortizsd.rsace.preferences;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
-import com.jocdev.rsace.Activator;
+
+import com.jortizsd.rsace.Activator;
 
 public class RsacePreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage 
 {

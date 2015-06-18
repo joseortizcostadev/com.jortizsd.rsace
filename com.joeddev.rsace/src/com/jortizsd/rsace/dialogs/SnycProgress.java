@@ -1,4 +1,4 @@
-package com.jocdev.rsace.dialogs;
+package com.jortizsd.rsace.dialogs;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -10,7 +10,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.jocdev.rsace.Task;
+import com.jortizsd.rsace.Task;
 
 public class SnycProgress extends Dialog {
 

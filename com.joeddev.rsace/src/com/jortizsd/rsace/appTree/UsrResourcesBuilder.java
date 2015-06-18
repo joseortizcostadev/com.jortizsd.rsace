@@ -1,13 +1,13 @@
 /**
  * @author        Jose Ortiz Costa
- * @application   com.jocdev.rsace
+ * @application   com.jortizsd.rsace
  * @File          UsrResourcesBuilder.java
  * @Date          04/06/2015
  * @Description   This class extends TreeBuilder class, and 
  *                provides methods build and handle the necessary resources
  *                for this application 
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,8 +18,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
-import com.jocdev.rsace.Task;
-import com.jocdev.rsace.team.Developer;
+import com.jortizsd.rsace.Task;
+import com.jortizsd.rsace.team.Developer;
 
 public class UsrResourcesBuilder extends TreeBuilder
 {

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Rsace
 Bundle-SymbolicName: com.jocdev.rsace;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: com.jocdev.rsace.Activator
+Bundle-Activator: com.jortizsd.rsace.Activator
 Bundle-Vendor: JOEDDEV
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

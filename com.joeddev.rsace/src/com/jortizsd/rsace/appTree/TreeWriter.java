@@ -8,7 +8,7 @@
  *                in the configurations and resources 
  *                files of this applications  
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;

@@ -8,7 +8,7 @@
  *                all the developers participating in this
  *                session
  */
-package com.jocdev.rsace.team;
+package com.jortizsd.rsace.team;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.jocdev.rsace.appTree.ConfigBuilder;
-import com.jocdev.rsace.appTree.TreeBuilder;
+import com.jortizsd.rsace.appTree.ConfigBuilder;
+import com.jortizsd.rsace.appTree.TreeBuilder;
 public class Team extends Developer
 {
 	private List <Developer >developers;
@@ -76,7 +76,7 @@ public class Team extends Developer
      * @description Gets all the developers that pertain to the team 
      *              that is working in the current session
      * @return      List object containing all the developers working at this session 
-     * @see         com.jocdev.rsace.team.Developer
+     * @see         com.jortizsd.rsace.team.Developer
      */
     public List <Developer> getDevelopers ()
     {
@@ -129,7 +129,7 @@ public class Team extends Developer
      * @description Gets a developer by a given name
      * @param name  String object representing the developer's name
      * @return      Developer object representing the developer found. Otherwise, returns null
-     * @see         com.jocdev.rsace.team.Developer
+     * @see         com.jortizsd.rsace.team.Developer
      */
     public Developer getDeveloperFromTeamByName (String name)
     {
@@ -145,7 +145,7 @@ public class Team extends Developer
      * @description Gets a developer by a given id
      * @param name  String object representing the developer's id
      * @return      Developer object representing the developer found. Otherwise, returns null
-     * @see         com.jocdev.rsace.team.Developer
+     * @see         com.jortizsd.rsace.team.Developer
      */
     public Developer getDeveloperFromTeamById (String id)
     {

@@ -10,7 +10,7 @@
  *                that need to handle resources located inside
  *                of the application's tree root
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;

@@ -6,7 +6,7 @@
  * @Description   This singleton class extends TreeWritter class, and 
  *                build the manifest file for this application
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,7 +16,8 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import com.jocdev.rsace.preferences.DVTPreferencesPage;
+
+import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 
 public class AppManifestBuild extends TreeWriter
 {

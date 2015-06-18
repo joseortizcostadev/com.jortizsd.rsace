@@ -11,7 +11,7 @@
  *                which contain the base for rsace's configuration files, and 
  *                resources files respectively. 
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
@@ -28,8 +28,8 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
-import com.jocdev.rsace.AbstractTaskBuilder;
-import com.jocdev.rsace.Task;
+import com.jortizsd.rsace.AbstractTaskBuilder;
+import com.jortizsd.rsace.Task;
 
 public class TreeBuilder 
 {

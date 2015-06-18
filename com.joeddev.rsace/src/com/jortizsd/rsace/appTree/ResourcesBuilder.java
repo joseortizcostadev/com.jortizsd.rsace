@@ -9,7 +9,7 @@
  *                This class handles the resources
  *                files of this application.
  */
-package com.jocdev.rsace.appTree;
+package com.jortizsd.rsace.appTree;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
