@@ -63,9 +63,17 @@ public class Team extends Developer
 		super();
 		developers = new ArrayList<>();
 		teams = new ArrayList <>();
-		
-		
-		
+	}
+	
+	private Team (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+	{
+		super();
+		developers = new ArrayList <>();
+		teams = new ArrayList <>();
+		Team team = fetchTeamByName(teamName);
+		System.out.println("Team: " + team.getTeamName() + "Id: " + team.getTeamId());
+		this.setTeamName(teamName);
+		this.setTeamId(team.getTeamId());
 	}
 	
 	public static Team createNewTeam (String teamName, String teamId)
@@ -81,6 +89,11 @@ public class Team extends Developer
 	public static Team getAllTeamsInstance () throws SAXException, IOException, CoreException, ParserConfigurationException
 	{
 		return new Team ();
+	}
+	
+	public static Team getTeamByName (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+	{
+		return new Team(teamName);
 	}
 	
     public void setTeamName (String teamName)
@@ -226,10 +239,22 @@ public class Team extends Developer
         return this.teams;
     }
     
+    public Team fetchTeamByName (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+    {
+    	teams = fetchAllTeams();
+    	for (Team team : teams)
+    	if (team.getTeamName().equalsIgnoreCase(teamName))
+    	      return team;
+    	return null;
+    	
+    }
+    
     // Not implemented yet
     public boolean isMember (String developerName)
     {
     	return false;
     	
     }
+    
+    
 }

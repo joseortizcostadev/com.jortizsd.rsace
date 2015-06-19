@@ -36,6 +36,7 @@ public class Developer extends TreeWriter
     private String email;
     private boolean active;
     private boolean isTheSender;
+    private boolean isFavorite;
     
     /**
      * @category Constructor
@@ -65,6 +66,7 @@ public class Developer extends TreeWriter
         this.email = email;
         this.active = isActive;
         this.isTheSender = isTheOwner;
+        
     }
     
     /**
@@ -150,6 +152,16 @@ public class Developer extends TreeWriter
     }
     
     /**
+     * @category           Public Class Method
+     * @description        Sets this developer as favorite
+     * @param isFavorite   boolean object. When true, this developer is added to favorites
+    */
+    public void setAsFavorite (boolean isFavorite)
+    {
+    	this.isFavorite = isFavorite;
+    }
+    
+    /**
      * @category     Public Class Method
      * @description  Gets this developer's team
      * @return       Team object representing the developer's team
@@ -210,6 +222,11 @@ public class Developer extends TreeWriter
         return active;
     }
     
+    public boolean isFavorite ()
+    {
+    	return isFavorite;
+    }
+    
     /**
      * @category        Private Class Method
      * @description     This method prepares the developer's information to be inserted
@@ -226,6 +243,7 @@ public class Developer extends TreeWriter
         setChildNode(document, developer, "email", getEmail());
         setChildNode(document, developer, "session_active", String.valueOf(isSessionActive()));
         setChildNode(document, developer, "session_owner", String.valueOf(isSessionOwner()));
+        setChildNode(document, developer, "is_in_favorites", String.valueOf(isFavorite()));
         
     }
     
@@ -270,10 +288,8 @@ public class Developer extends TreeWriter
         for (int i = 0; i<teams.getLength(); i++)
         {
         	Element tmpTeam = (Element) teams.item(i);
-        	System.out.println(tmpTeam.getNodeName());
         	if (tmpTeam.getAttribute("id").equalsIgnoreCase(team.getTeamId()))
         	{
-        		System.out.println("I am here");
         		prepareDeveloperInfo( tmpTeam, document);
                 InputStream is = getStream(file, document);
                 file.setContents(is, IResource.NONE, null);

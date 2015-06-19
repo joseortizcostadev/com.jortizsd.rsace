@@ -7,6 +7,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -21,6 +22,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.xml.sax.SAXException;
 
+import com.jortizsd.rsace.team.Developer;
 import com.jortizsd.rsace.team.Team;
 
 public class NewTeamDeveloperDialog extends TitleAreaDialog {
@@ -28,7 +30,11 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	private Text devIdText;
 	private Text devEmailText;
 	private Combo teamCombo;
-	private Team myTeam;
+	private Developer newDeveloperMember;
+	private Button devFavoritesCheckBox;
+	public static final String TEAM_COMBO_TITLE = "Select a team from this list";
+	public static final String NO_TEAMS = "No Teams Found";
+	
 
 	/**
 	 * Create the dialog.
@@ -54,7 +60,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		teamCombo.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
 		teamCombo.setBounds(10, 10, 430, 24);
 		// Adds existing teams to combo 
-		fillTeamComboBox("Select a team from this list");
+		fillTeamComboBox();
 	   
 		
 		
@@ -87,7 +93,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		devEmailText.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
 		devEmailText.setBounds(10, 101, 430, 19);
 		
-		Button devFavoritesCheckBox = new Button(container, SWT.CHECK);
+		devFavoritesCheckBox = new Button(container, SWT.CHECK);
 		devFavoritesCheckBox.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
 		devFavoritesCheckBox.setBounds(10, 132, 142, 18);
 		devFavoritesCheckBox.setText("Add to Favorites");
@@ -95,19 +101,23 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		return area;
 	}
 	
-	private void fillTeamComboBox (String title)
+	private void fillTeamComboBox ()
 	{
-		// Adds existing teams to combo 
+		// Adds existing teams to the teamComboBox 
 		try 
 		{
 			
 		    Team team = Team.getAllTeamsInstance();
 		    List <Team> teams = team.fetchAllTeams();
-		    if (teams.size() == 0)
-		    	title = "No Teams Found";
-		    teamCombo.setText(title);
-			for (Team t : teams)
+		    String comboTeamTitle = TEAM_COMBO_TITLE;
+		    if (teams.isEmpty())
+		    	comboTeamTitle = NO_TEAMS;
+		    teamCombo.setText(comboTeamTitle);
+		    for (Team t : teams)
+			{
 			    teamCombo.add(t.getTeamName());
+			    
+			}
 		} 
 		catch (Exception e) 
 		{
@@ -139,7 +149,50 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed() 
 	{
+		
+		String myTeam = teamCombo.getText();
+		System.out.println(myTeam);
+		String devName = devNameText.getText();
+		System.out.println(devName);
+		String devId = devIdText.getText();
+		System.out.println(devId);
+		String devEmail = devEmailText.getText();
+		System.out.println(devEmail);
+		boolean isFavorites = devFavoritesCheckBox.getSelection();
+		System.out.println(isFavorites);
+		if (isDataValidated(myTeam, devName, devId, devEmail))
+		{
+			try 
+			{
+				Team team = Team.getTeamByName(myTeam);
+				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
+				newDeveloperMember.setAsFavorite(isFavorites);
+				newDeveloperMember.addToTeam(team);
+	
+			} 
+			catch (SAXException | IOException | CoreException | ParserConfigurationException e) 
+			{
+				
+			}
+		}
+		else
+		{
+			MessageDialog.openInformation(getShell(),
+					                      "Rsace Information",
+					                      "All fields are required");
+		}
+				                   
+		
+		 
 		super.okPressed();
+	}
+	
+	private boolean isDataValidated (String teamName, String devName, String devId, String devEmail)
+	{
+		return (!teamName.equalsIgnoreCase(NO_TEAMS) || 
+                !devName.equalsIgnoreCase(TEAM_COMBO_TITLE) ||
+                !devId.equalsIgnoreCase("") ||
+                !devEmail.equalsIgnoreCase("") || devEmail.equalsIgnoreCase("")); 
 	}
 	/**
 	 * Return the initial size of the dialog.
