@@ -9,21 +9,28 @@
  *                session
  */
 package com.jortizsd.rsace.team;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.jortizsd.rsace.appTree.ConfigBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 public class Team extends Developer
 {
 	private List <Developer >developers;
+	private List <Team> teams;
 	private String teamName;
 	private String teamId;
     public static final String TEAM_CONTEXT = "team";
@@ -34,6 +41,7 @@ public class Team extends Developer
 	 */
 	private Team (String teamName, String teamId)
     {
+		super();
         developers = new ArrayList<>();
         this.teamName = teamName;
         this.teamId = teamId;
@@ -42,24 +50,48 @@ public class Team extends Developer
         
     }
 	
-	private Team (String teamName)
+	private Team (int defaultIndex) throws SAXException, IOException, CoreException, ParserConfigurationException 
 	{
+		super();
+		developers = new ArrayList<>();
+		fetchDefaultTeam(defaultIndex);
 		
 	}
 	
+	private Team () throws SAXException, IOException, CoreException, ParserConfigurationException
+	{
+		super();
+		developers = new ArrayList<>();
+		teams = new ArrayList <>();
+		
+		
+		
+	}
 	
+	public static Team createNewTeam (String teamName, String teamId)
+	{
+		return new Team (teamName, teamId);
+	}
 	
+	public static Team getDefaultTeam (int defaultIndex) throws SAXException, IOException, CoreException, ParserConfigurationException
+	{
+		return new Team (defaultIndex);
+	}
 	
-    
-    public static Team createNewTeam (String id, String teamName)
+	public static Team getAllTeamsInstance () throws SAXException, IOException, CoreException, ParserConfigurationException
+	{
+		return new Team ();
+	}
+	
+    public void setTeamName (String teamName)
     {
-    	
-    	return new Team(id,teamName);
+    	this.teamName = teamName;
     }
     
-    
-    
-    
+    public void setTeamId (String teamId)
+    {
+    	this.teamId = teamId;
+    }
    
     public String getTeamName ()
     {
@@ -169,5 +201,35 @@ public class Team extends Developer
     		
     }
     
+    private void fetchDefaultTeam (int index) throws SAXException, IOException, CoreException, ParserConfigurationException
+    {
+    	Document document = getDocumentToParse(file);
+        document.getDocumentElement().normalize();
+        NodeList  teams = document.getElementsByTagName(Team.TEAM_CONTEXT);
+        Element teamElement = (Element) teams.item(index);
+        setTeamName(teamElement.getAttribute("team_name"));
+        setTeamId(teamElement.getAttribute("id"));
+        System.out.print(getTeamName() + " " + getTeamId());
+    }
     
+    public List <Team> fetchAllTeams () throws SAXException, IOException, CoreException, ParserConfigurationException
+    {
+    	Document document = getDocumentToParse(file);
+        document.getDocumentElement().normalize();
+        NodeList  teamNodes = document.getElementsByTagName(Team.TEAM_CONTEXT);
+        for (int i = 0; i<teamNodes.getLength(); i++)
+        {
+        	Element teamElement = (Element) teamNodes.item(i);
+        	
+        	this.teams.add(createNewTeam(teamElement.getAttribute("team_name"), teamElement.getAttribute("id")));
+        }
+        return this.teams;
+    }
+    
+    // Not implemented yet
+    public boolean isMember (String developerName)
+    {
+    	return false;
+    	
+    }
 }

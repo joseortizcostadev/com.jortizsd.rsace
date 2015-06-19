@@ -30,6 +30,7 @@ import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.dialogs.AskSetPreferencesDialog;
+import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.dialogs.SnycProgress;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.team.Developer;
@@ -103,13 +104,14 @@ public class InitHandler extends AbstractHandler
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
-			  // Do team adding work here and add it to preferences
-			  //before opening section
+			  // Create remote session
 			   
-			  
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
-			  System.out.println("New Developer Team");
+		   {
+			  // Add a new developer to a existing team
+			   new NewTeamDeveloperDialog(window.getShell()).open();
+		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
 				  System.out.println("New Developer");
 		   return null;
