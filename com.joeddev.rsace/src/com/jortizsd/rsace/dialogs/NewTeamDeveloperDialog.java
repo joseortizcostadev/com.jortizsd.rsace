@@ -151,48 +151,47 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	{
 		
 		String myTeam = teamCombo.getText();
-		System.out.println(myTeam);
 		String devName = devNameText.getText();
-		System.out.println(devName);
 		String devId = devIdText.getText();
-		System.out.println(devId);
 		String devEmail = devEmailText.getText();
-		System.out.println(devEmail);
 		boolean isFavorites = devFavoritesCheckBox.getSelection();
-		System.out.println(isFavorites);
+		
 		if (isDataValidated(myTeam, devName, devId, devEmail))
 		{
+			// The data has been validated
 			try 
 			{
+				// Saves new developer info in XML configuration, and preferences files.
 				Team team = Team.getTeamByName(myTeam);
 				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
 				newDeveloperMember.setAsFavorite(isFavorites);
 				newDeveloperMember.addToTeam(team);
+				super.okPressed();
 	
 			} 
 			catch (SAXException | IOException | CoreException | ParserConfigurationException e) 
 			{
 				
 			}
+			
 		}
 		else
 		{
+			// The data has not been validated
 			MessageDialog.openInformation(getShell(),
 					                      "Rsace Information",
 					                      "All fields are required");
 		}
 				                   
-		
-		 
-		super.okPressed();
 	}
 	
 	private boolean isDataValidated (String teamName, String devName, String devId, String devEmail)
 	{
-		return (!teamName.equalsIgnoreCase(NO_TEAMS) || 
-                !devName.equalsIgnoreCase(TEAM_COMBO_TITLE) ||
-                !devId.equalsIgnoreCase("") ||
-                !devEmail.equalsIgnoreCase("") || devEmail.equalsIgnoreCase("")); 
+		if (teamName.equalsIgnoreCase(NO_TEAMS) || teamName.equalsIgnoreCase(TEAM_COMBO_TITLE))
+			return false;
+		else if (devName.equalsIgnoreCase("") || devId.equalsIgnoreCase("") || devEmail.equalsIgnoreCase(""))
+			return false;
+		return true;
 	}
 	/**
 	 * Return the initial size of the dialog.
