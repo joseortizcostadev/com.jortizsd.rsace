@@ -165,7 +165,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 				Team team = Team.getTeamByName(myTeam);
 				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
 				newDeveloperMember.setAsFavorite(isFavorites);
-				newDeveloperMember.addToTeam(team);
+				newDeveloperMember.addToTeam();
 				super.okPressed();
 	
 			} 
@@ -177,11 +177,23 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		}
 		else
 		{
+			try {
+				Team t = Team.getTeamByName("Jose Team");
+				Developer d = t.getDeveloperFromTeamByName("Nina");
+				System.out.print(d.removeFromTeam());
+				
+			} catch (Exception e) {
+				
+			}
+	           
 			// The data has not been validated
 			MessageDialog.openInformation(getShell(),
 					                      "Rsace Information",
 					                      "All fields are required");
+			
+		
 		}
+			
 				                   
 	}
 	

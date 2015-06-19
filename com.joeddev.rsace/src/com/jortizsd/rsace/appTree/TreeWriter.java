@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.Random;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,11 +23,13 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class TreeWriter extends TreeBuilder
@@ -63,6 +66,8 @@ public class TreeWriter extends TreeBuilder
         
     }
     
+    
+    
     /**
      * @category           Public Class Method
      * @description        Creates a new element
@@ -77,6 +82,26 @@ public class TreeWriter extends TreeBuilder
         root.appendChild(element);
         return element;
     }
+    
+    public Element deleteElement (Document doc, String tag, String elementValue)
+    {
+    	NodeList elements =  doc.getElementsByTagName(tag);
+    	
+    	for (int i = 0; i<elements.getLength(); i++)
+    	{
+    	    Element element = (Element) elements.item(i);
+    	    if (element.getNodeValue().equalsIgnoreCase(elementValue))
+    	    {
+    	    	element.getParentNode().removeChild(element);
+    	    	doc.normalize();
+    	    	return element;
+    	    }
+    		   
+    		   
+    	}
+    	doc.normalize();
+    	return null;
+     }
     
     /**
      * @category            Public Class Method

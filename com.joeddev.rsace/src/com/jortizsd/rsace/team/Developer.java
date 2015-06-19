@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
@@ -37,6 +38,7 @@ public class Developer extends TreeWriter
     private boolean active;
     private boolean isTheSender;
     private boolean isFavorite;
+    public static final String CLASS_CONTEXT = "developer";
     
     /**
      * @category Constructor
@@ -45,28 +47,6 @@ public class Developer extends TreeWriter
     {
         super();
         file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
-    }
-    
-    /**
-     * @category           Constructor
-     * @param id           String object representing the developer's id
-     * @param name         String object representing the developer's name or userName
-     * @param email        String object representing the developer's email
-     * @param isActive     boolean representing true if the session for this developer is 
-     *                     active.
-     * @param isTheOwner   boolean representing true if the developer is the owner of this
-     *                     session
-     */
-    public Developer (String id, String name, String email, boolean isActive, boolean isTheOwner) 
-    {
-        super();
-        file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.active = isActive;
-        this.isTheSender = isTheOwner;
-        
     }
     
     /**
@@ -222,6 +202,12 @@ public class Developer extends TreeWriter
         return active;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Determines if the developer is in favorites
+     * @return       True if the developer is in favorites. Otherwise, returns false.
+     * @see          com.jortizsd.rsace.appTree.AppManifestBuilder
+    */
     public boolean isFavorite ()
     {
     	return isFavorite;
@@ -254,7 +240,7 @@ public class Developer extends TreeWriter
      * @throws      ParserConfigurationException
      * @throws      CoreException
      */
-    public void setAsSessionOwner (Team team) throws ParserConfigurationException, CoreException
+    public void setAsSessionOwner () throws ParserConfigurationException, CoreException
     {
     	setTeam(team);
         Document document = getNewDocument(file);
@@ -279,7 +265,7 @@ public class Developer extends TreeWriter
      * @throws      CoreException
      * @throws      ParserConfigurationException
      */
-    public void addToTeam (Team team) throws SAXException, IOException, CoreException, ParserConfigurationException
+    public void addToTeam () throws SAXException, IOException, CoreException, ParserConfigurationException
     {
     	setTeam(team);
         Document document = getDocumentToParse(file);
@@ -298,21 +284,68 @@ public class Developer extends TreeWriter
         
     }
     
+    /**
+     * @category      Public Class Method
+     * @description   Removes this developer from its team
+     * @return        True if the developer was successfully removed from its team 
+     *                Otherwise, returns false.
+     */
+    public boolean removeFromTeam ()
+    {
+    	boolean removed = false;
+    	try 
+    	{
+    		String id;
+			Document document = getDocumentToParse(file);
+			NodeList developersList = document.getElementsByTagName(CLASS_CONTEXT);
+			for (int i = 0; i<developersList.getLength(); i++)
+			{
+				if (developersList.item(i).getNodeType() == Node.ELEMENT_NODE) 
+                {
+             	    Element developer = (Element) developersList.item(i);
+                    id = developer.getElementsByTagName("id").item(0).getTextContent();
+                    if (id.equalsIgnoreCase(getId()))
+                    {
+                    	developer.getParentNode().removeChild(developer);
+                    	document.normalize();
+                    	InputStream is = getStream(file, document);
+                        file.setContents(is, IResource.NONE, null);
+                    	removed = true;
+                    	break;
+                    }
+                    	
+                    
+                 }
+			 }
+			 return removed;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		
+    	return removed;
+    }
+    
+    /**
+     * @category     Public Class Method
+     * @description  Overrides the method toString from the superClass to return 
+     *               a description for this object
+     */
     @Override
     public String toString ()
     {
+    	super.toString();
     	String developerContext;
     	developerContext = "**************************Developer Member********************************\n" + 
     			           "Developer's user name: " + getName() + "\n" + 
     	                   "Developer's id: " + getId() + "\n" + 
     			           "Developer's email: " + getEmail() + "\n" + 
     	                   "Is this developer the owner of this session? " + isSessionOwner() + "\n" +
+    	                   "Is this developer in Favorites? " + isFavorite() + "\n" +
     			           "**************************************************************************\n";
     	                   
     	return developerContext;
     			           
     }
-    
-    
-   
 }

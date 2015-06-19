@@ -72,6 +72,7 @@ public class InitHandler extends AbstractHandler
 	    manifest = AppManifestBuild.getInstance();
 	    usrResourcesBuilder = new UsrResourcesBuilder();
 	    author = (String) developerPreferences.getUsername();
+	   
 	    
 	}
 
@@ -110,6 +111,7 @@ public class InitHandler extends AbstractHandler
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
 		   {
 			  // Add a new developer to a existing team
+			   
 			   new NewTeamDeveloperDialog(window.getShell()).open();
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
@@ -146,13 +148,14 @@ public class InitHandler extends AbstractHandler
                treeBuilder.buildAppTree(author, email);
                team = Team.createNewTeam(teamName,teamId);
                Developer developer = new Developer(team, id, author, email, false, true);
-               developer.setAsSessionOwner(team);
+               developer.setAsSessionOwner();
                manifest.makeManifestFile();
                // Open session 
 		       InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
 	           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
 	           treeBuilder.refreshAppTree();
-	          
+	           
+	           
            
 	    }
         catch (Exception e)

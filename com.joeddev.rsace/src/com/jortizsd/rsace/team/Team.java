@@ -54,6 +54,8 @@ public class Team extends Developer
 	{
 		super();
 		developers = new ArrayList<>();
+		teams = new ArrayList<>();
+		developers = getDevelopers();
 		fetchDefaultTeam(defaultIndex);
 		
 	}
@@ -62,6 +64,7 @@ public class Team extends Developer
 	{
 		super();
 		developers = new ArrayList<>();
+		developers = getDevelopers();
 		teams = new ArrayList <>();
 	}
 	
@@ -69,6 +72,7 @@ public class Team extends Developer
 	{
 		super();
 		developers = new ArrayList <>();
+		developers = getDevelopers();
 		teams = new ArrayList <>();
 		Team team = fetchTeamByName(teamName);
 		System.out.println("Team: " + team.getTeamName() + "Id: " + team.getTeamId());
@@ -144,12 +148,12 @@ public class Team extends Developer
                         {
                      	   
                             Element developer = (Element) developersList.item(j);
-                            id = developer.getAttribute("id");
+                            id = developer.getElementsByTagName("id").item(0).getTextContent();
                             name = developer.getElementsByTagName("name").item(0).getTextContent();
                             email = developer.getElementsByTagName("email").item(0).getTextContent();
                             isActive = Boolean.valueOf(developer.getElementsByTagName("session_active").item(0).getTextContent());
                             isSender = Boolean.valueOf(developer.getElementsByTagName("session_owner").item(0).getTextContent());
-                            developers.add(new Developer(id,name,email,isActive,isSender));
+                            developers.add(new Developer(this,id,name,email,isActive,isSender));
                             
                         }
            		    }
@@ -200,6 +204,11 @@ public class Team extends Developer
         return null;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Returns a string with the description of this object
+     * @see          Developer#toString()
+     */
     @Override
     public String toString ()
     {
