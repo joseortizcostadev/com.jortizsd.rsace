@@ -38,7 +38,7 @@ public class Developer extends TreeWriter
     private boolean active;
     private boolean isTheSender;
     private boolean isFavorite;
-    public static final String CLASS_CONTEXT = "developer";
+    public static final String DEVELOPER_CONTEXT = "developer";
     
     /**
      * @category Constructor
@@ -99,6 +99,7 @@ public class Developer extends TreeWriter
     public void setName (String name)
     {
        this.name = name;
+       
     }
     
     /**
@@ -233,6 +234,12 @@ public class Developer extends TreeWriter
         
     }
     
+ 
+    
+    
+    
+   
+    
     /**
      * @category    Public Class Method
      * @description This method creates a developer as the session owner, and subscribes
@@ -297,7 +304,7 @@ public class Developer extends TreeWriter
     	{
     		String id;
 			Document document = getDocumentToParse(file);
-			NodeList developersList = document.getElementsByTagName(CLASS_CONTEXT);
+			NodeList developersList = document.getElementsByTagName(DEVELOPER_CONTEXT);
 			for (int i = 0; i<developersList.getLength(); i++)
 			{
 				if (developersList.item(i).getNodeType() == Node.ELEMENT_NODE) 
@@ -307,7 +314,53 @@ public class Developer extends TreeWriter
                     if (id.equalsIgnoreCase(getId()))
                     {
                     	developer.getParentNode().removeChild(developer);
-                    	document.normalize();
+                    	document.getDocumentElement().normalize();
+                    	InputStream is = getStream(file, document);
+                        file.setContents(is, IResource.NONE, null);
+                    	removed = true;
+                    	break;
+                    }
+                    	
+                    
+                 }
+			 }
+			 return removed;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		
+    	return removed;
+    }
+    
+    /**
+     * @category       Public Class Method
+     * @description    Updates an existing data from this developer
+     * @param tag      String object representing the name of the tag that holds the value
+     * @param value    String object representing the name of the tag's value
+     * @return         True if this developer was successfully updated. Otherwise, returns false. 
+     */
+    public boolean update (String tag, String value) 
+    {
+    	boolean removed = false;
+    	try 
+    	{
+    		String id;
+			Document document = getDocumentToParse(file);
+			NodeList developersList = document.getElementsByTagName(DEVELOPER_CONTEXT);
+			for (int i = 0; i<developersList.getLength(); i++)
+			{
+				if (developersList.item(i).getNodeType() == Node.ELEMENT_NODE) 
+                {
+             	    Element developer = (Element) developersList.item(i);
+                    id = developer.getElementsByTagName("id").item(0).getTextContent();
+                    if (id.equalsIgnoreCase(getId()))
+                    {
+                    	
+                        Node node = developer.getElementsByTagName(tag).item(0).getFirstChild();
+                        node.setTextContent(value);
+                    	document.getDocumentElement().normalize();
                     	InputStream is = getStream(file, document);
                         file.setContents(is, IResource.NONE, null);
                     	removed = true;

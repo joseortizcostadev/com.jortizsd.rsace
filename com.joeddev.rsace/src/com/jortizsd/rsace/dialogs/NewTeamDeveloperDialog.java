@@ -177,14 +177,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		}
 		else
 		{
-			try {
-				Team t = Team.getTeamByName("Jose Team");
-				Developer d = t.getDeveloperFromTeamByName("Nina");
-				System.out.print(d.removeFromTeam());
-				
-			} catch (Exception e) {
-				
-			}
+			
 	           
 			// The data has not been validated
 			MessageDialog.openInformation(getShell(),
