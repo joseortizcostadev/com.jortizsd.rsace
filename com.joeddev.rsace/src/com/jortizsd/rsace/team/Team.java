@@ -223,6 +223,15 @@ public class Team extends Developer
     		
     }
     
+    /**
+     * @category                              Public Class Method
+     * @description                           Determines and gets the default team of developers by index
+     * @param index                           Integer representing the index 
+     * @throws                                SAXException
+     * @throws                                IOException
+     * @throws                                CoreException
+     * @throws                                ParserConfigurationException
+     */
     private void fetchDefaultTeam (int index) throws SAXException, IOException, CoreException, ParserConfigurationException
     {
     	Document document = getDocumentToParse(file);
@@ -234,6 +243,11 @@ public class Team extends Developer
         System.out.print(getTeamName() + " " + getTeamId());
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Fetches all the developer teams
+     * @return       List <Team> object representing a list of the existing developers teams 
+     */
     public List <Team> fetchAllTeams () throws SAXException, IOException, CoreException, ParserConfigurationException
     {
     	Document document = getDocumentToParse(file);
@@ -248,6 +262,16 @@ public class Team extends Developer
         return this.teams;
     }
     
+    /**
+     * @category         Public Class Method
+     * @description      Fetches a team given a its name as a parameter
+     * @param teamName   String object representing the team's name
+     * @return           Team object representing the team that matches with the given name
+     * @throws           SAXException
+     * @throws           IOException
+     * @throws           CoreException
+     * @throws           ParserConfigurationException
+     */
     public Team fetchTeamByName (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
     {
     	teams = fetchAllTeams();
@@ -258,9 +282,17 @@ public class Team extends Developer
     	
     }
     
-    // Not implemented yet
+    /**
+     * @category              Public Class Method
+     * @description           Determines if a developer is a member of this team
+     * @param developerName   String object representing the developer's name
+     * @return                True is the developer is a member of this team. Otherwise, returns false.
+     */
     public boolean isMember (String developerName)
     {
+    	for (Developer dev : developers)
+    		if (dev.getName().equalsIgnoreCase(developerName))
+    			return true;
     	return false;
     	
     }

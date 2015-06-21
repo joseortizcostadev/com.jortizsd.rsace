@@ -11,11 +11,7 @@
 package com.jortizsd.rsace.team;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.stream.StreamResult;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -24,7 +20,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import com.jortizsd.rsace.appTree.ConfigBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.TreeWriter;
