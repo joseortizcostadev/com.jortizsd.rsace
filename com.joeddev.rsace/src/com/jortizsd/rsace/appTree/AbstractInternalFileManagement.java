@@ -100,9 +100,10 @@ abstract class AbstractInternalFileManagement
 	}
 	
 	/**
-	 * 
-	 * @param file
-	 * @param contents
+	 * @category       Signature Class Method
+	 * @description    Appends stream content to an existing IFile object
+	 * @param file     IFile object representing the file where the contents will be appended
+	 * @param contents String object representing the content to be appended
 	 */
 	abstract void appendContents (IFile file, String contents);
 	

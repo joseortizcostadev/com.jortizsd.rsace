@@ -63,6 +63,12 @@ public class TreeBuilder
     	
     }
 	
+	/**
+	 * @category           Public Class Method
+	 * @description        Builds the base app's tree for this application
+	 * @param serverMaker  String object representing the computer who makes the server
+	 * @param email        String object representing the email of the owner's session
+	 */
 	public void buildAppTree (String serverMaker, String email)
 	{
 		Task task = new Task("Configuration files", Task.MODE_MILISECONDS);
@@ -258,11 +264,21 @@ public class TreeBuilder
 	    return file;
     }
     
+    /**
+     * @category     Public Class Method
+     * @description  Determines the root folder for this application
+     * @return       IFolder object representing the root's folder for this application
+     */
     public IFolder getAppRootFolder ()
     {
     	return root;
     }
     
+    /**
+     * @category     Public Class Method 
+     * @description  Refresh and saves all changes made in the user's project workspace
+     * 
+     */
     public void refreshUserRootProject () throws CoreException
     {
     	IWorkbenchPart workbenchPart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart(); 
@@ -270,16 +286,31 @@ public class TreeBuilder
 	    folder.refreshLocal(1, null);
     }
     
+    /**
+     * @category              Public Class Method 
+     * @description           Refresh and saves all changes made in the app's project workspace
+     * @throws CoreException
+     */
     public void refreshAppTree () throws CoreException
     {
     	root.refreshLocal(IResource.DEPTH_INFINITE, null);
     }
     
+    /**
+     * @category      Public Class Method 
+     * @description   Determines if the plug-in is already synchronized 
+     * @return        True if the plug-in is synchronized. Otherwise, returns false.
+     */
     public boolean isPluginSynchronizedLocally ()
     {
     	return getFile(RESOURCES_DIR, UsrResourcesBuilder.SYNC_FILE).exists();
     }
     
+    /**
+     * @category     Public Class Method 
+     * @description  Saves all work unsaved 
+     *        
+     */
     public void saveUserWork ()
     {
     	IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
