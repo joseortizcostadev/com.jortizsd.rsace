@@ -116,6 +116,9 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 				IDialogConstants.CANCEL_LABEL, false);
 	}
 	
+	/**
+	 * Creates an action when the ok button is cliked
+	 */
 	@Override
 	protected void okPressed() 
 	{
@@ -128,6 +131,9 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	    super.okPressed();
 	}
 	
+	/**
+	 * Creates contents
+	 */
 	@Override
     protected Control createContents(Composite parent) {
         Control contents = super.createContents(parent);

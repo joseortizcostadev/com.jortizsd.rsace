@@ -1,10 +1,17 @@
-package com.jortizsd.rsace.dialogs;
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.jortizsd.rsace
+ * @File          NewTeamDeveloperDialog.java
+ * @Date          04/06/2015
+ * @Description   This class creates a dialog for adding
+ *                a new developer to an existing team of developers
+ *                
+ */
 
+package com.jortizsd.rsace.dialogs;
 import java.io.IOException;
 import java.util.List;
-
 import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -61,11 +68,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		teamCombo.setBounds(10, 10, 430, 24);
 		// Adds existing teams to combo 
 		fillTeamComboBox();
-	   
-		
-		
-		
-		
+	    
 		Label lblDevelopersUserName = new Label(container, SWT.NONE);
 		lblDevelopersUserName.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
 		lblDevelopersUserName.setBounds(10, 38, 142, 22);
@@ -101,6 +104,9 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		return area;
 	}
 	
+	/**
+	 *  Populates comboBox with all the existing team's names
+	*/
 	private void fillTeamComboBox ()
 	{
 		// Adds existing teams to the teamComboBox 
@@ -138,6 +144,9 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 				IDialogConstants.CANCEL_LABEL, false);
 	}
 	
+	/**
+	 * Creates contents
+	 */
 	@Override
     protected Control createContents(Composite parent) {
         Control contents = super.createContents(parent);
@@ -146,6 +155,9 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
         return contents;
     }
 	
+	/**
+	 * Creates an action when the ok button is clicked
+	 */
 	@Override
 	protected void okPressed() 
 	{
@@ -189,7 +201,15 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			
 				                   
 	}
-	
+	/**
+	 * @category        Private Class Method
+	 * @description     Validates form's data before sending it to preferences
+	 * @param teamName  String object representing the team's name
+	 * @param devName   String object representing the developer's name
+	 * @param devId     String object representing the developer's id
+	 * @param devEmail  String object representing the developer's email
+	 * @return          True if the data was correctly validated. Otherwise returns false.
+	 */
 	private boolean isDataValidated (String teamName, String devName, String devId, String devEmail)
 	{
 		if (teamName.equalsIgnoreCase(NO_TEAMS) || teamName.equalsIgnoreCase(TEAM_COMBO_TITLE))
