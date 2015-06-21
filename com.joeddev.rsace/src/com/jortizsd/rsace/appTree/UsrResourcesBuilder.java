@@ -70,7 +70,18 @@ public class UsrResourcesBuilder extends TreeBuilder
         }
         task.stopTime();
 	}
-	
+	/**
+	 * @category                Public Class Method 
+	 * @description             Creates the temporal header in _sync.java
+	 * @param fileMode          String object representing the synchronization mode ( Local or Remote )
+	 * @param devSessionOwner   String object representing the session's owner
+	 * @param fileName          String object representing the file's name
+	 * @param email             String object representing the developer's email
+	 * @param isSessionOpened   If true, the session is opened.
+	 * @param teamName          String object representing the team's name
+	 * @param teamDevelopers    List <Developer> representing a list of developers who joined to this session
+	 * @return                  ImputStream object representing the header built
+	 */
 	public InputStream getHeaderStreamForSyncFile (String fileMode, String devSessionOwner, String fileName, String email,
 			                         boolean isSessionOpened, String teamName, List <Developer> teamDevelopers)
 	{
@@ -102,7 +113,11 @@ public class UsrResourcesBuilder extends TreeBuilder
 		return getHeaderStream(header);
 		
 	}
-	
+	/**
+	 * @category       Public Class Method
+	 * @param header   String object representing the header to be inserted in the stream
+	 * @return         ImputStream object of the data just created
+	 */
 	private InputStream getHeaderStream (String header)
 	{
 		 byte[] bytes = header.getBytes();
