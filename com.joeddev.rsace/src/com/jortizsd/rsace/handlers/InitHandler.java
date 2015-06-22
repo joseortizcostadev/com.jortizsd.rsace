@@ -110,7 +110,7 @@ public class InitHandler extends AbstractHandler
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
 		   {
-			  // Add a new developer to a existing team
+			  // Add a new developer to a existing team.
 			   
 			   new NewTeamDeveloperDialog(window.getShell()).open();
 		   }
