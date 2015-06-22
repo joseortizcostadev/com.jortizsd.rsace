@@ -33,8 +33,8 @@ import com.jortizsd.rsace.dialogs.AskSetPreferencesDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.dialogs.SnycProgress;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
-import com.jortizsd.rsace.team.Developer;
-import com.jortizsd.rsace.team.Team;
+import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Team;
 
 /**
  * Our handler extends AbstractHandler, an IHandler base class.

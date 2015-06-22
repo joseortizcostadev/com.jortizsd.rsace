@@ -8,7 +8,7 @@
  *                all the developers participating in this
  *                session
  */
-package com.jortizsd.rsace.team;
+package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -125,7 +125,7 @@ public class Team extends Developer
      * @description Gets all the developers that pertain to the team 
      *              that is working in the current session
      * @return      List object containing all the developers working at this session 
-     * @see         com.jortizsd.rsace.team.Developer
+     * @see         com.jortizsd.rsace.remote.Developer
      */
     public List <Developer> getDevelopers ()
     {
@@ -178,7 +178,7 @@ public class Team extends Developer
      * @description Gets a developer by a given name
      * @param name  String object representing the developer's name
      * @return      Developer object representing the developer found. Otherwise, returns null
-     * @see         com.jortizsd.rsace.team.Developer
+     * @see         com.jortizsd.rsace.remote.Developer
      */
     public Developer getDeveloperFromTeamByName (String name)
     {
@@ -194,7 +194,7 @@ public class Team extends Developer
      * @description Gets a developer by a given id
      * @param name  String object representing the developer's id
      * @return      Developer object representing the developer found. Otherwise, returns null
-     * @see         com.jortizsd.rsace.team.Developer
+     * @see         com.jortizsd.rsace.remote.Developer
      */
     public Developer getDeveloperFromTeamById (String id)
     {

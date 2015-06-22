@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
 import com.jortizsd.rsace.Task;
-import com.jortizsd.rsace.team.Developer;
+import com.jortizsd.rsace.remote.Developer;
 
 public class UsrResourcesBuilder extends TreeBuilder
 {

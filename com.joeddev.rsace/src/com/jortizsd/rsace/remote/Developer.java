@@ -8,7 +8,7 @@
  *                using this application
  */
 
-package com.jortizsd.rsace.team;
+package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.xml.parsers.ParserConfigurationException;

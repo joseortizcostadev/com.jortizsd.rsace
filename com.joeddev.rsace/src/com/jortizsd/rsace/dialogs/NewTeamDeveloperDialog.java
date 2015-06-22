@@ -11,7 +11,9 @@
 package com.jortizsd.rsace.dialogs;
 import java.io.IOException;
 import java.util.List;
+
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -29,8 +31,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.xml.sax.SAXException;
 
-import com.jortizsd.rsace.team.Developer;
-import com.jortizsd.rsace.team.Team;
+import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Team;
 
 public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	private Text devNameText;
