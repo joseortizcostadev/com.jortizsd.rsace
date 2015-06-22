@@ -31,7 +31,7 @@ import org.w3c.dom.Element;
 
 public class Remote extends Team implements RemoteInterface
 {
-	public static final String REMOTE_SERVER_DEFAULT = "http://www.jortizsd.com//projects_config/com.jortizsd.rsace/rsace_config.xml";
+	
     private URL url;
     public Remote (String url) throws MalformedURLException 
     {

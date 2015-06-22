@@ -37,6 +37,7 @@ import com.jortizsd.rsace.dialogs.SnycProgress;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Remote;
+import com.jortizsd.rsace.remote.RemoteConstants;
 import com.jortizsd.rsace.remote.Team;
 
 /**
@@ -171,7 +172,7 @@ public class InitHandler extends AbstractHandler
 	{
 		try
 		{
-		   Remote r = new Remote(Remote.REMOTE_SERVER_DEFAULT);
+		   Remote r = new Remote(RemoteConstants.REMOTE_SERVER_DEFAULT);
 	       if (r.isServerUp())
 	       {
 	    	 

@@ -389,6 +389,21 @@ public class Developer extends TreeWriter
     	return removed;
     }
     
+    public void addToDatabase ()
+    {
+    	// Add this developer to database
+    }
+    
+    public void updateInDatabase()
+    {
+    	// Updates developer info in database
+    }
+    
+    public void deleteFromDatabase ()
+    {
+    	// Deletes developer from database and its team
+    }
+    
     /**
      * @category     Public Class Method
      * @description  Overrides the method toString from the superClass to return 
