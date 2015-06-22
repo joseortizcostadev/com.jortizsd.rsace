@@ -12,6 +12,7 @@ package com.jortizsd.rsace.handlers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -168,7 +169,7 @@ public class InitHandler extends AbstractHandler
         }
 	}
 	
-	public void startRemoteWork (IWorkbenchWindow window) 
+	public void startRemoteWork (IWorkbenchWindow window) throws SQLException, ClassNotFoundException 
 	{
 		try
 		{
@@ -176,6 +177,7 @@ public class InitHandler extends AbstractHandler
 	       if (r.isServerUp())
 	       {
 	    	 
+	    	  Developer dev = new Developer();
 	    	  
 	    	 
 	       }
