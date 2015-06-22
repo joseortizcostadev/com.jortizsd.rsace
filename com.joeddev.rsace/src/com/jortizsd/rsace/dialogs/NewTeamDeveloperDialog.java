@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import org.xml.sax.SAXException;
 
 import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Remote;
 import com.jortizsd.rsace.remote.Team;
 
 public class NewTeamDeveloperDialog extends TitleAreaDialog {
@@ -175,6 +176,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			// The data has been validated
 			try 
 			{
+				
 				// Saves new developer info in XML configuration, and preferences files.
 				Team team = Team.getTeamByName(myTeam);
 				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
@@ -192,7 +194,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		else
 		{
 			
-	           
+	       
 			// The data has not been validated
 			MessageDialog.openInformation(getShell(),
 					                      "Rsace Information",

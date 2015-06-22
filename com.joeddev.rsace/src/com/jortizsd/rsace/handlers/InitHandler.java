@@ -9,7 +9,9 @@
  *                are initialized for the first time 
  */
 package com.jortizsd.rsace.handlers;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -34,6 +36,7 @@ import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.dialogs.SnycProgress;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Remote;
 import com.jortizsd.rsace.remote.Team;
 
 /**
@@ -105,7 +108,7 @@ public class InitHandler extends AbstractHandler
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
-			  // Create remote session
+			   startRemoteWork(window);
 			   
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
@@ -150,7 +153,7 @@ public class InitHandler extends AbstractHandler
                Developer developer = new Developer(team, id, author, email, false, true);
                developer.setAsSessionOwner();
                manifest.makeManifestFile();
-               // Open session 
+               // Open local session 
 		       InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
 	           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
 	           treeBuilder.refreshAppTree();
@@ -162,6 +165,32 @@ public class InitHandler extends AbstractHandler
         {
             System.out.println(e.getMessage());
         }
+	}
+	
+	public void startRemoteWork (IWorkbenchWindow window) 
+	{
+		try
+		{
+		   Remote r = new Remote(Remote.REMOTE_SERVER_DEFAULT);
+	       if (r.isServerUp())
+	       {
+	    	 
+	    	  
+	    	 
+	       }
+	       else
+	       {
+	    	   // The data has not been validated
+	    	   MessageDialog.openInformation(window.getShell(),
+	    						          "Rsace Information",
+	    						          "Connection to Rsace server failed. Please, try later " + 
+	    						          "or contact the web master at jortizdev@jortizsd.com");
+	       }
+		}
+		catch (IOException e)
+		{
+			
+		}
 	}
 	
 	

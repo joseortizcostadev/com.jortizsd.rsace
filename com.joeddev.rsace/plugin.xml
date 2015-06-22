@@ -85,7 +85,7 @@
 				            <iterate
 				                 ifEmpty="false">
 				             <adapt type="org.eclipse.core.resources.IResource">
-				               <test property="org.eclipse.core.resources.name" value="*_sync.java" />
+				               <test property="org.eclipse.core.resources.name" value="Rsace" />
 				             </adapt>
 				            </iterate>
 				           </with>
@@ -99,7 +99,7 @@
 				            <iterate
 				                 ifEmpty="false">
 				             <adapt type="org.eclipse.core.resources.IResource">
-				               <test property="org.eclipse.core.resources.name" value="*_sync.java" />
+				               <test property="org.eclipse.core.resources.name" value="Rsace" />
 				             </adapt>
 				            </iterate>
 				           </with>
@@ -113,7 +113,7 @@
 				            <iterate
 				                 ifEmpty="false">
 				             <adapt type="org.eclipse.core.resources.IResource">
-				               <test property="org.eclipse.core.resources.name" value="*_sync.java" />
+				               <test property="org.eclipse.core.resources.name" value="Rsace" />
 				             </adapt>
 				            </iterate>
 				           </with>

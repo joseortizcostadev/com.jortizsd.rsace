@@ -50,7 +50,7 @@ public class Team extends Developer
         
     }
 	
-	private Team (int defaultIndex) throws SAXException, IOException, CoreException, ParserConfigurationException 
+	private Team (int defaultIndex) 
 	{
 		super();
 		developers = new ArrayList<>();
@@ -60,7 +60,7 @@ public class Team extends Developer
 		
 	}
 	
-	private Team () throws SAXException, IOException, CoreException, ParserConfigurationException
+	protected Team () 
 	{
 		super();
 		developers = new ArrayList<>();
@@ -68,7 +68,7 @@ public class Team extends Developer
 		teams = new ArrayList <>();
 	}
 	
-	private Team (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+	private Team (String teamName) 
 	{
 		super();
 		developers = new ArrayList <>();
@@ -85,17 +85,17 @@ public class Team extends Developer
 		return new Team (teamName, teamId);
 	}
 	
-	public static Team getDefaultTeam (int defaultIndex) throws SAXException, IOException, CoreException, ParserConfigurationException
+	public static Team getDefaultTeam (int defaultIndex) 
 	{
 		return new Team (defaultIndex);
 	}
 	
-	public static Team getAllTeamsInstance () throws SAXException, IOException, CoreException, ParserConfigurationException
+	public static Team getAllTeamsInstance () 
 	{
 		return new Team ();
 	}
 	
-	public static Team getTeamByName (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+	public static Team getTeamByName (String teamName) 
 	{
 		return new Team(teamName);
 	}
@@ -232,15 +232,22 @@ public class Team extends Developer
      * @throws                                CoreException
      * @throws                                ParserConfigurationException
      */
-    private void fetchDefaultTeam (int index) throws SAXException, IOException, CoreException, ParserConfigurationException
+    private void fetchDefaultTeam (int index) 
     {
-    	Document document = getDocumentToParse(file);
-        document.getDocumentElement().normalize();
-        NodeList  teams = document.getElementsByTagName(Team.TEAM_CONTEXT);
-        Element teamElement = (Element) teams.item(index);
-        setTeamName(teamElement.getAttribute("team_name"));
-        setTeamId(teamElement.getAttribute("id"));
-        System.out.print(getTeamName() + " " + getTeamId());
+    	try
+    	{
+    	   Document document = getDocumentToParse(file);
+           document.getDocumentElement().normalize();
+           NodeList  teams = document.getElementsByTagName(Team.TEAM_CONTEXT);
+           Element teamElement = (Element) teams.item(index);
+           setTeamName(teamElement.getAttribute("team_name"));
+           setTeamId(teamElement.getAttribute("id"));
+           System.out.print(getTeamName() + " " + getTeamId());
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
     }
     
     /**
@@ -248,18 +255,25 @@ public class Team extends Developer
      * @description  Fetches all the developer teams
      * @return       List <Team> object representing a list of the existing developers teams 
      */
-    public List <Team> fetchAllTeams () throws SAXException, IOException, CoreException, ParserConfigurationException
+    public List <Team> fetchAllTeams () 
     {
-    	Document document = getDocumentToParse(file);
-        document.getDocumentElement().normalize();
-        NodeList  teamNodes = document.getElementsByTagName(Team.TEAM_CONTEXT);
-        for (int i = 0; i<teamNodes.getLength(); i++)
-        {
-        	Element teamElement = (Element) teamNodes.item(i);
-        	
-        	this.teams.add(createNewTeam(teamElement.getAttribute("team_name"), teamElement.getAttribute("id")));
-        }
-        return this.teams;
+    	try
+    	{
+    	   Document document = getDocumentToParse(file);
+           document.getDocumentElement().normalize();
+           NodeList  teamNodes = document.getElementsByTagName(Team.TEAM_CONTEXT);
+           for (int i = 0; i<teamNodes.getLength(); i++)
+           {
+        	   Element teamElement = (Element) teamNodes.item(i);
+        	   this.teams.add(createNewTeam(teamElement.getAttribute("team_name"), teamElement.getAttribute("id")));
+           }
+           return this.teams;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		return this.teams;
     }
     
     /**
@@ -272,7 +286,7 @@ public class Team extends Developer
      * @throws           CoreException
      * @throws           ParserConfigurationException
      */
-    public Team fetchTeamByName (String teamName) throws SAXException, IOException, CoreException, ParserConfigurationException
+    public Team fetchTeamByName (String teamName) 
     {
     	teams = fetchAllTeams();
     	for (Team team : teams)
