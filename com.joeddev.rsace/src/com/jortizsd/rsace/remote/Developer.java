@@ -11,6 +11,7 @@
 package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -27,7 +28,7 @@ import org.xml.sax.SAXException;
 import com.jortizsd.rsace.appTree.ConfigBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.TreeWriter;
-public class Developer extends TreeWriter 
+public class Developer extends TreeWriter implements DatabaseInterface
 {
     protected IFile file;
     private Team team;
@@ -393,20 +394,29 @@ public class Developer extends TreeWriter
     	return removed;
     }
     
-    public void addToDatabase ()
-    {
-    	// Add this developer to database
-    }
-    
-    public void updateInDatabase()
-    {
-    	// Updates developer info in database
-    }
-    
-    public void deleteFromDatabase ()
-    {
-    	// Deletes developer from database and its team
-    }
+    @Override
+	public void addDeveloperToDB(Connection conn, Developer developer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateDeveloperFromDB(Connection conn, Developer developer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteDeveliperFromDB(Connection conn, String developerID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Developer getDeveloperFromDB(Connection conn, String developerID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     /**
      * @category     Public Class Method
@@ -429,6 +439,4 @@ public class Developer extends TreeWriter
     	return developerContext;
     			           
     }
-
-	
 }

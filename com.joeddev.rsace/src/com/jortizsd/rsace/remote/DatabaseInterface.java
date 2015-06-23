@@ -51,39 +51,35 @@ public interface DatabaseInterface
     /**
      * @category         Public Interface Signature Method
      * @description      Adds a developer to the database
-     * @param conn       Connection object representing the connection to the database
      * @param developer  Developer object representing a developer
      * @see              Developer 
      */
-    public void addDeveloperToDB (Connection conn, Developer developer);
+    public void addDeveloperToDB (Developer developer);
     
     /**
      * @category         Public Interface Signature Method
      * @description      Updates a developer from the database
-     * @param conn       Connection object representing the connection to the database
      * @param developer  Developer object representing a developer
      * @see              Developer 
      */
-    public void updateDeveloperFromDB (Connection conn, Developer developer);
+    public void updateDeveloperFromDB (Developer developer);
     
     /**
      * @category         Public Interface Signature Method
      * @description      Deletes a developer from the database
-     * @param conn       Connection object representing the connection to the database
      * @param developer  String object representing the developer's id
      * @see              Developer 
      */
-    public void deleteDeveliperFromDB(Connection conn, String developerID);
+    public void deleteDeveliperFromDB(String developerID);
     
     /**
      * @category         Public Interface Signature Method
      * @description      Gets a developer from the database
-     * @param conn       Connection object representing the connection to the database
      * @param developer  String object representing the developer's id
      * @return           Developer object representing a developer from the database
      * @see              Developer 
      */
-    public Developer getDeveloperFromDB(Connection conn, String developerID);
+    public Developer getDeveloperFromDB(String developerID);
     
     
 }
