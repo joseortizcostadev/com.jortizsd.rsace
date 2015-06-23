@@ -395,25 +395,25 @@ public class Developer extends TreeWriter implements DatabaseInterface
     }
     
     @Override
-	public void addDeveloperToDB(Connection conn, Developer developer) {
+	public void addDeveloperToDB(Developer developer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateDeveloperFromDB(Connection conn, Developer developer) {
+	public void updateDeveloperFromDB(Developer developer) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void deleteDeveliperFromDB(Connection conn, String developerID) {
+	public void deleteDeveliperFromDB(String developerID) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Developer getDeveloperFromDB(Connection conn, String developerID) {
+	public Developer getDeveloperFromDB( String developerID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
