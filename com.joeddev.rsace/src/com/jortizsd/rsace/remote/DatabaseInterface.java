@@ -43,7 +43,7 @@ public interface DatabaseInterface
      * @return               True is the connection to the database is up. Otherwise, returns false
      * @throws SQLException
      */
-    default boolean isDBConnectionUp (Connection conn, int timeout) throws SQLException
+    default boolean isDBConnectionValid (Connection conn, int timeout) throws SQLException
     {
     	return conn.isValid(timeout);
     }
