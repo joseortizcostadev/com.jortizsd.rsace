@@ -41,8 +41,8 @@ public class TreeBuilder
 	public static final String ECLIPSE_PLATFORM = "Eclipse";
 	public static final String NETBEANS_PLATFORM = "Netbeans";
 	public static final String ROOT_FOLDER = "Rsace";
-	public static final String CONFIG_DIR = "RsaceConfigFiles";
-	public static final String RESOURCES_DIR = "rscDir";
+	public static final String CONFIG_DIR = "META-INF";
+	public static final String RESOURCES_DIR = "Resources";
 	private IProject proj; // User's working project
 	private AbstractInternalFileManagement configBuilder;
 	private AbstractInternalFileManagement resourcesBuilder;
