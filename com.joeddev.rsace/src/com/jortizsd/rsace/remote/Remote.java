@@ -13,6 +13,7 @@
 package com.jortizsd.rsace.remote;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,7 +45,10 @@ public class Remote extends Team implements RemoteInterface
     	this.url = new URL(url);
     }
 	
-
+    public URL getURL ()
+    {
+    	return this.url;
+    }
 	@Override
 	public boolean isServerUp() throws IOException
 	{
@@ -140,5 +144,10 @@ public class Remote extends Team implements RemoteInterface
 			System.out.println(e.getMessage());
 		}
 		return null;
+	}
+	
+	public InputStream getURLStream () throws IOException
+	{
+		return this.url.openStream();
 	}
 }

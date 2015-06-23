@@ -417,6 +417,12 @@ public class Developer extends TreeWriter implements DatabaseInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Connection getConn () throws SQLException, IOException
+	{
+		
+		return DatabaseInterface.super.getConnection(RemoteConstants.REMOTE_URL_DATABASE_HOST, RemoteConstants.REMOTE_DATABASE, "rsace", "8161975jO");
+	}
     
     /**
      * @category     Public Class Method

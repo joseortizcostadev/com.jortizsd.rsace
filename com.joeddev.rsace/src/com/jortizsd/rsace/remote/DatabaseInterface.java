@@ -14,8 +14,13 @@
  *        
  */
 package com.jortizsd.rsace.remote;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.jasypt.properties.EncryptableProperties;
+
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public interface DatabaseInterface 
 {
 	/**
@@ -27,11 +32,40 @@ public interface DatabaseInterface
 	 * @param username   String object representing the user name 
 	 * @param password   String object representing the user's password
 	 * @return           Connection object representing the connection to the database
+	 * @throws SQLException 
+	 * @throws IOException 
 	 */
-    default Connection getConnection (String url, String database, String username, String password)
+    default Connection getConnection (String url, String database, String username, String password) throws SQLException, IOException
     {
-    	// Needs to be implemented here
-		return null;
+    	
+    	// Connection is working in hills but we need to encript the password
+    	Connection conn = null;
+    	try {
+    		
+    		MysqlDataSource dataSource = new MysqlDataSource();
+    		dataSource.setUser("jortizco");
+    		dataSource.setPassword("aug1676.jo");
+    		dataSource.setDatabaseName("jortizco");
+    		dataSource.setServerName("hills.ccsf.edu");
+    	    conn =
+    	       dataSource.getConnection();
+    	    if (conn.isValid(3))
+    	        System.out.println("valid Connection");
+    	    else
+    	    	System.out.println("valid Connection");
+    	    return conn;
+    	    
+
+    	    // Do something with the Connection
+
+    	   
+    	} catch (SQLException ex) {
+    	    // handle any errors
+    	    System.out.println("SQLException: " + ex.getMessage());
+    	    System.out.println("SQLState: " + ex.getSQLState());
+    	    System.out.println("VendorError: " + ex.getErrorCode());
+    	}
+        return null;
     	
     }
     

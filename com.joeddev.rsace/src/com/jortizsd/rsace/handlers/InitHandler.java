@@ -11,23 +11,15 @@
 package com.jortizsd.rsace.handlers;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.List;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import com.jortizsd.rsace.AbstractTaskBuilder;
-import com.jortizsd.rsace.Task;
 import com.jortizsd.rsace.appTree.AppManifestBuild;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
@@ -40,6 +32,7 @@ import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Remote;
 import com.jortizsd.rsace.remote.RemoteConstants;
 import com.jortizsd.rsace.remote.Team;
+
 
 /**
  * Our handler extends AbstractHandler, an IHandler base class.
@@ -110,6 +103,10 @@ public class InitHandler extends AbstractHandler
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
+			   Developer dev = new Developer();
+		       Connection c = dev.getConn();
+		       if (c.isValid(10)) System.out.println("is Valid");
+		       else System.out.println("is Not Valid");
 			   startRemoteWork(window);
 			   
 		   }
@@ -177,7 +174,6 @@ public class InitHandler extends AbstractHandler
 	       if (r.isServerUp())
 	       {
 	    	 
-	    	  Developer dev = new Developer();
 	    	  
 	    	 
 	       }
