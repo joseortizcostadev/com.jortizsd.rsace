@@ -17,8 +17,13 @@ package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import org.jasypt.properties.EncryptableProperties;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public interface DatabaseInterface 
@@ -29,24 +34,27 @@ public interface DatabaseInterface
 	 * @param url        String object representing the host's server URL 
 	 *                   where the database is hosted
 	 * @param database   String object representing the database's name
-	 * @param username   String object representing the user name 
-	 * @param password   String object representing the user's password
 	 * @return           Connection object representing the connection to the database
 	 * @throws SQLException 
 	 * @throws IOException 
 	 */
-    default Connection getConnection (String url, String database, String username, String password) throws SQLException, IOException
+    default Connection getConnection (String databaseName) throws SQLException, IOException
     {
-    	
-    	// Connection is working in hills but we need to encript the password
+    	String username, password, host;
+    	Remote remote = new Remote (RemoteConstants.REMOTE_APP_CONFIG_FILE);
+    	AppConfig dbConfig = new AppConfig (remote);
+    	HashMap <String,String> databaseCredentials = dbConfig.getDatabaseCredentials(databaseName);
+    	username = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_USERNAME);
+    	password = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_PASSWORD);
+    	host = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_HOST);
     	Connection conn = null;
     	try {
     		
     		MysqlDataSource dataSource = new MysqlDataSource();
-    		dataSource.setUser("jortizco");
-    		dataSource.setPassword("aug1676.jo");
-    		dataSource.setDatabaseName("jortizco");
-    		dataSource.setServerName("hills.ccsf.edu");
+    		dataSource.setUser(username ); 
+    		dataSource.setPassword(password); //rme.getDatabasePasswordProperty());
+    		dataSource.setDatabaseName(databaseName);//rme.getDatabaseProperty());
+    		dataSource.setServerName(host);//rme.getDatabaseHostProperty());
     	    conn =
     	       dataSource.getConnection();
     	    if (conn.isValid(3))
@@ -54,19 +62,15 @@ public interface DatabaseInterface
     	    else
     	    	System.out.println("valid Connection");
     	    return conn;
-    	    
-
-    	    // Do something with the Connection
-
-    	   
-    	} catch (SQLException ex) {
+    	}
+    	catch (SQLException ex) 
+    	{
     	    // handle any errors
     	    System.out.println("SQLException: " + ex.getMessage());
     	    System.out.println("SQLState: " + ex.getSQLState());
     	    System.out.println("VendorError: " + ex.getErrorCode());
     	}
         return null;
-    	
     }
     
     /**

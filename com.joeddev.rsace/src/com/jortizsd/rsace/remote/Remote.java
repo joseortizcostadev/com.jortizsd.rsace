@@ -17,8 +17,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -28,16 +31,20 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jortizsd.rsace.appTree.TreeWriter;
 
 
-public class Remote extends Team implements RemoteInterface
+
+public class Remote extends TreeWriter implements RemoteInterface
 {
 	
     private URL url;
+    
     public Remote (String url) throws MalformedURLException 
     {
     	 super();
     	 setURL(url);
+    	 
     }
    
     public void setURL (String url) throws MalformedURLException
@@ -136,7 +143,9 @@ public class Remote extends Team implements RemoteInterface
 		   InputStream is = this.url.openStream();
 		   DocumentBuilderFactory docBuilF = DocumentBuilderFactory.newInstance();
            DocumentBuilder docBuilder =  docBuilF.newDocumentBuilder();
-           return docBuilder.parse(is);
+           Document document =  docBuilder.parse(is);
+           document.normalizeDocument();
+           return document;
            
 		}
 		catch (Exception e)
@@ -150,4 +159,6 @@ public class Remote extends Team implements RemoteInterface
 	{
 		return this.url.openStream();
 	}
+	
+	 
 }

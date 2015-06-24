@@ -103,11 +103,8 @@ public class InitHandler extends AbstractHandler
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
-			   Developer dev = new Developer();
-		       Connection c = dev.getConn();
-		       if (c.isValid(10)) System.out.println("is Valid");
-		       else System.out.println("is Not Valid");
-			   startRemoteWork(window);
+			   Developer d = new Developer();
+	    	   d.getConn();
 			   
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
@@ -170,11 +167,12 @@ public class InitHandler extends AbstractHandler
 	{
 		try
 		{
-		   Remote r = new Remote(RemoteConstants.REMOTE_SERVER_DEFAULT);
+		   Remote r = new Remote(RemoteConstants.REMOTE_SERVER);
 	       if (r.isServerUp())
 	       {
 	    	 
-	    	  
+	    	   Developer d = new Developer();
+	    	   d.getConn();
 	    	 
 	       }
 	       else
