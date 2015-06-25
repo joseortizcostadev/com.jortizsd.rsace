@@ -11,6 +11,7 @@
 package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -420,8 +421,8 @@ public class Developer extends TreeWriter implements DatabaseInterface
 	
 	public Connection getConn () throws SQLException, IOException
 	{
-		
-		return DatabaseInterface.super.getConnection(RemoteConstants.REMOTE_VALUE_DB_DBNAME);
+		URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+		return DatabaseInterface.super.getConnectionFromRemoteConfigFile(url);
 	}
     
     /**

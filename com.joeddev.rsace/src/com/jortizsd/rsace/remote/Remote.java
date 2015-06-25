@@ -13,7 +13,9 @@
 package com.jortizsd.rsace.remote;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,6 +26,7 @@ import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,24 +42,59 @@ public class Remote extends TreeWriter implements RemoteInterface
 {
 	
     private URL url;
+    private String fileName;
+    private InputStream fileStream;
+    private FileInputStream fileInputStream;
+    private Properties properties;
+    private File file;
     
-    public Remote (String url) throws MalformedURLException 
+    public Remote (URL url) throws IOException 
     {
     	 super();
     	 setURL(url);
+    	 properties = new Properties();
+    	 fileStream = this.url.openStream();
     	 
     }
+    
+    
    
-    public void setURL (String url) throws MalformedURLException
+    public void setURL (URL url) throws MalformedURLException
     {
-    	this.url = new URL(url);
+    	this.url = url;
     }
 	
     public URL getURL ()
     {
     	return this.url;
     }
-	@Override
+    
+    public String getFileName (String file)
+    {
+    	return this.fileName;
+    }
+    
+    public void setFile (String filename)
+    {
+    	this.file = new File (filename);
+    }
+    
+    public File getFile ()
+    {
+    	return this.file;
+    }
+    
+    public InputStream getInputStream ()
+    {
+    	return this.fileStream;
+    }
+    
+    public FileInputStream getFileInputStream()
+    {
+    	return this.fileInputStream;
+    }
+    
+    @Override
 	public boolean isServerUp() throws IOException
 	{
 		try
@@ -105,18 +143,7 @@ public class Remote extends TreeWriter implements RemoteInterface
 	@Override
 	public void createRemoteTeam(Team team) 
 	{
-		try
-		{
-			Document doc = getRemoteDocument();
-			Element root = doc.getDocumentElement();
-		    Element teamElement = createElement(doc, root, Team.TEAM_CONTEXT);
-		    setAtrribute(doc, teamElement, Team.ID_CONTEXT, team.getTeamId());
-		    setAtrribute(doc, teamElement, Team.NAME_CONTEXT, team.getTeamName());
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
+		
 	}
 
 	@Override

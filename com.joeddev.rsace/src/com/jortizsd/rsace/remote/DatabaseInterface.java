@@ -15,9 +15,13 @@
  */
 package com.jortizsd.rsace.remote;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.jasypt.properties.EncryptableProperties;
 import org.w3c.dom.Document;
@@ -29,39 +33,28 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public interface DatabaseInterface 
 {
 	/**
-	 * @category         Default Interface Method
-	 * @description      Creates a connection to the database
-	 * @param url        String object representing the host's server URL 
-	 *                   where the database is hosted
-	 * @param database   String object representing the database's name
-	 * @return           Connection object representing the connection to the database
+	 * @category             Default Interface Method
+	 * @description          Creates a connection to the database
+	 * @param configFileURL  String object representing the host's server URL 
+	 *                       where the database is hosted
+	 * @return               Connection object representing the connection to the database
 	 * @throws SQLException 
 	 * @throws IOException 
 	 */
-    default Connection getConnection (String databaseName) throws SQLException, IOException
+    default Connection getConnectionFromRemoteConfigFile (URL configFileURL ) throws SQLException, IOException
     {
-    	String username, password, host;
-    	Remote remote = new Remote (RemoteConstants.REMOTE_APP_CONFIG_FILE);
+    	
+    	Remote remote = new Remote (configFileURL);
     	AppConfig dbConfig = new AppConfig (remote);
-    	HashMap <String,String> databaseCredentials = dbConfig.getDatabaseCredentials(databaseName);
-    	username = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_USERNAME);
-    	password = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_PASSWORD);
-    	host = databaseCredentials.get(RemoteConstants.REMOTE_PROPERTY_DB_HOST);
-    	Connection conn = null;
-    	try {
-    		
+    	
+    	try 
+    	{
     		MysqlDataSource dataSource = new MysqlDataSource();
-    		dataSource.setUser(username ); 
-    		dataSource.setPassword(password); //rme.getDatabasePasswordProperty());
-    		dataSource.setDatabaseName(databaseName);//rme.getDatabaseProperty());
-    		dataSource.setServerName(host);//rme.getDatabaseHostProperty());
-    	    conn =
-    	       dataSource.getConnection();
-    	    if (conn.isValid(3))
-    	        System.out.println("valid Connection");
-    	    else
-    	    	System.out.println("valid Connection");
-    	    return conn;
+    		dataSource.setUser(dbConfig.getDatabaseUsername()); 
+    		dataSource.setPassword(dbConfig.getDatabasePassword()); 
+    		dataSource.setDatabaseName(dbConfig.getDatabase());
+    		dataSource.setServerName(dbConfig.getDatabaseHost());
+    	    return dataSource.getConnection();
     	}
     	catch (SQLException ex) 
     	{
@@ -71,6 +64,7 @@ public interface DatabaseInterface
     	    System.out.println("VendorError: " + ex.getErrorCode());
     	}
         return null;
+        
     }
     
     /**

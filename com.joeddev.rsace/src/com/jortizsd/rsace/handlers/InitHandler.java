@@ -163,31 +163,20 @@ public class InitHandler extends AbstractHandler
         }
 	}
 	
-	public void startRemoteWork (IWorkbenchWindow window) throws SQLException, ClassNotFoundException 
+	public void startRemoteWork (IWorkbenchWindow window) 
 	{
-		try
-		{
-		   Remote r = new Remote(RemoteConstants.REMOTE_SERVER);
-	       if (r.isServerUp())
-	       {
-	    	 
-	    	   Developer d = new Developer();
-	    	   d.getConn();
-	    	 
-	       }
-	       else
-	       {
+		
+			
+	      
 	    	   // The data has not been validated
 	    	   MessageDialog.openInformation(window.getShell(),
 	    						          "Rsace Information",
 	    						          "Connection to Rsace server failed. Please, try later " + 
 	    						          "or contact the web master at jortizdev@jortizsd.com");
-	       }
-		}
-		catch (IOException e)
-		{
-			
-		}
+	       
+		
+		
+		
 	}
 	
 	
