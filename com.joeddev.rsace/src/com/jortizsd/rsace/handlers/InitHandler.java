@@ -138,32 +138,20 @@ public class InitHandler extends AbstractHandler
 	{
 	    try
         {
-	           
-               if (developerPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
-               {
-            	   
-        	       AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
-        	       askPreferencesDialog.open();
-               }
-               
-               author = (String) developerPreferences.getUsername();
-               email = (String) developerPreferences.getEmail();
-               id = (String) developerPreferences.getId();
-               teamName = (String) developerPreferences.getTeamName();
-               teamId = (String) developerPreferences.getTeamId();
+	           /*
                treeBuilder.buildAppTree(author, email);
+               
                team = Team.createNewTeam(teamName,teamId);
                Developer developer = new Developer(team, id, author, email, false, true);
                developer.setAsSessionOwner();
                developer.addDeveloperToDB();
+               treeBuilder.refreshAppTree();
                manifest.makeManifestFile();
-               // Open local session 
-		       InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
-	           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
-	           treeBuilder.refreshAppTree();
-	           
-	           
-           
+               */
+               LoginDialog login = new LoginDialog(window.getShell());
+               login.open();
+               
+	               
 	    }
         catch (Exception e)
         {
@@ -175,8 +163,7 @@ public class InitHandler extends AbstractHandler
 	{
 		try
 		{
-			new LoginDialog(window.getShell()).open();
-		    
+			
 		    // do Remote work
  	        
 		}

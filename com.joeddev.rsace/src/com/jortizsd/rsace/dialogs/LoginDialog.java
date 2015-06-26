@@ -1,6 +1,11 @@
 package com.jortizsd.rsace.dialogs;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -15,9 +20,22 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
 
+import com.jortizsd.rsace.appTree.AppManifestBuild;
+import com.jortizsd.rsace.appTree.ResourcesBuilder;
+import com.jortizsd.rsace.appTree.TreeBuilder;
+import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
+import com.jortizsd.rsace.preferences.DVTPreferencesPage;
+import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Team;
+
 public class LoginDialog extends TitleAreaDialog {
-	private Text text;
-	private Listener listener;
+	private Text devIdText;
+	private Listener newCredentialsListener;
+	private Text teamText;
+	private UsrResourcesBuilder resourcesBuilder;
+	private TreeBuilder treeBuilder;
+	private AppManifestBuild manifest;
+	
 
 	/**
 	 * Create the dialog.
@@ -26,6 +44,12 @@ public class LoginDialog extends TitleAreaDialog {
 	public LoginDialog(Shell parentShell) {
 		super(parentShell);
 		syncListener();
+		resourcesBuilder = new UsrResourcesBuilder();
+		treeBuilder = TreeBuilder.getRsaceTreeInstance();
+	    manifest = AppManifestBuild.getInstance();
+	    resourcesBuilder = new UsrResourcesBuilder();
+	   
+		
 	}
 
 	/**
@@ -44,15 +68,17 @@ public class LoginDialog extends TitleAreaDialog {
 		lblNewLabel.setBounds(10, 10, 116, 14);
 		lblNewLabel.setText("Developer ID");
 		
-		text = new Text(container, SWT.BORDER);
-		text.setBounds(10, 30, 116, 19);
+		devIdText = new Text(container, SWT.BORDER);
+		devIdText.setBounds(10, 30, 116, 19);
+		devIdText.setToolTipText("Enter your developer ID");
+		
 		
 		Label lblTeams = new Label(container, SWT.NONE);
 		lblTeams.setBounds(147, 10, 60, 14);
-		lblTeams.setText("Teams");
+		lblTeams.setText("Team ID");
 		
-		Combo combo = new Combo(container, SWT.NONE);
-		combo.setBounds(146, 30, 261, 22);
+		teamText = new Text(container, SWT.BORDER);
+		teamText.setBounds(147, 30, 268, 19);
 
 		return area;
 	}
@@ -66,31 +92,83 @@ public class LoginDialog extends TitleAreaDialog {
 	{
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
-		 Button sync = createButton(parent,IDialogConstants.OK_ID,"Create New", true);
+		 Button sync = createButton(parent,IDialogConstants.CANCEL_ID,"New Credentials", true);
 		 createButton(parent, IDialogConstants.OK_ID, "Synchronize",
 				true);
-		 sync.addListener(SWT.Selection, listener);
-		 
-	    
-	}
+		 sync.addListener(SWT.Selection, newCredentialsListener);
+    }
 	
+	
+	
+    
+	// New credentials button clicked
 	public void syncListener ()
 	{
-	          listener = new Listener() {
-		      public void handleEvent(Event event) {
+	    newCredentialsListener = new Listener() 
+	    {
+		    public void handleEvent(Event event) 
+		    {
 		        
-		    	  AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(getShell());
-       	          askPreferencesDialog.open();	       
-		      }
-		    };
+		        AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(getShell());
+	       	    askPreferencesDialog.open();
+		        
+		    }
+		};
 	}
+	// Synchronize button clicked
+	@Override
+	protected void okPressed()
+	{
+		try
+		{
+			Developer developer = Team.getDeveloperFromDB(devIdText.getText(), teamText.getText());
+			if (developer.isRegistered() == true)
+            {
+            	treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
+            	developer.setAsSessionOwner();
+            	manifest.makeManifestFile();
+        	    List <Developer> teamMembers= developer.getMyTeamMembers();
+        	    for (Developer dev : teamMembers)
+        	    {
+        	    	System.out.println(dev.getId() + " " + developer.getId());
+        	    	if (!developer.getId().equalsIgnoreCase(dev.getId()))
+        		          dev.addToTeam();
+        	    	
+        	    }
+        	    InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
+        	    		                                                               developer.getEmail(), false, developer.getTeam().getName(), null);
+        	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+        	    treeBuilder.refreshAppTree();
+        	    treeBuilder.refreshUserRootProject();
+        	    
+        	    
+	            
+            }
+            else
+            {
+            	MessageDialog.openInformation(getShell(),
+				                              "Rsace Information",
+				                              "Sorry, we couldn't find your credentials in our servers. Where do I go from here?\n" +
+				                              "1. Check if your credentials are in the correct form. Remember, developer's id and team's id " +
+				                              "can be in any form you want but only 5 characters maximum\n" + 
+				                              "2. If this is your first time using Rsace, you'll need to create new credentials");
+            }
+		    
+		}
+		catch (Exception e)
+		{
+		    System.out.println(e.getMessage());	
+		}
+		super.okPressed();
+	}
+	
+	
     
 	/**
 	 * Return the initial size of the dialog.
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(417, 203);
+		return new Point(436, 203);
 	}
-
 }

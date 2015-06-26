@@ -320,7 +320,7 @@ public class Team extends Developer
     }
     
    
-    public static Developer getDeveloperFromDB(String developerID)
+    public static Developer getDeveloperFromDB (String developerID, String teamId)
     {
     	Team team;
     	Developer developer = null;
@@ -339,9 +339,9 @@ public class Team extends Developer
             // iterate through the java resultset
             while (rs.next())
             {
-              if (developerID.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID)))
+              if (developerID.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID)) && 
+            	  teamId.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID)))
               {
-            	  String teamId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID);
             	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
             	  String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
             	  String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
@@ -349,6 +349,7 @@ public class Team extends Developer
                   boolean isOwner = rs.getBoolean(RemoteConstants.REMOTE_DB_FIELD_ISTEAMOWNER);
                   team = new Team(teamName, teamId);
                   developer = new Developer(team,devId,devName,devEmail,false,isOwner);
+                  developer.setRegistrationState(true);
                   break;
               }
             }
@@ -362,6 +363,5 @@ public class Team extends Developer
 		return developer;
         
     }
-    
     
 }

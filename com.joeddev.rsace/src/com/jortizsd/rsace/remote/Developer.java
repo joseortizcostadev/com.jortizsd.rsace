@@ -15,7 +15,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -48,6 +52,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
     public static final String DB_FIELD_DEV_NAME = "dev_name";
     public static final String DB_FIELD_DEV_EMAIL = "dev_email";
     public static final String DB_FIELD_DEV_ISTEAMOWNER = "isTeamOwner";
+    private boolean isRegistered;
     
     
     
@@ -62,7 +67,16 @@ public class Developer extends TreeWriter implements DatabaseInterface
     {
         super();
         file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
+        setRegistrationState(false);
         
+    }
+    
+    public Developer (String developerId)
+    {
+    	super();
+        file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
+        setId(developerId);
+        setRegistrationState(false);
     }
     
     /**
@@ -86,6 +100,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
         this.active = isActive;
         this.isTheSender = isTheOwner;
         this.team = team;
+        setRegistrationState(false);
     }
     
     /**
@@ -479,6 +494,89 @@ public class Developer extends TreeWriter implements DatabaseInterface
 	
 	
 	
+	public List <Team> getAllMyTeams ()
+	{
+		List <Team> myTeams = new ArrayList <>();
+		try
+    	{
+    	    String query = RemoteConstants.REMOTE_DB_SELECT_QUERY;
+ 	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+             
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+             
+            // iterate through the java resultset
+            while (rs.next())
+            {
+              if (getId().equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID)))
+              {
+            	  String teamId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID);
+            	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
+            	  myTeams.add(Team.createNewTeam(teamName, teamId));
+              }
+            }
+            st.close();
+           return myTeams;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		
+		return myTeams;
+		
+	}
+	
+	public List <Developer> getMyTeamMembers ()
+	{
+		List <Developer> teamMembers = new ArrayList <> ();
+		String query = "SELECT * FROM developers WHERE team_id = " + getTeam().getTeamId();
+		try
+    	{
+    	    URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+             
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+             
+            // iterate through the java resultset
+            while (rs.next())
+            {
+            	String teamId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID);
+            	String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
+          	    String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
+          	    String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
+                String devEmail = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVEMAIL);
+                boolean isOwner = rs.getBoolean(RemoteConstants.REMOTE_DB_FIELD_ISTEAMOWNER);
+                team = Team.createNewTeam(teamName, teamId);
+                teamMembers.add(new Developer(team,devId,devName,devEmail,false,isOwner));
+            }
+            st.close();
+           return teamMembers;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		
+		return teamMembers;
+		
+	}
+	
+	public void setRegistrationState (boolean isRegistered)
+	{
+		this.isRegistered = isRegistered;
+	}
+	
+	public boolean isRegistered ()
+	{
+		return this.isRegistered;
+	}
     
     /**
      * @category     Public Class Method
