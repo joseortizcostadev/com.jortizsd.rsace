@@ -7,6 +7,8 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -15,6 +17,7 @@ import org.eclipse.swt.widgets.Button;
 
 public class LoginDialog extends TitleAreaDialog {
 	private Text text;
+	private Listener listener;
 
 	/**
 	 * Create the dialog.
@@ -22,6 +25,7 @@ public class LoginDialog extends TitleAreaDialog {
 	 */
 	public LoginDialog(Shell parentShell) {
 		super(parentShell);
+		syncListener();
 	}
 
 	/**
@@ -62,12 +66,25 @@ public class LoginDialog extends TitleAreaDialog {
 	{
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
-		createButton(parent,IDialogConstants.OK_ID,"New Developer", true);
-		createButton(parent, IDialogConstants.OK_ID, "Synchronize",
+		 Button sync = createButton(parent,IDialogConstants.OK_ID,"Create New", true);
+		 createButton(parent, IDialogConstants.OK_ID, "Synchronize",
 				true);
+		 sync.addListener(SWT.Selection, listener);
+		 
 	    
 	}
-
+	
+	public void syncListener ()
+	{
+	          listener = new Listener() {
+		      public void handleEvent(Event event) {
+		        
+		    	  AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(getShell());
+       	          askPreferencesDialog.open();	       
+		      }
+		    };
+	}
+    
 	/**
 	 * Return the initial size of the dialog.
 	 */
