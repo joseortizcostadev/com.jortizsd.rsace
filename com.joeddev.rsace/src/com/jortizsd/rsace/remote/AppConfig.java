@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Properties;
@@ -16,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.jortizsd.rsace.appTree.TreeWriter;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class AppConfig extends TreeWriter
 {
@@ -136,6 +140,30 @@ public class AppConfig extends TreeWriter
 		return this.databasePassword;
 	}
 	
-	
+	static Connection getConnectionFromRemoteConfigFile (URL configFileURL ) throws SQLException, IOException
+    {
+    	
+    	Remote remote = new Remote (configFileURL);
+    	AppConfig dbConfig = new AppConfig (remote);
+    	
+    	try 
+    	{
+    		MysqlDataSource dataSource = new MysqlDataSource();
+    		dataSource.setUser(dbConfig.getDatabaseUsername()); 
+    		dataSource.setPassword(dbConfig.getDatabasePassword()); 
+    		dataSource.setDatabaseName(dbConfig.getDatabase());
+    		dataSource.setServerName(dbConfig.getDatabaseHost());
+    	    return dataSource.getConnection();
+    	}
+    	catch (SQLException ex) 
+    	{
+    	    // handle any errors
+    	    System.out.println("SQLException: " + ex.getMessage());
+    	    System.out.println("SQLState: " + ex.getSQLState());
+    	    System.out.println("VendorError: " + ex.getErrorCode());
+    	}
+        return null;
+        
+    }
     
 }

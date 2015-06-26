@@ -41,6 +41,7 @@ public interface DatabaseInterface
 	 * @throws SQLException 
 	 * @throws IOException 
 	 */
+	/*
     default Connection getConnectionFromRemoteConfigFile (URL configFileURL ) throws SQLException, IOException
     {
     	
@@ -66,6 +67,7 @@ public interface DatabaseInterface
         return null;
         
     }
+    */
     
     /**
      * @category             Default Interface Method
@@ -86,7 +88,7 @@ public interface DatabaseInterface
      * @param developer  Developer object representing a developer
      * @see              Developer 
      */
-    public void addDeveloperToDB (Developer developer);
+    public void addDeveloperToDB ();
     
     /**
      * @category         Public Interface Signature Method
@@ -94,7 +96,7 @@ public interface DatabaseInterface
      * @param developer  Developer object representing a developer
      * @see              Developer 
      */
-    public void updateDeveloperFromDB (Developer developer);
+    public void updateDeveloperFromDB ();
     
     /**
      * @category         Public Interface Signature Method
@@ -102,7 +104,7 @@ public interface DatabaseInterface
      * @param developer  String object representing the developer's id
      * @see              Developer 
      */
-    public void deleteDeveliperFromDB(String developerID);
+    public void deleteDeveloperFromDB();
     
     /**
      * @category         Public Interface Signature Method
@@ -111,7 +113,7 @@ public interface DatabaseInterface
      * @return           Developer object representing a developer from the database
      * @see              Developer 
      */
-    public Developer getDeveloperFromDB(String developerID);
+   // public Developer getDeveloperFromDB(String developerID);
     
     
 }

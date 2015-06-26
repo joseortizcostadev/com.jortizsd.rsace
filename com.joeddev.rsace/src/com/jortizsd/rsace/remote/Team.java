@@ -11,6 +11,10 @@
 package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +31,8 @@ import org.xml.sax.SAXException;
 
 import com.jortizsd.rsace.appTree.ConfigBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
-public class Team extends Developer
+
+public class Team extends Developer 
 {
 	private List <Developer >developers;
 	private List <Team> teams;
@@ -36,6 +41,9 @@ public class Team extends Developer
     public static final String TEAM_CONTEXT = "team";
 	public static final String ID_CONTEXT = "id";
 	public static final String NAME_CONTEXT = "name";
+	public static final String DB_FIELD_TEAM_ID = "team_id";
+	public static final String DB_FIELD_TEAM_NAME = "team_name";
+	
 	/**
 	 * @category Constructor
 	 */
@@ -309,6 +317,50 @@ public class Team extends Developer
     			return true;
     	return false;
     	
+    }
+    
+   
+    public static Developer getDeveloperFromDB(String developerID)
+    {
+    	Team team;
+    	Developer developer = null;
+    	try
+    	{
+    	    
+    	    String query = RemoteConstants.REMOTE_DB_SELECT_QUERY;
+ 	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+             
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+             
+            // iterate through the java resultset
+            while (rs.next())
+            {
+              if (developerID.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID)))
+              {
+            	  String teamId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID);
+            	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
+            	  String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
+            	  String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
+                  String devEmail = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVEMAIL);
+                  boolean isOwner = rs.getBoolean(RemoteConstants.REMOTE_DB_FIELD_ISTEAMOWNER);
+                  team = new Team(teamName, teamId);
+                  developer = new Developer(team,devId,devName,devEmail,false,isOwner);
+                  break;
+              }
+            }
+            st.close();
+           return developer;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		return developer;
+        
     }
     
     

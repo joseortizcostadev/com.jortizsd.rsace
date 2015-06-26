@@ -11,8 +11,11 @@
 package com.jortizsd.rsace.handlers;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -20,11 +23,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
+
 import com.jortizsd.rsace.appTree.AppManifestBuild;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.dialogs.AskSetPreferencesDialog;
+import com.jortizsd.rsace.dialogs.LoginDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.dialogs.SnycProgress;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
@@ -103,8 +108,8 @@ public class InitHandler extends AbstractHandler
 		   }
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SESSION))
 		   {
-			   Developer d = new Developer();
-	    	   d.getConn();
+			   
+	           startRemoteConnection(window); 
 			   
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_TEAM))
@@ -136,9 +141,11 @@ public class InitHandler extends AbstractHandler
 	           
                if (developerPreferences.getUsername().toString().equalsIgnoreCase(INITIAL_PREFERENCES_MARKER))
                {
+            	   
         	       AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(window.getShell());
         	       askPreferencesDialog.open();
                }
+               
                author = (String) developerPreferences.getUsername();
                email = (String) developerPreferences.getEmail();
                id = (String) developerPreferences.getId();
@@ -148,6 +155,7 @@ public class InitHandler extends AbstractHandler
                team = Team.createNewTeam(teamName,teamId);
                Developer developer = new Developer(team, id, author, email, false, true);
                developer.setAsSessionOwner();
+               developer.addDeveloperToDB();
                manifest.makeManifestFile();
                // Open local session 
 		       InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
@@ -163,16 +171,23 @@ public class InitHandler extends AbstractHandler
         }
 	}
 	
-	public void startRemoteWork (IWorkbenchWindow window) 
+	public void startRemoteConnection (IWorkbenchWindow window) 
 	{
-		
-			
+		try
+		{
+			new LoginDialog(window.getShell()).open();
+		    
+		    // do Remote work
+ 	        
+		}
+ 		catch (Exception e)
+ 		{
 	      
-	    	   // The data has not been validated
-	    	   MessageDialog.openInformation(window.getShell(),
+	    	   
+	    	 MessageDialog.openInformation(window.getShell(),
 	    						          "Rsace Information",
-	    						          "Connection to Rsace server failed. Please, try later " + 
-	    						          "or contact the web master at jortizdev@jortizsd.com");
+	    						          "Connection to Rsace server failed with error: " + e.getMessage());
+ 		}
 	       
 		
 		

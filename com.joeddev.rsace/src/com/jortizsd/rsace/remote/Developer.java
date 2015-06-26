@@ -11,8 +11,10 @@
 package com.jortizsd.rsace.remote;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,6 +31,7 @@ import org.xml.sax.SAXException;
 import com.jortizsd.rsace.appTree.ConfigBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.TreeWriter;
+
 public class Developer extends TreeWriter implements DatabaseInterface
 {
     protected IFile file;
@@ -39,15 +42,27 @@ public class Developer extends TreeWriter implements DatabaseInterface
     private boolean active;
     private boolean isTheSender;
     private boolean isFavorite;
+    private Connection conn;
     public static final String DEVELOPER_CONTEXT = "developer";
+    public static final String DB_FIELD_DEV_ID = "dev_id";
+    public static final String DB_FIELD_DEV_NAME = "dev_name";
+    public static final String DB_FIELD_DEV_EMAIL = "dev_email";
+    public static final String DB_FIELD_DEV_ISTEAMOWNER = "isTeamOwner";
+    
+    
+    
+   
     
     /**
+     * @throws IOException 
+     * @throws SQLException 
      * @category Constructor
      */
-    public Developer () 
+    public Developer ()  
     {
         super();
         file = getFile(TreeBuilder.CONFIG_DIR, ConfigBuilder.TEAM_FILE_CONFIG);
+        
     }
     
     /**
@@ -396,34 +411,74 @@ public class Developer extends TreeWriter implements DatabaseInterface
     }
     
     @Override
-	public void addDeveloperToDB(Developer developer) {
-		// TODO Auto-generated method stub
+	public void addDeveloperToDB() 
+    {
+    	try
+    	{
+    	   String query = RemoteConstants.REMOTE_DB_INSERT_QUERY;
+    	   URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+           conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+    	   PreparedStatement preparedStmt = conn.prepareStatement(query);
+    	   preparedStmt.setString(1, getTeam().getTeamId());
+    	   preparedStmt.setString(2, getId());
+    	   preparedStmt.setString(3, getTeam().getTeamName());
+    	   preparedStmt.setString(4, getName());
+    	   preparedStmt.setString (5, getEmail());
+    	   preparedStmt.setBoolean (6, isSessionOwner());
+    	   // execute the preparedstatement
+    	   preparedStmt.execute();
+    	   conn.close();
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
 		
 	}
+    
+   
 
 	@Override
-	public void updateDeveloperFromDB(Developer developer) {
-		// TODO Auto-generated method stub
+	public void updateDeveloperFromDB() 
+	{
+		try
+		{
+		    String query = RemoteConstants.REMOTE_DB_UPDATE_QUERY;
+		    URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+		    PreparedStatement preparedStmt = conn.prepareStatement(query);
+		    preparedStmt.setString(1, getTeam().getTeamName());
+	    	preparedStmt.setString(2, getName());
+	    	preparedStmt.setString (3, getEmail());
+	    	preparedStmt.setBoolean (4, isSessionOwner());
+	    	preparedStmt.setString (5, getId());
+	        // execute the java preparedstatement
+	        preparedStmt.executeUpdate();
+	        conn.close();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
 		
-	}
-
-	@Override
-	public void deleteDeveliperFromDB(String developerID) {
-		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public Developer getDeveloperFromDB( String developerID) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
-	public Connection getConn () throws SQLException, IOException
-	{
-		URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
-		return DatabaseInterface.super.getConnectionFromRemoteConfigFile(url);
+	
+	@Override
+	public void deleteDeveloperFromDB() {
+		// TODO Auto-generated method stub
+		
 	}
+
+	
+	public static Developer getDeveloperFromDB(String developerID) 
+	{
+	   return null;
+	}
+	
+	
+	
     
     /**
      * @category     Public Class Method
