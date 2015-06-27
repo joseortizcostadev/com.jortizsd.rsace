@@ -107,7 +107,12 @@ public class UsrResourcesBuilder extends TreeBuilder
 	    	    counter++;
 	        }
 		}
-		header += "// @Note:                  This header won't be saved in your original file\n" +   
+		header += "// @Description:           After local synchronization, this file is a exact\n" +
+		          "                           copy of your original file. When a remote session is opened,\n" +
+				  "                           any modification made to this file, will not affect your original file\n" +
+		          "                           until it is remotely syncronized. Once this file is remotely syncronized,\n" +
+				  "                           your original file will be modified with the new edited content\n" +
+				  "// @Note:                  This header won't be saved in your original file\n" +   
 		          "*/\n";
 		
 		return getHeaderStream(header);

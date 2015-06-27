@@ -51,32 +51,21 @@ public class InitHandler extends AbstractHandler
 	public static final String MENU_NEW_TEAM = "Add Developers to Team";
 	public static final String MENU_NEW_DEVELOPER = "New Developer";
 	private TreeBuilder treeBuilder;
-	private DVTPreferencesPage developerPreferences;
-	private AppManifestBuild manifest;
-	private UsrResourcesBuilder usrResourcesBuilder;
+    private UsrResourcesBuilder usrResourcesBuilder;
 	private String author;
 	private String email; 
-	private String id; 
-	private String teamName; 
-	private String teamId;
-    private Team team;
-    private SnycProgress syncProgress;
+	
+   
    
 	
 	/**
 	 * The constructor.
 	 */
 	
-	private final String INITIAL_PREFERENCES_MARKER = "your_name_or_username_here";
+	
 	public InitHandler() 
 	{
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		developerPreferences = new DVTPreferencesPage ();
-	    manifest = AppManifestBuild.getInstance();
-	    usrResourcesBuilder = new UsrResourcesBuilder();
-	    author = (String) developerPreferences.getUsername();
-	   
-	    
 	}
 
 	/**
@@ -87,21 +76,23 @@ public class InitHandler extends AbstractHandler
 	{
 	    try
 	    {
+	    	
 		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		   syncProgress = new SnycProgress(window.getShell(), SWT.TITLE | SWT.PRIMARY_MODAL | SWT.CENTER);
+		   
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SYNC))
 		   {
 			   
 			   if (!treeBuilder.isPluginSynchronizedLocally())
 			   {
+				  
 	              initApp(window);
-	              syncProgress.open();
+	              
 			   }
 			   else
 			   {
 				   InputStream headerStream = usrResourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, author, ResourcesBuilder.SYNC_FILE, email, false, "No team", null);
 		           usrResourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
-		           syncProgress.open();
+		           
 		       }
 			   
 			   
@@ -138,19 +129,11 @@ public class InitHandler extends AbstractHandler
 	{
 	    try
         {
-	           /*
-               treeBuilder.buildAppTree(author, email);
-               
-               team = Team.createNewTeam(teamName,teamId);
-               Developer developer = new Developer(team, id, author, email, false, true);
-               developer.setAsSessionOwner();
-               developer.addDeveloperToDB();
-               treeBuilder.refreshAppTree();
-               manifest.makeManifestFile();
-               */
+	          
                LoginDialog login = new LoginDialog(window.getShell());
-               login.open();
                
+               login.open();
+              
 	               
 	    }
         catch (Exception e)

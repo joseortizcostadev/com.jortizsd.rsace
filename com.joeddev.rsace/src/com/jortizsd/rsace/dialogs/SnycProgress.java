@@ -51,31 +51,28 @@ public class SnycProgress extends Dialog {
 		shell.layout();
 		display = getParent().getDisplay();
 		// Work done in background by progressBar
-		
-		for (int i =0; i<=100; i++)
-		{
-			
-			try 
-			{
-				Thread.sleep(10);
-				
-				
-			}
-			catch (Throwable th)
-			{
-				
-			}
-			progressBar.setSelection(i);
-			if (progressBar.getSelection() == 100)
-				shell.dispose();
-		}
-		
-		
-	    
-		
-		
-        
-		while (!shell.isDisposed()) {
+		new Thread() {
+		      public void run() {
+		        for (final int[] i = new int[1]; i[0] <= 100; i[0]++) {
+		          try {
+		            Thread.sleep(10);
+		          } catch (Throwable th) {
+		          }
+		          if (display.isDisposed())
+		            return;
+		          display.asyncExec(new Runnable() {
+		            public void run() {
+		              if (progressBar.isDisposed())
+		                return;
+		              progressBar.setSelection(i[0]);
+		              if (progressBar.getSelection() == 100)
+		                 shell.dispose();
+		            }
+		          });
+		        }
+		      }
+		    }.start();
+	    while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -83,6 +80,7 @@ public class SnycProgress extends Dialog {
 		}
 		return result;
 	}
+	
 	
 	 
 

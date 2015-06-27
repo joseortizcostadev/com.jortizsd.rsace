@@ -35,6 +35,7 @@ public class LoginDialog extends TitleAreaDialog {
 	private UsrResourcesBuilder resourcesBuilder;
 	private TreeBuilder treeBuilder;
 	private AppManifestBuild manifest;
+	private SnycProgress syncProgress;
 	
 
 	/**
@@ -43,11 +44,12 @@ public class LoginDialog extends TitleAreaDialog {
 	 */
 	public LoginDialog(Shell parentShell) {
 		super(parentShell);
-		syncListener();
+		
 		resourcesBuilder = new UsrResourcesBuilder();
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
 	    manifest = AppManifestBuild.getInstance();
 	    resourcesBuilder = new UsrResourcesBuilder();
+	   syncListener();
 	   
 		
 	}
@@ -119,40 +121,47 @@ public class LoginDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed()
 	{
-		try
+		
+		syncProgress = new SnycProgress(getShell(), SWT.TITLE | SWT.PRIMARY_MODAL);
+	    try
 		{
 			Developer developer = Team.getDeveloperFromDB(devIdText.getText(), teamText.getText());
-			if (developer.isRegistered() == true)
+			if (developer == null)
+			{	
+        	    MessageDialog.openInformation(getShell(),
+			                              "Rsace Information",
+			                              "Sorry, we couldn't find your credentials in our servers. Where do I go from here?\n" +
+			                              "1. Check if your credentials are in the correct form. Remember, developer's id and team's id " +
+			                              "can be in any form you want but only 5 characters maximum\n" + 
+			                              "2. If this is your first time using Rsace, you'll need to create new credentials");
+        	    treeBuilder.deleteRoot();
+        	    
+			}
+			else if (developer.isRegistered() == true)
             {
-            	treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
+				System.out.println("I am here 1");
+				treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
             	developer.setAsSessionOwner();
             	manifest.makeManifestFile();
         	    List <Developer> teamMembers= developer.getMyTeamMembers();
         	    for (Developer dev : teamMembers)
         	    {
-        	    	System.out.println(dev.getId() + " " + developer.getId());
+        	    	
         	    	if (!developer.getId().equalsIgnoreCase(dev.getId()))
         		          dev.addToTeam();
         	    	
         	    }
         	    InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
-        	    		                                                               developer.getEmail(), false, developer.getTeam().getName(), null);
+        	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+        	    
         	    treeBuilder.refreshAppTree();
         	    treeBuilder.refreshUserRootProject();
+        	    syncProgress.open();
         	    
         	    
-	            
-            }
-            else
-            {
-            	MessageDialog.openInformation(getShell(),
-				                              "Rsace Information",
-				                              "Sorry, we couldn't find your credentials in our servers. Where do I go from here?\n" +
-				                              "1. Check if your credentials are in the correct form. Remember, developer's id and team's id " +
-				                              "can be in any form you want but only 5 characters maximum\n" + 
-				                              "2. If this is your first time using Rsace, you'll need to create new credentials");
-            }
+        	}
+          
 		    
 		}
 		catch (Exception e)

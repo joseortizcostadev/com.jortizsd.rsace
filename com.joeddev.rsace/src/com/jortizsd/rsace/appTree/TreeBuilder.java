@@ -318,6 +318,11 @@ public class TreeBuilder
     	page.saveEditor(editor, true /* confirm */);
     }
     
+    public void deleteRoot () throws CoreException
+    {
+    	root.delete(true, null);
+    }
+    
  
     
     

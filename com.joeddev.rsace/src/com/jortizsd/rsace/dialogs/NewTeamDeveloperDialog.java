@@ -182,6 +182,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
 				newDeveloperMember.setAsFavorite(isFavorites);
 				newDeveloperMember.addToTeam();
+				newDeveloperMember.addDeveloperToDB();
 				super.okPressed();
 	
 			} 
