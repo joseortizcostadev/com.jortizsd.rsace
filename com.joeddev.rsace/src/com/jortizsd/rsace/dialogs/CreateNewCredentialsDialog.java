@@ -7,7 +7,11 @@
  *                users to enter their developer's preferences
  */
 package com.jortizsd.rsace.dialogs;
+import java.io.InputStream;
+import java.util.List;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -19,12 +23,22 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Text;
 
+import com.jortizsd.rsace.appTree.AppManifestBuild;
+import com.jortizsd.rsace.appTree.ResourcesBuilder;
+import com.jortizsd.rsace.appTree.TreeBuilder;
+import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
+import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.Team;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ProgressBar;
 
-public class AskSetPreferencesDialog extends TitleAreaDialog {
+public class CreateNewCredentialsDialog extends TitleAreaDialog 
+{
+	private TreeBuilder treeBuilder;
+	private AppManifestBuild manifest;
+	private UsrResourcesBuilder resourcesBuilder;
 	private Text developerIdText;
 	private Text developerNameText;
 	private Text developerEmailText;
@@ -37,9 +51,12 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public AskSetPreferencesDialog(Shell parentShell) {
+	public CreateNewCredentialsDialog(Shell parentShell) {
 		super(parentShell);
 		dvtPreferences = new DVTPreferencesPage();
+		treeBuilder = TreeBuilder.getRsaceTreeInstance();
+		manifest = AppManifestBuild.getInstance();
+		resourcesBuilder = new UsrResourcesBuilder();
 		
 	}
 
@@ -122,12 +139,7 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed() 
 	{
-		dvtPreferences.updateId(developerIdText.getText());
-	    dvtPreferences.updateAuthor(developerNameText.getText());
-	    dvtPreferences.updateEmail(developerEmailText.getText());
-	    dvtPreferences.updatePermissions( allowSyncPermissionsBtn.getSelection());
-	    dvtPreferences.updateTeamName(teamText.getText());
-	    dvtPreferences.updateTeamId(teamIdText.getText());
+		initAppWithNewCredentials();
 	    super.okPressed();
 	}
 	
@@ -145,6 +157,53 @@ public class AskSetPreferencesDialog extends TitleAreaDialog {
 
         return contents;
     }
+	
+	
+	public void initAppWithNewCredentials ()
+	{
+		SnycProgress syncProgress = new SnycProgress(getShell(), SWT.TITLE | SWT.PRIMARY_MODAL);
+	    try
+		{
+	    	Team team = Team.createNewTeam(teamText.getText(), teamIdText.getText());
+	    	Developer developer = new Developer(team, developerIdText.getText(), developerNameText.getText(), 
+	    			                            developerEmailText.getText(), false, true);
+			if (developer.isRegisteredInTeam())
+			{	
+        	    MessageDialog.openInformation(getShell(),
+			                              "Rsace Information",
+			                              "Your credentials are being used by other developer in the system. Please enter a diferent developer ID, and/or team ID");
+        	    treeBuilder.deleteRoot();
+        	    
+			}
+			else 
+            {
+				
+				treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
+				developer.addDeveloperToDB();
+            	developer.setAsSessionOwner();
+            	manifest.makeManifestFile();
+        	    List <Developer> teamMembers= developer.getMyTeamMembers();
+        	    for (Developer dev : teamMembers)
+        	    {
+        	    	
+        	    	if (!developer.getId().equalsIgnoreCase(dev.getId()))
+        		          dev.addToTeam();
+        	    	
+        	    }
+        	    InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
+        	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
+        	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+        	    
+        	    treeBuilder.refreshAppTree();
+        	    treeBuilder.refreshUserRootProject();
+        	    syncProgress.open();
+            }
+		}
+	    catch (Exception e)
+	    {
+	    	
+	    }
+	 }
 	
 
 	/**

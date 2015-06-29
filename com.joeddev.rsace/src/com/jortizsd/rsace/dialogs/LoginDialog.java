@@ -1,9 +1,22 @@
+/**
+ * @author        Jose Ortiz Costa
+ * @application   com.jortizsd.rsace
+ * @File          LoginDialog.java
+ * @Date          04/06/2015
+ * @Description   This class creates a dialog asking the
+ *                users to enter their developer's credentials.
+ *                If the credentials are correct, it loads all
+ *                the user configuration from the database.
+ *                Otherwise, its inform the users that their
+ *                credentials are incorrect.
+ *                This class also contains a button to launch
+ *                the CreateNewCredentialsDialog which creates
+ *                new credentials for this application
+ */
 package com.jortizsd.rsace.dialogs;
-
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -17,18 +30,16 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Button;
-
 import com.jortizsd.rsace.appTree.AppManifestBuild;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
-import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Team;
 
-public class LoginDialog extends TitleAreaDialog {
+public class LoginDialog extends TitleAreaDialog 
+{
 	private Text devIdText;
 	private Listener newCredentialsListener;
 	private Text teamText;
@@ -37,29 +48,28 @@ public class LoginDialog extends TitleAreaDialog {
 	private AppManifestBuild manifest;
 	private SnycProgress syncProgress;
 	
-
-	/**
+    /**
 	 * Create the dialog.
 	 * @param parentShell
 	 */
-	public LoginDialog(Shell parentShell) {
+	public LoginDialog(Shell parentShell) 
+	{
+		// initializes dialog componenets
 		super(parentShell);
-		
 		resourcesBuilder = new UsrResourcesBuilder();
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
 	    manifest = AppManifestBuild.getInstance();
 	    resourcesBuilder = new UsrResourcesBuilder();
-	   syncListener();
-	   
-		
-	}
+	    credentialsListener(); // Listener for synchronize button
+	 }
 
 	/**
 	 * Create contents of the dialog.
 	 * @param parent
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	protected Control createDialogArea(Composite parent) 
+	{
 		setMessage("Rsace Synchronization Credentials");
 		setTitle("Welcome to Rsace");
 		Composite area = (Composite) super.createDialogArea(parent);
@@ -94,52 +104,94 @@ public class LoginDialog extends TitleAreaDialog {
 	{
 		createButton(parent, IDialogConstants.CANCEL_ID,
 				IDialogConstants.CANCEL_LABEL, false);
-		 Button sync = createButton(parent,IDialogConstants.CANCEL_ID,"New Credentials", true);
+		 Button newCredentialsButton = createButton(parent,IDialogConstants.CANCEL_ID,"New Credentials", true);
 		 createButton(parent, IDialogConstants.OK_ID, "Synchronize",
 				true);
-		 sync.addListener(SWT.Selection, newCredentialsListener);
+		 newCredentialsButton.addListener(SWT.Selection, newCredentialsListener);
     }
 	
-	
-	
-    
-	// New credentials button clicked
-	public void syncListener ()
+	/**
+	 * Create listener for credentials button 
+	 */
+	public void credentialsListener ()
 	{
 	    newCredentialsListener = new Listener() 
 	    {
 		    public void handleEvent(Event event) 
 		    {
 		        
-		        AskSetPreferencesDialog askPreferencesDialog = new AskSetPreferencesDialog(getShell());
+		        CreateNewCredentialsDialog askPreferencesDialog = new CreateNewCredentialsDialog(getShell());
 	       	    askPreferencesDialog.open();
 		        
 		    }
 		};
 	}
-	// Synchronize button clicked
+	/**
+	 * Action when synchronized button is pressed
+	 */
 	@Override
 	protected void okPressed()
 	{
-		
-		syncProgress = new SnycProgress(getShell(), SWT.TITLE | SWT.PRIMARY_MODAL);
-	    try
+	    initAppWithCredentials();
+	}
+	
+	/**
+	 * Action when cancel button is pressed
+	 */
+	@Override
+	protected void cancelPressed ()
+	{
+		try 
+		{
+			treeBuilder.deleteRoot();
+			super.cancelPressed();
+		} 
+		catch (CoreException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Clear all fields 
+	 */
+	private void clearFields ()
+	{
+		devIdText.setText("");
+		teamText.setText("");
+	}
+	
+	/**
+	 *  If the credentials given by the user are correct, it loads
+	 *  all the configuration parameters for this user.
+	 */
+	public void initAppWithCredentials ()
+	{
+		try
 		{
 			Developer developer = Team.getDeveloperFromDB(devIdText.getText(), teamText.getText());
 			if (developer == null)
 			{	
         	    MessageDialog.openInformation(getShell(),
 			                              "Rsace Information",
-			                              "Sorry, we couldn't find your credentials in our servers. Where do I go from here?\n" +
-			                              "1. Check if your credentials are in the correct form. Remember, developer's id and team's id " +
-			                              "can be in any form you want but only 5 characters maximum\n" + 
-			                              "2. If this is your first time using Rsace, you'll need to create new credentials");
-        	    treeBuilder.deleteRoot();
+			                              "Ops, we are sorry. We couldn't find your credentials in our server, but " + 
+			                              "the RSACE's team would be very happy to have you in our developer's family. " + 
+			                              "Please, create new credentials to join our RSACE team");
+        	    clearFields();
         	    
 			}
-			else if (developer.isRegistered() == true)
+			else if (developer.isSessionOwner() == false)
+			{
+				MessageDialog.openInformation(getShell(),
+                        "Rsace Information",
+                        "The developer's ID that you have provided is not the owner of " + 
+                        "this team. Please, enter the developer and team ID provided at registration time");
+                clearFields();
+			}
+			else if (developer.isRegisteredInTeam() == true )
             {
-				System.out.println("I am here 1");
+				
 				treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
             	developer.setAsSessionOwner();
             	manifest.makeManifestFile();
@@ -154,10 +206,9 @@ public class LoginDialog extends TitleAreaDialog {
         	    InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
-        	    
         	    treeBuilder.refreshAppTree();
-        	    treeBuilder.refreshUserRootProject();
-        	    syncProgress.open();
+        	   // treeBuilder.refreshUserRootProject();
+        	    super.okPressed();
         	    
         	    
         	}
@@ -168,10 +219,7 @@ public class LoginDialog extends TitleAreaDialog {
 		{
 		    System.out.println(e.getMessage());	
 		}
-		super.okPressed();
 	}
-	
-	
     
 	/**
 	 * Return the initial size of the dialog.

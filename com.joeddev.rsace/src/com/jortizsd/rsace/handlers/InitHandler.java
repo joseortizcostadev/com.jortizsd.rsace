@@ -28,7 +28,7 @@ import com.jortizsd.rsace.appTree.AppManifestBuild;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
-import com.jortizsd.rsace.dialogs.AskSetPreferencesDialog;
+import com.jortizsd.rsace.dialogs.CreateNewCredentialsDialog;
 import com.jortizsd.rsace.dialogs.LoginDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.dialogs.SnycProgress;

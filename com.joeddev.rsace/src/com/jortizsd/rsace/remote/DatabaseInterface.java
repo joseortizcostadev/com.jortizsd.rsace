@@ -41,33 +41,7 @@ public interface DatabaseInterface
 	 * @throws SQLException 
 	 * @throws IOException 
 	 */
-	/*
-    default Connection getConnectionFromRemoteConfigFile (URL configFileURL ) throws SQLException, IOException
-    {
-    	
-    	Remote remote = new Remote (configFileURL);
-    	AppConfig dbConfig = new AppConfig (remote);
-    	
-    	try 
-    	{
-    		MysqlDataSource dataSource = new MysqlDataSource();
-    		dataSource.setUser(dbConfig.getDatabaseUsername()); 
-    		dataSource.setPassword(dbConfig.getDatabasePassword()); 
-    		dataSource.setDatabaseName(dbConfig.getDatabase());
-    		dataSource.setServerName(dbConfig.getDatabaseHost());
-    	    return dataSource.getConnection();
-    	}
-    	catch (SQLException ex) 
-    	{
-    	    // handle any errors
-    	    System.out.println("SQLException: " + ex.getMessage());
-    	    System.out.println("SQLState: " + ex.getSQLState());
-    	    System.out.println("VendorError: " + ex.getErrorCode());
-    	}
-        return null;
-        
-    }
-    */
+	
     
     /**
      * @category             Default Interface Method

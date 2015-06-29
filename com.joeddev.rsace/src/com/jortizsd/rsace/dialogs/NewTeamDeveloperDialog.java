@@ -36,14 +36,13 @@ import com.jortizsd.rsace.remote.Remote;
 import com.jortizsd.rsace.remote.Team;
 
 public class NewTeamDeveloperDialog extends TitleAreaDialog {
-	private Text devNameText;
 	private Text devIdText;
-	private Text devEmailText;
 	private Combo teamCombo;
 	private Developer newDeveloperMember;
 	private Button devFavoritesCheckBox;
 	public static final String TEAM_COMBO_TITLE = "Select a team from this list";
 	public static final String NO_TEAMS = "No Teams Found";
+	
 	
 
 	/**
@@ -68,40 +67,22 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		
 		teamCombo = new Combo(container, SWT.NONE);
 		teamCombo.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		teamCombo.setBounds(10, 10, 430, 24);
+		teamCombo.setBounds(10, 10, 232, 22);
 		// Adds existing teams to combo 
 		fillTeamComboBox();
-	    
-		Label lblDevelopersUserName = new Label(container, SWT.NONE);
-		lblDevelopersUserName.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblDevelopersUserName.setBounds(10, 38, 142, 22);
-		lblDevelopersUserName.setText("Developer's User Name");
-		
-		devNameText = new Text(container, SWT.BORDER);
-		devNameText.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		devNameText.setBounds(10, 57, 282, 19);
 		
 		Label lblNewLabel = new Label(container, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel.setBounds(298, 38, 126, 14);
+		lblNewLabel.setBounds(10, 38, 126, 14);
 		lblNewLabel.setText("Developer's ID");
 		
 		devIdText = new Text(container, SWT.BORDER);
 		devIdText.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		devIdText.setBounds(298, 57, 142, 19);
-		
-		Label lblNewLabel_1 = new Label(container, SWT.NONE);
-		lblNewLabel_1.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		lblNewLabel_1.setBounds(10, 82, 110, 19);
-		lblNewLabel_1.setText("Developer's email");
-		
-		devEmailText = new Text(container, SWT.BORDER);
-		devEmailText.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		devEmailText.setBounds(10, 101, 430, 19);
+		devIdText.setBounds(10, 58, 232, 19);
 		
 		devFavoritesCheckBox = new Button(container, SWT.CHECK);
 		devFavoritesCheckBox.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
-		devFavoritesCheckBox.setBounds(10, 132, 142, 18);
+		devFavoritesCheckBox.setBounds(10, 87, 142, 18);
 		devFavoritesCheckBox.setText("Add to Favorites");
 
 		return area;
@@ -154,7 +135,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
     protected Control createContents(Composite parent) {
         Control contents = super.createContents(parent);
         setTitle("Developers Team");
-        setMessage("Add New Developer to an Exixting Team");
+        setMessage("Add a RSACE'S developer to your team");
         return contents;
     }
 	
@@ -164,14 +145,34 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	@Override
 	protected void okPressed() 
 	{
+		addNewTeamMember();
 		
+    }
+	/**
+	 * @category        Private Class Method
+	 * @description     Validates form's data before sending it to preferences
+	 * @param teamName  String object representing the team's name
+	 * @param devName   String object representing the developer's name
+	 * @param devId     String object representing the developer's id
+	 * @param devEmail  String object representing the developer's email
+	 * @return          True if the data was correctly validated. Otherwise returns false.
+	 */
+	private boolean isDataValidated (String teamName, String devId)
+	{
+		
+		if (teamName.equalsIgnoreCase(NO_TEAMS) || teamName.equalsIgnoreCase(TEAM_COMBO_TITLE))
+			return false;
+		else if ( devId.equalsIgnoreCase("") )
+			return false;
+		return true;
+	}
+	
+	public void addNewTeamMember ()
+	{
 		String myTeam = teamCombo.getText();
-		String devName = devNameText.getText();
 		String devId = devIdText.getText();
-		String devEmail = devEmailText.getText();
-		boolean isFavorites = devFavoritesCheckBox.getSelection();
-		
-		if (isDataValidated(myTeam, devName, devId, devEmail))
+		boolean isInFavorites = devFavoritesCheckBox.getSelection();
+		if (isDataValidated(myTeam,  devId))
 		{
 			// The data has been validated
 			try 
@@ -179,16 +180,31 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 				
 				// Saves new developer info in XML configuration, and preferences files.
 				Team team = Team.getTeamByName(myTeam);
-				newDeveloperMember = new Developer (team, devId, devName, devEmail, false, false);
-				newDeveloperMember.setAsFavorite(isFavorites);
-				newDeveloperMember.addToTeam();
-				newDeveloperMember.addDeveloperToDB();
-				super.okPressed();
+				newDeveloperMember = Team.getDeveloperFromDB(devId);
+			    if (newDeveloperMember != null)
+				{
+			    	newDeveloperMember.setTeam(team);
+					newDeveloperMember.setAsOwner(false);
+			        newDeveloperMember.addToTeam();
+				    newDeveloperMember.addDeveloperToDB();
+				    newDeveloperMember.setAsFavorite(isInFavorites);
+				    super.okPressed();
+				}
+				else
+				{
+					MessageDialog.openInformation(getShell(),
+                            "Rsace Information",
+                            "The developer with ID: " + devId + 
+                            " does not have an RSACE's developer account. In order to add developers " +
+                            "as members of your developers team, they need to have a develper " +
+                            "account in RSACE with a valid developer ID");
+				}
+				
 	
 			} 
-			catch (SAXException | IOException | CoreException | ParserConfigurationException e) 
+			catch (Exception e) 
 			{
-				
+				System.out.println(e.getMessage());
 			}
 			
 		}
@@ -203,31 +219,12 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			
 		
 		}
-			
-				                   
-	}
-	/**
-	 * @category        Private Class Method
-	 * @description     Validates form's data before sending it to preferences
-	 * @param teamName  String object representing the team's name
-	 * @param devName   String object representing the developer's name
-	 * @param devId     String object representing the developer's id
-	 * @param devEmail  String object representing the developer's email
-	 * @return          True if the data was correctly validated. Otherwise returns false.
-	 */
-	private boolean isDataValidated (String teamName, String devName, String devId, String devEmail)
-	{
-		if (teamName.equalsIgnoreCase(NO_TEAMS) || teamName.equalsIgnoreCase(TEAM_COMBO_TITLE))
-			return false;
-		else if (devName.equalsIgnoreCase("") || devId.equalsIgnoreCase("") || devEmail.equalsIgnoreCase(""))
-			return false;
-		return true;
 	}
 	/**
 	 * Return the initial size of the dialog.
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(450, 300);
+		return new Point(358, 261);
 	}
 }

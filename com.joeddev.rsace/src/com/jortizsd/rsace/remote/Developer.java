@@ -148,7 +148,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
      * @description        Sets this developer as the session's owner
      * @param isSender     boolean object. When true, it sets this developer as the session owner
     */
-    public void setAsSender (boolean isSender)
+    public void setAsOwner (boolean isSender)
     {
         this.isTheSender = isSender;
     }
@@ -480,21 +480,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
 	}
 	
 	
-	@Override
-	public void deleteDeveloperFromDB() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
-	public static Developer getDeveloperFromDB(String developerID) 
-	{
-	   return null;
-	}
-	
-	
-	
-	public List <Team> getAllMyTeams ()
+    public List <Team> getAllMyTeams ()
 	{
 		List <Team> myTeams = new ArrayList <>();
 		try
@@ -573,11 +559,56 @@ public class Developer extends TreeWriter implements DatabaseInterface
 		this.isRegistered = isRegistered;
 	}
 	
-	public boolean isRegistered ()
+	public boolean isRegisteredInTeam ()
 	{
-		return this.isRegistered;
+		String query = "SELECT * FROM developers WHERE " + RemoteConstants.REMOTE_DB_FIELD_DEVID + "=" + getId() + 
+				       " OR " + RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID + "=" + getTeam().getTeamId();
+		try
+    	{
+    	    URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+             
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+             
+            if (rs.next())
+            	return true;
+            st.close();
+            return false;
+          
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		
+		return false;
 	}
     
+	public boolean isRegistered ()
+	{
+		String query = "SELECT * FROM developers WHERE " + RemoteConstants.REMOTE_DB_FIELD_DEVID + "=" + getId();
+	    try
+	    {
+	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+            if (rs.next())
+     	       return true;
+            st.close();
+            return false;
+        }
+	    catch (Exception e)
+	    {
+		    System.out.println(e.getMessage());
+	    }
+        return false;
+	}
     /**
      * @category     Public Class Method
      * @description  Overrides the method toString from the superClass to return 
@@ -599,4 +630,10 @@ public class Developer extends TreeWriter implements DatabaseInterface
     	return developerContext;
     			           
     }
+
+	@Override
+	public void deleteDeveloperFromDB() {
+		// TODO Auto-generated method stub
+		
+	}
 }

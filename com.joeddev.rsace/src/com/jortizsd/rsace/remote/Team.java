@@ -319,7 +319,6 @@ public class Team extends Developer
     	
     }
     
-   
     public static Developer getDeveloperFromDB (String developerID, String teamId)
     {
     	Team team;
@@ -363,5 +362,48 @@ public class Team extends Developer
 		return developer;
         
     }
+    
+    public static Developer getDeveloperFromDB (String developerID)
+    {
+    	Team team;
+    	Developer developer = null;
+    	try
+    	{
+    	    
+    	    String query = "SELECT * FROM developers WHERE " + RemoteConstants.REMOTE_DB_FIELD_DEVID + 
+    	    		       "=" + developerID;
+ 	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
+            Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
+            // create the java statement
+            Statement st = conn.createStatement();
+             
+            // execute the query, and get a java resultset
+            ResultSet rs = st.executeQuery(query);
+             
+            // iterate through the java resultset
+            while (rs.next())
+            {
+              
+            	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
+            	  String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
+            	  String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
+                  String devEmail = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVEMAIL);
+                  boolean isOwner = rs.getBoolean(RemoteConstants.REMOTE_DB_FIELD_ISTEAMOWNER);
+                  team = new Team(teamName, devId);
+                  developer = new Developer(team,devId,devName,devEmail,false,isOwner);
+                  developer.setRegistrationState(true);
+                  break;
+              
+            }
+            st.close();
+           return developer;
+    	}
+    	catch (Exception e)
+    	{
+    		System.out.println(e.getMessage());
+    	}
+		return developer;
+    }
+    
     
 }
