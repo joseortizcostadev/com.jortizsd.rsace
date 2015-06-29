@@ -12,6 +12,7 @@
  */
 package com.jortizsd.rsace.dialogs;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -36,6 +37,8 @@ import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.remote.AppConfig;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Team;
+import com.jortizsd.rsace.views.LogConstants;
+import com.jortizsd.rsace.views.RsaceLog;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -192,11 +195,14 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
 	    	   		                            developerEmailText.getText(), false, true);
 	    	   // Checks is the info provided by the new developer is already taken. Otherwise, register the developer
 	    	   if (developer.isRegisteredInTeam())
+	    	   {
 	    		  // A developer and/or team with those credentials already exist 
 			      MessageDialog.openInformation(getShell(),
 			                                    "Rsace Information",
 			                                    "The developer and/or team ID that you provided are being already used " + 
 			                                    "by other RSACE's develoepers and/or teams.");
+	    	      RsaceLog.writeLog("Rsace Failed to Create New Credentials", "Credentials already exist", LogConstants.LOG_ERROR_CONTEXT);
+	    	   }
         	   else 
                {
         		  // Register developer 
@@ -212,6 +218,9 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	      resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
         	      treeBuilder.refreshAppTree();
+        	      RsaceLog.writeLog("Rsace Synchronization Status", "Local synchronization succesfully done with developer's id: " + 
+	                       developer.getId() + " and developer's team id: " + developer.getTeam().getTeamId() + 
+	                       " at " + new Date().toString(), LogConstants.LOG_INFO_CONTEXT);
         	      super.okPressed();
         	    }
 	    	}
@@ -221,6 +230,7 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
 	    		MessageDialog.openInformation(getShell(),
                         "Rsace Information",
                         "All fields are required, and ID's fields must contain only numbers");
+	    		RsaceLog.writeLog("New Credentials Warning", "All fields are required, and ID's fields must contain only numbers" , LogConstants.LOG_WARNING_CONTEXT);
 	    	}
 		}
 	    catch (Exception e)

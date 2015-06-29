@@ -10,6 +10,7 @@
 
 package com.jortizsd.rsace.dialogs;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,6 +35,8 @@ import org.xml.sax.SAXException;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Remote;
 import com.jortizsd.rsace.remote.Team;
+import com.jortizsd.rsace.views.LogConstants;
+import com.jortizsd.rsace.views.RsaceLog;
 
 public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	private Text devIdText;
@@ -188,6 +191,9 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			        newDeveloperMember.addToTeam();
 				    newDeveloperMember.addDeveloperToDB();
 				    newDeveloperMember.setAsFavorite(isInFavorites);
+				    RsaceLog.writeLog("Rsace Information","The developer " + newDeveloperMember.getName() + " was succesfully added to the team  " + 
+				                      myTeam +  " at " + new Date().toString() + 
+				                      " In order to get more information about this new developer, you can check the file rsace_team.xml ", LogConstants.LOG_INFO_CONTEXT);
 				    super.okPressed();
 				}
 				else
@@ -197,13 +203,14 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
                             "The developer with id: " + devId + 
                             " does not match with any Rsace's developer account " + 
                             "Please enter a valid developer's id");
+					RsaceLog.writeLog("Rsace Error", "Credentials provided dont correspond to any Rsace's developer member", LogConstants.LOG_ERROR_CONTEXT);
 				}
 				
 	
 			} 
 			catch (Exception e) 
 			{
-				System.out.println(e.getMessage());
+				RsaceLog.writeLog("Internal Error", e.getMessage(), LogConstants.LOG_ERROR_CONTEXT);
 			}
 			
 		}
@@ -215,6 +222,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			MessageDialog.openInformation(getShell(),
 					                      "Rsace Information",
 					                      "All fields are required");
+			RsaceLog.writeLog("Rsace Warning","All fields are required" , LogConstants.LOG_WARNING_CONTEXT);
 			
 		
 		}

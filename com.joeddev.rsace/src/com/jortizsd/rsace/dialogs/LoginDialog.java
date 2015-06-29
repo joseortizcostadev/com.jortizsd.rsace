@@ -183,7 +183,7 @@ public class LoginDialog extends TitleAreaDialog
 			                              "Please, create new credentials to join our RSACE team");
         	    
         	    clearFields();
-        	    RsaceLog.writeLog("Rsace Login Failed","Credentials not found on Rsace's system" , LogConstants.LOG_ERROR_COLOR);
+        	    RsaceLog.writeLog("Rsace Login Failed","Credentials not found in Rsace's developer credentials" , LogConstants.LOG_ERROR_CONTEXT);
         	    
 			}
 			else if (developer.isSessionOwner() == false)
@@ -192,7 +192,7 @@ public class LoginDialog extends TitleAreaDialog
                         "Rsace Login Failed",
                         "The developer's ID that you have provided is not the owner of " + 
                         "this team. Please, enter the developer and team ID provided at registration time");
-				RsaceLog.writeLog("Rsace Login Failed","The developer's id provided is not the owner of the team provided" , LogConstants.LOG_ERROR_COLOR);
+				RsaceLog.writeLog("Rsace Login Failed","The developer's id provided is not the owner of the team provided" , LogConstants.LOG_ERROR_CONTEXT);
                 clearFields();
 			}
 			else if (developer.isRegisteredInTeam() == true )
@@ -215,7 +215,7 @@ public class LoginDialog extends TitleAreaDialog
         	    treeBuilder.refreshAppTree();
         	    RsaceLog.writeLog("Rsace Synchronization Status", "Local synchronization succesfully done with developer's id: " + 
         	                       developer.getId() + " and developer's team id: " + developer.getTeam().getTeamId() + 
-        	                       " at " + new Date().toString(), LogConstants.LOG_INFO_COLOR);
+        	                       " at " + new Date().toString(), LogConstants.LOG_INFO_CONTEXT);
         	    super.okPressed();
         	    
         	    
