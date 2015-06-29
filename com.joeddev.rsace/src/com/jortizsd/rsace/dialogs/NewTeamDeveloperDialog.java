@@ -67,7 +67,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		
 		teamCombo = new Combo(container, SWT.NONE);
 		teamCombo.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		teamCombo.setBounds(10, 10, 232, 22);
+		teamCombo.setBounds(10, 10, 290, 22);
 		// Adds existing teams to combo 
 		fillTeamComboBox();
 		
@@ -78,7 +78,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		
 		devIdText = new Text(container, SWT.BORDER);
 		devIdText.setFont(SWTResourceManager.getFont("Lucida Grande", 11, SWT.NORMAL));
-		devIdText.setBounds(10, 58, 232, 19);
+		devIdText.setBounds(10, 58, 290, 19);
 		
 		devFavoritesCheckBox = new Button(container, SWT.CHECK);
 		devFavoritesCheckBox.setFont(SWTResourceManager.getFont("Lucida Grande", 12, SWT.NORMAL));
@@ -194,10 +194,9 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 				{
 					MessageDialog.openInformation(getShell(),
                             "Rsace Information",
-                            "The developer with ID: " + devId + 
-                            " does not have an RSACE's developer account. In order to add developers " +
-                            "as members of your developers team, they need to have a develper " +
-                            "account in RSACE with a valid developer ID");
+                            "The developer with id: " + devId + 
+                            " does not match with any Rsace's developer account " + 
+                            "Please enter a valid developer's id");
 				}
 				
 	
@@ -225,6 +224,6 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(358, 261);
+		return new Point(310, 261);
 	}
 }
