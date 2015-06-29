@@ -3,13 +3,18 @@
  * @application   com.jortizsd.rsace
  * @File          AskSetPreferencesDialog.java
  * @Date          04/06/2015
- * @Description   This class creates a dialog asking the
- *                users to enter their developer's preferences
+ * @Description   This class creates a dialog which asks the users
+ *                to create new developer's credentials
+ *                If the data is validated, then all the data is
+ *                saved in the database, and in addition, it is 
+ *                loaded to the app's configuration files.
+ *                This class also checks for data validation
  */
 package com.jortizsd.rsace.dialogs;
 import java.io.InputStream;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -28,6 +33,7 @@ import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
+import com.jortizsd.rsace.remote.AppConfig;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Team;
 
@@ -134,15 +140,30 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
 	}
 	
 	/**
-	 * Creates an action when the ok button is cliked
+	 * Creates an action when the OK button is clicked
 	 */
 	@Override
 	protected void okPressed() 
 	{
 		initAppWithNewCredentials();
-	    super.okPressed();
+	    
 	}
 	
+	/**
+	 * Creates an action when the Cancel Button is clicked
+	 */
+	@Override
+	protected void cancelPressed()
+	{
+		try {
+			treeBuilder.deleteRoot();
+			super.cancelPressed();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		super.cancelPressed();
+	}
 	/**
 	 * Creates contents
 	 */
@@ -161,51 +182,83 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
 	
 	public void initAppWithNewCredentials ()
 	{
-		SnycProgress syncProgress = new SnycProgress(getShell(), SWT.TITLE | SWT.PRIMARY_MODAL);
-	    try
+		try
 		{
-	    	Team team = Team.createNewTeam(teamText.getText(), teamIdText.getText());
-	    	Developer developer = new Developer(team, developerIdText.getText(), developerNameText.getText(), 
-	    			                            developerEmailText.getText(), false, true);
-			if (developer.isRegisteredInTeam())
-			{	
-        	    MessageDialog.openInformation(getShell(),
-			                              "Rsace Information",
-			                              "Your credentials are being used by other developer in the system. Please enter a diferent developer ID, and/or team ID");
-        	    treeBuilder.deleteRoot();
-        	    
-			}
-			else 
-            {
-				
-				treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
-				developer.addDeveloperToDB();
-            	developer.setAsSessionOwner();
-            	manifest.makeManifestFile();
-        	    List <Developer> teamMembers= developer.getMyTeamMembers();
-        	    for (Developer dev : teamMembers)
-        	    {
-        	    	
-        	    	if (!developer.getId().equalsIgnoreCase(dev.getId()))
+			// Checks data validation
+	    	if (isDataValidated())
+	    	{
+	    	   Team team = Team.createNewTeam(teamText.getText(), teamIdText.getText());
+	    	   Developer developer = new Developer(team, developerIdText.getText(), developerNameText.getText(), 
+	    	   		                            developerEmailText.getText(), false, true);
+	    	   // Checks is the info provided by the new developer is already taken. Otherwise, register the developer
+	    	   if (developer.isRegisteredInTeam())
+	    		  // A developer and/or team with those credentials already exist 
+			      MessageDialog.openInformation(getShell(),
+			                                    "Rsace Information",
+			                                    "The developer and/or team ID that you provided are being already used " + 
+			                                    "by other RSACE's develoepers and/or teams.");
+        	   else 
+               {
+        		  // Register developer 
+				  treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
+				  developer.addDeveloperToDB();
+            	  developer.setAsSessionOwner();
+            	  manifest.makeManifestFile();
+        	      List <Developer> teamMembers= developer.getMyTeamMembers();
+        	      for (Developer dev : teamMembers)
+        	         if (!developer.getId().equalsIgnoreCase(dev.getId()))
         		          dev.addToTeam();
-        	    	
-        	    }
-        	    InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
+        	      InputStream headerStream = resourcesBuilder.getHeaderStreamForSyncFile(UsrResourcesBuilder.FILE_MODE_LOCAL, developer.getName(), ResourcesBuilder.SYNC_FILE, 
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
-        	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
-        	    
-        	    treeBuilder.refreshAppTree();
-        	    treeBuilder.refreshUserRootProject();
-        	    syncProgress.open();
-            }
+        	      resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
+        	      treeBuilder.refreshAppTree();
+        	      super.okPressed();
+        	    }
+	    	}
+	    	else
+	    	{
+	    		// Data was not validated
+	    		MessageDialog.openInformation(getShell(),
+                        "Rsace Information",
+                        "All fields are required, and ID's fields must contain only numbers");
+	    	}
 		}
 	    catch (Exception e)
 	    {
-	    	
+	    	// Create error
 	    }
-	 }
+	}
 	
-
+	/**
+	 * Validates data 
+	 * @return True if the data was validated. Otherwise, return false
+	 */
+	private boolean isDataValidated ()
+	{
+		if (developerIdText.getText().equals("") || developerNameText.getText().equals("") || 
+			developerEmailText.getText().equals("") || teamIdText.getText().equals("") || 
+			teamText.getText().equals("") || !isFieldOnlyNumbers(developerIdText.getText()) ||
+			!isFieldOnlyNumbers(teamIdText.getText()))
+            return false;
+        return true;
+			
+	}
+	
+	/**
+	 * Checks if the id's fields contain only numbers
+	 * @param string String object representing the string to be tested
+	 * @return True if the string given contains only numbers. Otherwise, returns false.
+	 */
+	private static boolean isFieldOnlyNumbers (String string)
+	{
+		  char[] chars = new char[string.length()];
+	      string.getChars(0, chars.length, chars, 0);
+	      for (int i = 0; i < chars.length; i++) 
+	         if (!('0' <= chars[i] && chars[i] <= '9')) 
+	            return false;
+	      return true;
+	}
+	
 	/**
 	 * Return the initial size of the dialog.
 	 */
