@@ -15,6 +15,7 @@
  */
 package com.jortizsd.rsace.dialogs;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.List;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -37,6 +38,8 @@ import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.remote.Developer;
 import com.jortizsd.rsace.remote.Team;
+import com.jortizsd.rsace.views.LogConstants;
+import com.jortizsd.rsace.views.RsaceLog;
 
 public class LoginDialog extends TitleAreaDialog 
 {
@@ -178,15 +181,18 @@ public class LoginDialog extends TitleAreaDialog
 			                              "Ops, we are sorry. We couldn't find your credentials in our server, but " + 
 			                              "the RSACE's team would be very happy to have you in our developer's family. " + 
 			                              "Please, create new credentials to join our RSACE team");
+        	    
         	    clearFields();
+        	    RsaceLog.writeLog("Rsace Login Failed","Credentials not found on Rsace's system" , LogConstants.LOG_ERROR_COLOR);
         	    
 			}
 			else if (developer.isSessionOwner() == false)
 			{
 				MessageDialog.openInformation(getShell(),
-                        "Rsace Information",
+                        "Rsace Login Failed",
                         "The developer's ID that you have provided is not the owner of " + 
                         "this team. Please, enter the developer and team ID provided at registration time");
+				RsaceLog.writeLog("Rsace Login Failed","The developer's id provided is not the owner of the team provided" , LogConstants.LOG_ERROR_COLOR);
                 clearFields();
 			}
 			else if (developer.isRegisteredInTeam() == true )
@@ -207,8 +213,11 @@ public class LoginDialog extends TitleAreaDialog
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	    resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
         	    treeBuilder.refreshAppTree();
-        	   // treeBuilder.refreshUserRootProject();
+        	    RsaceLog.writeLog("Rsace Synchronization Status", "Local synchronization succesfully done with developer's id: " + 
+        	                       developer.getId() + " and developer's team id: " + developer.getTeam().getTeamId() + 
+        	                       " at " + new Date().toString(), LogConstants.LOG_INFO_COLOR);
         	    super.okPressed();
+        	    
         	    
         	    
         	}

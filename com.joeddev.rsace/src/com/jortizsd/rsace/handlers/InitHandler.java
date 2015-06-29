@@ -9,34 +9,21 @@
  *                are initialized for the first time 
  */
 package com.jortizsd.rsace.handlers;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
-
-import com.jortizsd.rsace.appTree.AppManifestBuild;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
-import com.jortizsd.rsace.dialogs.CreateNewCredentialsDialog;
 import com.jortizsd.rsace.dialogs.LoginDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
-import com.jortizsd.rsace.dialogs.SnycProgress;
-import com.jortizsd.rsace.preferences.DVTPreferencesPage;
-import com.jortizsd.rsace.remote.Developer;
-import com.jortizsd.rsace.remote.Remote;
-import com.jortizsd.rsace.remote.RemoteConstants;
-import com.jortizsd.rsace.remote.Team;
+import com.jortizsd.rsace.views.RsaceLog;
 
 
 /**
@@ -60,12 +47,14 @@ public class InitHandler extends AbstractHandler
 	
 	/**
 	 * The constructor.
+	 * @throws PartInitException 
 	 */
 	
 	
-	public InitHandler() 
+	public InitHandler() throws PartInitException 
 	{
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RsaceLog.ID);
 	}
 
 	/**
@@ -110,7 +99,7 @@ public class InitHandler extends AbstractHandler
 			   new NewTeamDeveloperDialog(window.getShell()).open();
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
-				  System.out.println("New Developer");
+			   System.out.println("I think that dos not work");
 		   return null;
 	    }
 	    catch (Exception e)
@@ -131,7 +120,6 @@ public class InitHandler extends AbstractHandler
         {
 	          
                LoginDialog login = new LoginDialog(window.getShell());
-               
                login.open();
               
 	               
@@ -146,23 +134,15 @@ public class InitHandler extends AbstractHandler
 	{
 		try
 		{
-			
-		    // do Remote work
- 	        
-		}
+		    
+	    }
  		catch (Exception e)
  		{
 	      
-	    	   
 	    	 MessageDialog.openInformation(window.getShell(),
 	    						          "Rsace Information",
 	    						          "Connection to Rsace server failed with error: " + e.getMessage());
- 		}
+	    }
 	       
-		
-		
-		
 	}
-	
-	
 }
