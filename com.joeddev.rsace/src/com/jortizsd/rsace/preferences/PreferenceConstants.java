@@ -31,6 +31,8 @@ public class PreferenceConstants {
 	
 	public static final String P_TEST = "text";
 	
+	public static final String P_LOG_STATUS = "showLogInformation";
+	
 	
 	
 	

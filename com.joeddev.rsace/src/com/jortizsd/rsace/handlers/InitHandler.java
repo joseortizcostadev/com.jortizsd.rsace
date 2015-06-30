@@ -23,6 +23,8 @@ import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.dialogs.LoginDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
+import com.jortizsd.rsace.preferences.RsacePreferencesPage;
+import com.jortizsd.rsace.remote.AppConfig;
 import com.jortizsd.rsace.views.RsaceLog;
 
 
@@ -54,8 +56,10 @@ public class InitHandler extends AbstractHandler
 	public InitHandler() throws PartInitException 
 	{
 		treeBuilder = TreeBuilder.getRsaceTreeInstance();
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RsaceLog.ID);
+		
 	}
+	
+	
 
 	/**
 	 * the command has been executed, so extract extract the needed information
@@ -63,10 +67,12 @@ public class InitHandler extends AbstractHandler
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
+		
 	    try
 	    {
 	    	
 		   IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
+		   AppConfig.checkLogStatus();
 		   
 		   if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_SYNC))
 		   {

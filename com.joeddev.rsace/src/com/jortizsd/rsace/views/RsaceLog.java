@@ -4,6 +4,9 @@ package com.jortizsd.rsace.views;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.*;
+
+import com.jortizsd.rsace.preferences.RsacePreferencesPage;
+
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GlyphMetrics;
@@ -104,23 +107,26 @@ public class RsaceLog extends ViewPart {
 	// Write Log
     public static void writeLog (String tag, String message, int contextColor)
     {
+    	RsacePreferencesPage generalSettings = new RsacePreferencesPage();
+    	if (generalSettings.isLogActive())
+    	{
+    	   // Font
+    	   Font font = new Font( Display.getDefault(), "Lucida Grande", 12, SWT.NORMAL);
+    	   // Text
+    	   int start = styledText.getCharCount();
+    	   String newText = "*** " + tag + ": " + message + "\n";
+    	   styledText.append(newText);
+    	   int end = styledText.getCharCount() - start;
+    	   // Sets error color
+           StyleRange sr1 = new StyleRange();
+           sr1.start = start;
+           sr1.length = end;
+           sr1.foreground = Display.getDefault().getSystemColor(contextColor);
+           sr1.font = font;
+           sr1.fontStyle = SWT.BOLD;
+           styledText.setStyleRange(sr1);
+    	}
     	
-    	// Font
-    	Font font = new Font( Display.getDefault(), "Lucida Grande", 12, SWT.NORMAL);
-    	// Text
-    	int start = styledText.getCharCount();
-    	String newText = "*** " + tag + ": " + message + "\n";
-    	styledText.append(newText);
-    	int end = styledText.getCharCount() - start;
-    	// Sets error color
-        StyleRange sr1 = new StyleRange();
-        sr1.start = start;
-        sr1.length = end;
-        sr1.foreground = Display.getDefault().getSystemColor(contextColor);
-        sr1.font = font;
-        sr1.fontStyle = SWT.BOLD;
-        styledText.setStyleRange(sr1);
-        
     }
 	
 	/**

@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -25,6 +27,8 @@ import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.TreeWriter;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
+import com.jortizsd.rsace.preferences.RsacePreferencesPage;
+import com.jortizsd.rsace.views.RsaceLog;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class AppConfig extends TreeWriter
@@ -172,6 +176,12 @@ public class AppConfig extends TreeWriter
         
     }
 	
-	
+	public static void checkLogStatus () throws PartInitException
+	{
+		RsacePreferencesPage generalSettings = new RsacePreferencesPage();
+    	if (generalSettings.isLogActive())
+    		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RsaceLog.ID);
+    	
+	}
     
 }

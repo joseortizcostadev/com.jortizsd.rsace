@@ -31,7 +31,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	
 	private void initRsaceGeneralSettings ()
 	{
-		
+		store.setDefault(PreferenceConstants.P_LOG_STATUS, true);
 	}
 	
     private void initDeveloperTeamSettings ()
@@ -54,6 +54,8 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(PreferenceConstants.P_REMOTE_HOST_PORT, 11109);
 		
     }
+    
+    
     
    
 	
