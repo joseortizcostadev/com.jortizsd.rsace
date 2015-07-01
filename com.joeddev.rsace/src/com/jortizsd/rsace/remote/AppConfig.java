@@ -14,6 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.NoSuchProviderException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -28,6 +36,7 @@ import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.TreeWriter;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.preferences.RsacePreferencesPage;
+import com.jortizsd.rsace.views.LogConstants;
 import com.jortizsd.rsace.views.RsaceLog;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
@@ -43,6 +52,12 @@ public class AppConfig extends TreeWriter
     String databaseUsername;
     String databasePassword;
     String databaseDriver;
+    String emailSMTPServer;
+    String smtpUsername;
+    String smtpPassword;
+    private Properties mailServerProperties;
+	private Session getMailSession;
+	private MimeMessage generateMailMessage;
     
     
 	public AppConfig (Remote remote) throws IOException 
@@ -72,6 +87,9 @@ public class AppConfig extends TreeWriter
 		    setDatabaseUsername(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_DB_USERNAME));
 		    setDatabasePassword(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_DB_PASSWORD));
 		    setDatabaseDriver(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_DB_DRIVER));
+		    setSMTPServer(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_EMAIL_HOST));
+			setSMTPUsername(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_EMAIL_USERNAME));
+			setSMTPPassword(properties.getProperty(RemoteConstants.REMOTE_PROPERTY_EMAIL_PASSWORD));
 		}
 		catch (Exception e)
 		{
@@ -115,6 +133,20 @@ public class AppConfig extends TreeWriter
 		this.databasePassword = databasePassword;
 	}
 	
+	public void setSMTPServer (String smtpHost)
+	{
+		this.emailSMTPServer = smtpHost;
+	}
+	
+	public void setSMTPUsername (String smtpUsername)
+	{
+		this.smtpUsername = smtpUsername;
+	}
+	
+	public void setSMTPPassword(String smtpPassword)
+	{
+		this.smtpPassword = smtpPassword;
+	}
 	public String getDatabaseHost ()
 	{
 		return this.databaseHost;
@@ -150,6 +182,23 @@ public class AppConfig extends TreeWriter
 		return this.databasePassword;
 	}
 	
+	public String getSMTPServer ()
+	{
+		return this.emailSMTPServer;
+	}
+	
+	public String getSMTPUsername ()
+	{
+		return this.smtpUsername;
+	}
+	
+	public String getSMTPPassword ()
+	{
+		return this.smtpPassword;
+	}
+	
+	
+	
 	static Connection getConnectionFromRemoteConfigFile (URL configFileURL ) throws SQLException, IOException
     {
     	
@@ -167,10 +216,7 @@ public class AppConfig extends TreeWriter
     	}
     	catch (SQLException ex) 
     	{
-    	    // handle any errors
-    	    System.out.println("SQLException: " + ex.getMessage());
-    	    System.out.println("SQLState: " + ex.getSQLState());
-    	    System.out.println("VendorError: " + ex.getErrorCode());
+    	    RsaceLog.writeLog("Rsace Internal Server Error", "An internal error has ocurred. " + ex.getMessage(), LogConstants.LOG_ERROR_CONTEXT);
     	}
         return null;
         
@@ -183,5 +229,37 @@ public class AppConfig extends TreeWriter
     		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(RsaceLog.ID);
     	
 	}
+	
+	public void sendEmail (Developer developerRecipient, String subject, String message) 
+	{
+		try
+		{
+		  
+		   mailServerProperties = System.getProperties();
+		   mailServerProperties.put("mail.smtp.port", "587");
+		   mailServerProperties.put("mail.smtp.auth", "true");
+		   mailServerProperties.put("mail.smtp.starttls.enable", "true");
+		   getMailSession = Session.getDefaultInstance(mailServerProperties, null);
+		   generateMailMessage = new MimeMessage(getMailSession);
+		   generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(developerRecipient.getEmail()));
+		   // Uncomment to send emails to the other members of the group
+		   // generateMailMessage.addRecipient(Message.RecipientType.CC, new InternetAddress("rsace.remote.notification@gmail.com"));
+		   generateMailMessage.setSubject(subject);
+		   generateMailMessage.setContent(message, "text/html");
+		   Transport transport = getMailSession.getTransport("smtp");
+		   System.out.println("Server: " + getSMTPServer() + " Username: " + getSMTPUsername() + " Password: " + getSMTPPassword());
+		   transport.connect(getSMTPServer(), getSMTPUsername(), getSMTPPassword());
+		   transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
+		   transport.close();
+		   RsaceLog.writeLog("Rsace Information", "Your request has been successfully sent to " + developerRecipient.getEmail(), LogConstants.LOG_INFO_CONTEXT);
+		   
+		}
+		catch (Exception e)
+		{
+			RsaceLog.writeLog("Rsace Email Error", "Couldn't connect to smtp server. " + e.getMessage(), LogConstants.LOG_ERROR_CONTEXT);
+		}
+	}
+	
+	
     
 }

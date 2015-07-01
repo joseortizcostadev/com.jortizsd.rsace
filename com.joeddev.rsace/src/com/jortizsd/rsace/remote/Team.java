@@ -58,15 +58,7 @@ public class Team extends Developer
         
     }
 	
-	private Team (int defaultIndex) 
-	{
-		super();
-		developers = new ArrayList<>();
-		teams = new ArrayList<>();
-		developers = getDevelopers();
-		fetchDefaultTeam(defaultIndex);
-		
-	}
+	
 	
 	protected Team () 
 	{
@@ -76,6 +68,7 @@ public class Team extends Developer
 		teams = new ArrayList <>();
 	}
 	
+	
 	private Team (String teamName) 
 	{
 		super();
@@ -83,10 +76,21 @@ public class Team extends Developer
 		developers = getDevelopers();
 		teams = new ArrayList <>();
 		Team team = fetchTeamByName(teamName);
-		System.out.println("Team: " + team.getTeamName() + "Id: " + team.getTeamId());
 		this.setTeamName(teamName);
 		this.setTeamId(team.getTeamId());
 	}
+	
+	private Team (int teamId)
+	{
+		super();
+		developers = new ArrayList <>();
+		developers = getDevelopers();
+		teams = new ArrayList <>();
+		Team team = fetchTeamById(teamId);
+		this.setTeamName(team.getTeamName());
+		this.setTeamId(team.getTeamId());
+	}
+	
 	
 	public static Team createNewTeam (String teamName, String teamId)
 	{
@@ -106,6 +110,12 @@ public class Team extends Developer
 	public static Team getTeamByName (String teamName) 
 	{
 		return new Team(teamName);
+	}
+	
+	public static Team getTeamByID (int teamId)
+	{
+		return null;
+		
 	}
 	
     public void setTeamName (String teamName)
@@ -231,32 +241,6 @@ public class Team extends Developer
     		
     }
     
-    /**
-     * @category                              Public Class Method
-     * @description                           Determines and gets the default team of developers by index
-     * @param index                           Integer representing the index 
-     * @throws                                SAXException
-     * @throws                                IOException
-     * @throws                                CoreException
-     * @throws                                ParserConfigurationException
-     */
-    private void fetchDefaultTeam (int index) 
-    {
-    	try
-    	{
-    	   Document document = getDocumentToParse(file);
-           document.getDocumentElement().normalize();
-           NodeList  teams = document.getElementsByTagName(Team.TEAM_CONTEXT);
-           Element teamElement = (Element) teams.item(index);
-           setTeamName(teamElement.getAttribute("team_name"));
-           setTeamId(teamElement.getAttribute("id"));
-           System.out.print(getTeamName() + " " + getTeamId());
-    	}
-    	catch (Exception e)
-    	{
-    		System.out.println(e.getMessage());
-    	}
-    }
     
     /**
      * @category     Public Class Method
@@ -304,6 +288,16 @@ public class Team extends Developer
     	
     }
     
+    public Team fetchTeamById (int teamId) 
+    {
+    	teams = fetchAllTeams();
+    	for (Team team : teams)
+    	if (team.getTeamId().equalsIgnoreCase(String.valueOf(teamId)))
+    	      return team;
+    	return null;
+    	
+    }
+    
     /**
      * @category              Public Class Method
      * @description           Determines if a developer is a member of this team
@@ -325,7 +319,6 @@ public class Team extends Developer
     	Developer developer = null;
     	try
     	{
-    	    
     	    String query = RemoteConstants.REMOTE_DB_SELECT_QUERY;
  	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
             Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
@@ -403,6 +396,24 @@ public class Team extends Developer
     		System.out.println(e.getMessage());
     	}
 		return developer;
+    }
+    
+    public Developer getTeamLeader()
+    {
+    	for (Developer dev : developers)
+    	{
+    		if (dev.isSessionOwner())
+    			return dev;
+    	}
+    	return null;
+    }
+    
+    public boolean isDeveloperTeamMember (Developer developer)
+    {
+    	for (Developer dev : developers)
+    		if (dev.getId().equalsIgnoreCase(developer.getId()))
+    			return true;
+    	return false;
     }
     
     

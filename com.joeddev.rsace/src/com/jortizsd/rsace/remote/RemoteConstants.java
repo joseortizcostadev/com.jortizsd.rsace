@@ -26,7 +26,11 @@ public class RemoteConstants
         + " VALUES (?, ?, ?, ?, ?, ?)";
 	public static final String REMOTE_DB_UPDATE_QUERY = "UPDATE developers set team_name = ?, dev_name = ?, dev_email = ?, isTeamOwner =? WHERE dev_id = ?";
 	public static final String REMOTE_DB_SELECT_QUERY = "SELECT * FROM developers";
+	public static final String REMOTE_PROPERTY_EMAIL_HOST = "mail.smtp.host";
+	public static final String REMOTE_PROPERTY_EMAIL_USERNAME = "mail.smtp.username";
+	public static final String REMOTE_PROPERTY_EMAIL_PASSWORD = "mail.smtp.password";
 	
-    
-    
+	
+	
+	
 }

@@ -43,7 +43,7 @@ public class RsacePreferencesPage extends FieldEditorPreferencePage implements I
     @Override
     protected void createFieldEditors() {
     	
-    	addField(new BooleanFieldEditor(PreferenceConstants.P_LOG_STATUS,"&Show relevant information in log",getFieldEditorParent()));
+    	addField(new BooleanFieldEditor(PreferenceConstants.P_LOG_STATUS,"&Show relevant information in log. ( Recomended )",getFieldEditorParent()));
     }
     
     // Getters

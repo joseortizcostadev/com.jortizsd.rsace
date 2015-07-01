@@ -9,13 +9,8 @@
  */
 
 package com.jortizsd.rsace.dialogs;
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -30,21 +25,23 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.xml.sax.SAXException;
 
+import com.jortizsd.rsace.remote.AppConfig;
 import com.jortizsd.rsace.remote.Developer;
-import com.jortizsd.rsace.remote.Remote;
+import com.jortizsd.rsace.remote.EmailInterface;
 import com.jortizsd.rsace.remote.Team;
 import com.jortizsd.rsace.views.LogConstants;
 import com.jortizsd.rsace.views.RsaceLog;
 
-public class NewTeamDeveloperDialog extends TitleAreaDialog {
+public class NewTeamDeveloperDialog extends TitleAreaDialog implements EmailInterface{
 	private Text devIdText;
 	private Combo teamCombo;
 	private Developer newDeveloperMember;
+	private Team team;
 	private Button devFavoritesCheckBox;
 	public static final String TEAM_COMBO_TITLE = "Select a team from this list";
 	public static final String NO_TEAMS = "No Teams Found";
+	private String [] teamsId;
 	
 	
 
@@ -101,7 +98,10 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		{
 			
 		    Team team = Team.getAllTeamsInstance();
+		    
 		    List <Team> teams = team.fetchAllTeams();
+		    teamsId = new String[teams.size()];
+		    int teamCounter = 0;
 		    String comboTeamTitle = TEAM_COMBO_TITLE;
 		    if (teams.isEmpty())
 		    	comboTeamTitle = NO_TEAMS;
@@ -109,6 +109,8 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 		    for (Team t : teams)
 			{
 			    teamCombo.add(t.getTeamName());
+			    teamsId[teamCounter] = t.getTeamId();
+			    teamCounter++;
 			    
 			}
 		} 
@@ -182,7 +184,7 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			{
 				
 				// Saves new developer info in XML configuration, and preferences files.
-				Team team = Team.getTeamByName(myTeam);
+				team = Team.getTeamByName(myTeam);
 				newDeveloperMember = Team.getDeveloperFromDB(devId);
 			    if (newDeveloperMember != null)
 				{
@@ -191,8 +193,10 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 			        newDeveloperMember.addToTeam();
 				    newDeveloperMember.addDeveloperToDB();
 				    newDeveloperMember.setAsFavorite(isInFavorites);
-				    RsaceLog.writeLog("Rsace Information","The developer " + newDeveloperMember.getName() + " was succesfully added to the team  " + 
-				                      myTeam +  " at " + new Date().toString() + 
+				    
+				    EmailInterface.super.sendEmail(newDeveloperMember, getSubject(), getBodyMessage());
+				    RsaceLog.writeLog("Rsace Information","The developer " + newDeveloperMember.getName() + " was temporaly added to the team waiting list " + 
+				                      "until he/she accept the requested invitation to join this team" +  " at " + new Date().toString() + 
 				                      " In order to get more information about this new developer, you can check the file rsace_team.xml ", LogConstants.LOG_INFO_CONTEXT);
 				    super.okPressed();
 				}
@@ -233,5 +237,29 @@ public class NewTeamDeveloperDialog extends TitleAreaDialog {
 	@Override
 	protected Point getInitialSize() {
 		return new Point(310, 261);
+	}
+
+	@Override
+	public String getSubject() 
+	{
+		return "A Rsace's developer sent you a request to join his/her developer's team. Check it out!!!";
+	}
+
+	@Override
+	public String getBodyMessage() 
+	{
+		return "<html><body><p>Hello " + newDeveloperMember.getName() + ", </p>" + 
+	           "The leader of the Rsace developers team " + team.getTeamName() +
+	           " with team id " + team.getTeamId() + 
+	           " has invited you to join to his/her developer team. </br>" + 
+	           "In the case you want to join this team, you just need to open " + 
+	           "a remote session in your Rsace plug-in, and insert the team id provided above. " + 
+	           "If everything goes as expected, you will join to the " + 
+	           "work flow of this team of developers. Otherwise, no action is required, and your Rsace developer " + 
+	           "information will be automatically removed from the team configuration file. </br>" + 
+	           "For more detailed information about this process or other questions, please visit www.jortizsd.com/rsace, " + 
+	           "or send an email to rsace@jortizsd.com.</br></br>" + 
+	           "Regards, </br>" + "Rsace Administration Team </body></html>" ;
+	           
 	}
 }

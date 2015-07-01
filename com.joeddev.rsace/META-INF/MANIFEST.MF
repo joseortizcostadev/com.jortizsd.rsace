@@ -7,7 +7,8 @@ Bundle-Activator: com.jortizsd.rsace.Activator
 Bundle-Vendor: JOEDDEV
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources;bundle-version="3.9.1"
+ org.eclipse.core.resources;bundle-version="3.9.1",
+ javax.mail;bundle-version="1.4.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: META-INF/mysql-connector-java-5.1.35-bin.jar,

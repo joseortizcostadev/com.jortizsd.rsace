@@ -38,7 +38,7 @@ public class InitHandler extends AbstractHandler
 	public static final String MENU_NEW_SYNC = "Synchronize";
 	public static final String MENU_NEW_SESSION = "Open Remote Session";
 	public static final String MENU_NEW_TEAM = "Add Developers to Team";
-	public static final String MENU_NEW_DEVELOPER = "New Developer";
+	public static final String MENU_NEW_DEVELOPER = "Invite Guest Developer";
 	private TreeBuilder treeBuilder;
     private UsrResourcesBuilder usrResourcesBuilder;
 	private String author;
@@ -105,7 +105,7 @@ public class InitHandler extends AbstractHandler
 			   new NewTeamDeveloperDialog(window.getShell()).open();
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
-			   System.out.println("I think that dos not work");
+			   System.out.println("I think it works");
 		   return null;
 	    }
 	    catch (Exception e)
@@ -140,7 +140,7 @@ public class InitHandler extends AbstractHandler
 	{
 		try
 		{
-		    
+			
 	    }
  		catch (Exception e)
  		{

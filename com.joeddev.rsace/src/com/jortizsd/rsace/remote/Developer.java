@@ -28,6 +28,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -102,6 +103,10 @@ public class Developer extends TreeWriter implements DatabaseInterface
         this.team = team;
         setRegistrationState(false);
     }
+    
+    
+    
+   
     
     /**
      * @category     Public Class Method
@@ -244,6 +249,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
     {
     	return isFavorite;
     }
+    
     
     /**
      * @category        Private Class Method

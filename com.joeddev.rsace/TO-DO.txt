@@ -1,0 +1,5 @@
+-- PUT HERE TO DO THINGS AND DELETE THEM ONCE THEY ARE DONE --
+* Create a method to check if a developer is already a member of the group before adding he/she to the group.
+* Improve remote preferences with all the new options
+* Document with java docs all the methods implemented so far.
+
