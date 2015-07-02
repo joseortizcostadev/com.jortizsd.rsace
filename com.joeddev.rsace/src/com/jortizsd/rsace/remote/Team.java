@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -38,6 +39,7 @@ public class Team extends Developer
 	private List <Team> teams;
 	private String teamName;
 	private String teamId;
+	private String teamGuestCode;
     public static final String TEAM_CONTEXT = "team";
 	public static final String ID_CONTEXT = "id";
 	public static final String NAME_CONTEXT = "name";
@@ -53,12 +55,8 @@ public class Team extends Developer
         developers = new ArrayList<>();
         this.teamName = teamName;
         this.teamId = teamId;
-       
-        
         
     }
-	
-	
 	
 	protected Team () 
 	{
@@ -66,6 +64,7 @@ public class Team extends Developer
 		developers = new ArrayList<>();
 		developers = getDevelopers();
 		teams = new ArrayList <>();
+		
 	}
 	
 	
@@ -78,6 +77,7 @@ public class Team extends Developer
 		Team team = fetchTeamByName(teamName);
 		this.setTeamName(teamName);
 		this.setTeamId(team.getTeamId());
+		
 	}
 	
 	private Team (int teamId)
@@ -89,6 +89,7 @@ public class Team extends Developer
 		Team team = fetchTeamById(teamId);
 		this.setTeamName(team.getTeamName());
 		this.setTeamId(team.getTeamId());
+	   
 	}
 	
 	
@@ -127,6 +128,11 @@ public class Team extends Developer
     {
     	this.teamId = teamId;
     }
+    
+    public void setTeamGuestCode (String teamGuestCode)
+    {
+    	this.teamGuestCode = teamGuestCode;
+    }
    
     public String getTeamName ()
     {
@@ -136,6 +142,11 @@ public class Team extends Developer
     public String getTeamId()
     {
     	return this.teamId;
+    }
+    
+    public String getTeamGuestCode()
+    {
+    	return this.teamGuestCode;
     }
     
     /**
@@ -416,7 +427,20 @@ public class Team extends Developer
     	return false;
     }
     
-    
+    // Temporal method. Delete once it is not used anymore
+    public void createTeamGuestCode ()
+    {
+    	teamGuestCode = "RSACE";
+    	int rnd;
+    	char rndResult;
+    	for (int i = 0; i<7; i++)
+    	{
+    		 rnd = (int) (Math.random() * 52); 
+    	     rndResult = (rnd < 26) ? 'A' : 'a';
+    	     teamGuestCode += (char) (rndResult + rnd % 26);
+    	}
+    	
+    }
     
     
 }

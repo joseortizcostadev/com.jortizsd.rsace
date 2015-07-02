@@ -47,6 +47,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
     private boolean active;
     private boolean isTheSender;
     private boolean isFavorite;
+    private String guestCode;
     private Connection conn;
     public static final String DEVELOPER_CONTEXT = "developer";
     public static final String DB_FIELD_DEV_ID = "dev_id";
@@ -102,6 +103,7 @@ public class Developer extends TreeWriter implements DatabaseInterface
         this.isTheSender = isTheOwner;
         this.team = team;
         setRegistrationState(false);
+       
     }
     
     
@@ -179,6 +181,16 @@ public class Developer extends TreeWriter implements DatabaseInterface
     }
     
     /**
+     * @category           Public Class Method
+     * @description        Sets a guest code for this developer
+     * @param guestCode    String object representing a guest code
+    */
+    public void setGuestCode (String guestCode)
+    {
+    	this.guestCode = guestCode;
+    }
+    
+    /**
      * @category     Public Class Method
      * @description  Gets this developer's team
      * @return       Team object representing the developer's team
@@ -250,7 +262,15 @@ public class Developer extends TreeWriter implements DatabaseInterface
     	return isFavorite;
     }
     
-    
+    /**
+     * @category     Public Class Method
+     * @description  Gets a guest code
+     * @return       A String object representing the guest code for this developer
+     */
+    public String getGuestCode ()
+    {
+    	return this.guestCode;
+    }
     /**
      * @category        Private Class Method
      * @description     This method prepares the developer's information to be inserted
@@ -615,6 +635,8 @@ public class Developer extends TreeWriter implements DatabaseInterface
 	    }
         return false;
 	}
+	
+	
     /**
      * @category     Public Class Method
      * @description  Overrides the method toString from the superClass to return 

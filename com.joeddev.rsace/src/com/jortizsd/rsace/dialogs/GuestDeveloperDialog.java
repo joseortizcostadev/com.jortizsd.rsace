@@ -26,8 +26,10 @@ public class GuestDeveloperDialog extends TitleAreaDialog implements EmailInterf
 	private Text emailText;
 	private Combo teamCombo;
 	private Team team;
+	private Developer dev;
 	private String [] teamsId;
 	private String teamId;
+
 
 	/**
 	 * Create the dialog.
@@ -123,8 +125,8 @@ public class GuestDeveloperDialog extends TitleAreaDialog implements EmailInterf
     	try
     	{
     		teamId = teamsId[teamCombo.getSelectionIndex()];
-    		Team team = Team.createNewTeam(teamCombo.getText(), teamId);
-    		Developer dev = new Developer ("guest");
+    		team = Team.createNewTeam(teamCombo.getText(), teamId);
+    		dev = new Developer ("guest");
     		dev.setEmail(emailText.getText());
     		dev.setTeam(team);
     		EmailInterface.super.sendEmail(dev, getSubject(), getBodyMessage());
@@ -159,9 +161,10 @@ public class GuestDeveloperDialog extends TitleAreaDialog implements EmailInterf
 		return "<p>Hi, </p> " +
 			   "A Rsace's developer member has sent you a request to join his/her " + 
 			   "team of developers. </br>" +
-			   "If you already are a Rsace's developer member, you just need to start a remote session in Rsace plug-in, " +
-			   "and insert your developer id, and the following </strong> team id " + teamId + "</strong> " + 
-			   ". Otherwise, download Rsace plug-in platform for Eclipse from " + RemoteConstants.REMOTE_WEB_RSACE_PAGE +
+			   "If you already are a Rsace's developer member, you just need to go to the <strong> join team as guest </strong> in the Rsace pop up menu, " +
+			   "and insert your <strong> developer id </strong>, as well as the following information </br> " +
+			   "<strong> Team Code: " + teamId + "</strong></br>" +
+			    "Otherwise, download Rsace plug-in platform for Eclipse from " + RemoteConstants.REMOTE_WEB_RSACE_PAGE +
 			   ". Once Rsace is installed in eclipse, create a new free Rsace developer account, and follow the steps described above. " + 
 			   "You will find more detailed information about this proccess and many more in "  + RemoteConstants.REMOTE_WEB_RSACE_TUTORIAL + 
 			   "</br></br> Regards, </br> The Rsace Team" ;
