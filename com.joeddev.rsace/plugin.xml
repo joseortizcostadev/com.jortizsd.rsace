@@ -22,7 +22,7 @@
       <command
             categoryId="Rsace.commands.category"
             id="Rsace.commands.developer"
-            name="Invite Guest Developer">
+            name="Developer as Guest">
       </command>
       
    </extension>

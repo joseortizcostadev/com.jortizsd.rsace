@@ -21,10 +21,12 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import com.jortizsd.rsace.appTree.ResourcesBuilder;
 import com.jortizsd.rsace.appTree.TreeBuilder;
 import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
+import com.jortizsd.rsace.dialogs.GuestDeveloperDialog;
 import com.jortizsd.rsace.dialogs.LoginDialog;
 import com.jortizsd.rsace.dialogs.NewTeamDeveloperDialog;
 import com.jortizsd.rsace.preferences.RsacePreferencesPage;
 import com.jortizsd.rsace.remote.AppConfig;
+import com.jortizsd.rsace.remote.EmailInterface;
 import com.jortizsd.rsace.views.RsaceLog;
 
 
@@ -38,7 +40,7 @@ public class InitHandler extends AbstractHandler
 	public static final String MENU_NEW_SYNC = "Synchronize";
 	public static final String MENU_NEW_SESSION = "Open Remote Session";
 	public static final String MENU_NEW_TEAM = "Add Developers to Team";
-	public static final String MENU_NEW_DEVELOPER = "Invite Guest Developer";
+	public static final String MENU_NEW_DEVELOPER = "Developer as Guest";
 	private TreeBuilder treeBuilder;
     private UsrResourcesBuilder usrResourcesBuilder;
 	private String author;
@@ -105,7 +107,10 @@ public class InitHandler extends AbstractHandler
 			   new NewTeamDeveloperDialog(window.getShell()).open();
 		   }
 		   else if (event.getCommand().getName().equalsIgnoreCase(MENU_NEW_DEVELOPER))
-			   System.out.println("I think it works");
+		   {
+			   new GuestDeveloperDialog(window.getShell()).open();
+		   }
+			   
 		   return null;
 	    }
 	    catch (Exception e)
@@ -115,6 +120,10 @@ public class InitHandler extends AbstractHandler
 		return null;
 	}
 	
+	public void sendRequest ()
+	{
+		
+	}
 	/**
 	 * @category      Private Class Method
 	 * @description   Initializes all the component and resources of this application
@@ -151,4 +160,5 @@ public class InitHandler extends AbstractHandler
 	    }
 	       
 	}
+
 }

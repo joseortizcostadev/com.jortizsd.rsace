@@ -29,6 +29,9 @@ public class RemoteConstants
 	public static final String REMOTE_PROPERTY_EMAIL_HOST = "mail.smtp.host";
 	public static final String REMOTE_PROPERTY_EMAIL_USERNAME = "mail.smtp.username";
 	public static final String REMOTE_PROPERTY_EMAIL_PASSWORD = "mail.smtp.password";
+	public static final String REMOTE_WEB_RSACE_PAGE = "jortizsd.com/rsace.php";
+	public static final String REMOTE_WEB_RSACE_TUTORIAL = "jortizsdblog.wordpress.com/2015/07/01/rsace-tutorial";
+	
 	
 	
 	
