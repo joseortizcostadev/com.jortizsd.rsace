@@ -36,6 +36,8 @@ import com.jortizsd.rsace.appTree.UsrResourcesBuilder;
 import com.jortizsd.rsace.preferences.DVTPreferencesPage;
 import com.jortizsd.rsace.remote.AppConfig;
 import com.jortizsd.rsace.remote.Developer;
+import com.jortizsd.rsace.remote.EmailInterface;
+import com.jortizsd.rsace.remote.RemoteConstants;
 import com.jortizsd.rsace.remote.Team;
 import com.jortizsd.rsace.views.LogConstants;
 import com.jortizsd.rsace.views.RsaceLog;
@@ -43,7 +45,7 @@ import com.jortizsd.rsace.views.RsaceLog;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.ProgressBar;
 
-public class CreateNewCredentialsDialog extends TitleAreaDialog 
+public class CreateNewCredentialsDialog extends TitleAreaDialog implements EmailInterface
 {
 	private TreeBuilder treeBuilder;
 	private AppManifestBuild manifest;
@@ -218,9 +220,13 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	      resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
         	      treeBuilder.refreshAppTree();
+        	      MessageDialog.openInformation(getShell(),
+                          "Rsace Welcome Message",
+                          "Welcome to Rsace Platform. Please check your email for detailed information about Rsace");
         	      RsaceLog.writeLog("Rsace Synchronization Status", "Local synchronization succesfully done with developer's id: " + 
 	                       developer.getId() + " and developer's team id: " + developer.getTeam().getTeamId() + 
 	                       " at " + new Date().toString(), LogConstants.LOG_INFO_CONTEXT);
+        	      EmailInterface.super.sendEmail(developer, getSubject(), getBodyMessage());
         	      super.okPressed();
         	    }
 	    	}
@@ -275,5 +281,23 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog
 	@Override
 	protected Point getInitialSize() {
 		return new Point(450, 300);
+	}
+
+	@Override
+	public String getSubject() 
+	{
+		return "Welcome to Rsace Platform";
+	}
+
+	@Override
+	public String getBodyMessage() 
+	{
+		return "<p> Hi " + developerNameText.getText() + ", </p> " + 
+	           "The Rsace Platform wants to welcome you to our team of developers. We are " +
+			   "very excited to have you in our team, where you'll have the opportunity to enjoy and learn " +
+	           "from the most advanced Rsace's features </br> " + 
+			   "If you want to learn more about Rsace, please visit " + RemoteConstants.REMOTE_WEB_RSACE_TUTORIAL + ". " + 
+			   "Dont miss it, and check it out now!!! </br></br> " + 
+			   "Regards, </br> The Rsace Team";
 	}
 }
