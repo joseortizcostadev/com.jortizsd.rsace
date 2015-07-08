@@ -29,18 +29,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.jortizsd.rsace.views.LogConstants;
+import com.jortizsd.rsace.views.RsaceLog;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 public interface DatabaseInterface 
 {
-	/**
-	 * @category             Default Interface Method
-	 * @description          Creates a connection to the database
-	 * @param configFileURL  String object representing the host's server URL 
-	 *                       where the database is hosted
-	 * @return               Connection object representing the connection to the database
-	 * @throws SQLException 
-	 * @throws IOException 
-	 */
 	
     
     /**
@@ -87,7 +80,7 @@ public interface DatabaseInterface
      * @return           Developer object representing a developer from the database
      * @see              Developer 
      */
-   // public Developer getDeveloperFromDB(String developerID);
+     
     
     
 }

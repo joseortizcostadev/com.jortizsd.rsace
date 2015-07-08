@@ -342,9 +342,10 @@ public class Team extends Developer
             // iterate through the java resultset
             while (rs.next())
             {
-              if (developerID.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID)) && 
-            	  teamId.equalsIgnoreCase(rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID)))
+              if (developerID.equalsIgnoreCase(rs.getString(String.valueOf(RemoteConstants.REMOTE_DB_FIELD_DEVID))) && 
+            	  teamId.equalsIgnoreCase(rs.getString(String.valueOf(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMID))))
               {
+            	  
             	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
             	  String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
             	  String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
@@ -374,8 +375,7 @@ public class Team extends Developer
     	try
     	{
     	    
-    	    String query = "SELECT * FROM developers WHERE " + RemoteConstants.REMOTE_DB_FIELD_DEVID + 
-    	    		       "=" + developerID;
+    	    String query = RemoteConstants.REMOTE_DB_SELECT_QUERY;
  	        URL url = new URL(RemoteConstants.REMOTE_APP_CONFIG_FILE_URL);
             Connection conn = AppConfig.getConnectionFromRemoteConfigFile(url);
             // create the java statement
@@ -387,7 +387,8 @@ public class Team extends Developer
             // iterate through the java resultset
             while (rs.next())
             {
-              
+                  if (rs.getString(String.valueOf(RemoteConstants.REMOTE_DB_FIELD_DEVID)).equalsIgnoreCase(developerID))
+                  {
             	  String teamName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVTEAMNAME);
             	  String devId = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVID);
             	  String devName = rs.getString(RemoteConstants.REMOTE_DB_FIELD_DEVNAME);
@@ -397,6 +398,7 @@ public class Team extends Developer
                   developer = new Developer(team,devId,devName,devEmail,false,isOwner);
                   developer.setRegistrationState(true);
                   break;
+                  }
               
             }
             st.close();

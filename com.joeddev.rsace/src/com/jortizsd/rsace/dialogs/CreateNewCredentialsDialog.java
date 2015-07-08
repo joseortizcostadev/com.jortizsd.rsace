@@ -220,13 +220,13 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog implements Email
         	    		                                                               developer.getEmail(), false, developer.getTeam().getTeamName(), teamMembers);
         	      resourcesBuilder.syncFile(UsrResourcesBuilder.LOCAL_MODE, headerStream);
         	      treeBuilder.refreshAppTree();
-        	      MessageDialog.openInformation(getShell(),
-                          "Rsace Welcome Message",
-                          "Welcome to Rsace Platform. Please check your email for detailed information about Rsace");
         	      RsaceLog.writeLog("Rsace Synchronization Status", "Local synchronization succesfully done with developer's id: " + 
 	                       developer.getId() + " and developer's team id: " + developer.getTeam().getTeamId() + 
 	                       " at " + new Date().toString(), LogConstants.LOG_INFO_CONTEXT);
         	      EmailInterface.super.sendEmail(developer, getSubject(), getBodyMessage());
+        	      MessageDialog.openInformation(getShell(),
+                          "Rsace Welcome Message",
+                          "Welcome to Rsace Platform. Please check your email for detailed information about Rsace");
         	      super.okPressed();
         	    }
 	    	}
@@ -253,8 +253,7 @@ public class CreateNewCredentialsDialog extends TitleAreaDialog implements Email
 	{
 		if (developerIdText.getText().equals("") || developerNameText.getText().equals("") || 
 			developerEmailText.getText().equals("") || teamIdText.getText().equals("") || 
-			teamText.getText().equals("") || !isFieldOnlyNumbers(developerIdText.getText()) ||
-			!isFieldOnlyNumbers(teamIdText.getText()))
+			teamText.getText().equals(""))
             return false;
         return true;
 			

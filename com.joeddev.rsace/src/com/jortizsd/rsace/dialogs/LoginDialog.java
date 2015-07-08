@@ -174,6 +174,7 @@ public class LoginDialog extends TitleAreaDialog
 		try
 		{
 			Developer developer = Team.getDeveloperFromDB(devIdText.getText(), teamText.getText());
+			
 			if (developer == null)
 			{	
         	    MessageDialog.openInformation(getShell(),
@@ -195,7 +196,7 @@ public class LoginDialog extends TitleAreaDialog
 				RsaceLog.writeLog("Rsace Login Failed","The developer's id provided is not the owner of the team provided" , LogConstants.LOG_ERROR_CONTEXT);
                 clearFields();
 			}
-			else if (developer.isRegisteredInTeam() == true )
+			else  
             {
 				
 				treeBuilder.buildAppTree(developer.getName(), developer.getEmail());
